@@ -12,6 +12,7 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import domain.Customer;
+import domain.Employee;
 
 @Dependent
 @Transactional
@@ -37,7 +38,7 @@ public class CustomerService implements CustomerServiceInterface{
 	}
 
 	@Override
-	public List<Customer> readCustomer(int currentPage, int recordsPerPage, String keyword) throws EJBException {
+	public List<Customer> readCustomers(int currentPage, int recordsPerPage, String keyword) throws EJBException {
 		Query q = null;
 
 		if (keyword.isEmpty()) {
@@ -89,7 +90,13 @@ public class CustomerService implements CustomerServiceInterface{
 	}
 
 	@Override
-	public void updateCustomer(String[] s) throws EJBException {
+	public boolean updateCustomer(String[] s) throws EJBException {
+		EmpService empService = new EmpService(em);
+		Employee employee = empService.findEmployee(s[12]);
+		
+		if(employee == null)
+			return false;
+		
 		Customer customer = findCustomer(s[0]);
 
 		customer.setAddressline1(s[1]);
@@ -104,9 +111,10 @@ public class CustomerService implements CustomerServiceInterface{
 		customer.setPhone(s[9]);
 		customer.setPostalcode(s[10]);
 		customer.setState(s[11]);
-		//customer.setEmployee(employee);
+		customer.setEmployee(employee);
 
 		em.merge(customer);
+		return true;
 	}
 
 	@Override
@@ -116,7 +124,13 @@ public class CustomerService implements CustomerServiceInterface{
 	}
 
 	@Override
-	public void addCustomer(String[] s) throws EJBException {
+	public boolean addCustomer(String[] s) throws EJBException {
+		EmpService empService = new EmpService(em);
+		Employee employee = empService.findEmployee(s[12]);
+		
+		if(employee == null)
+			return false;
+		
 		Customer customer = new Customer();
 
 		customer.setAddressline1(s[1]);
@@ -131,8 +145,9 @@ public class CustomerService implements CustomerServiceInterface{
 		customer.setPhone(s[9]);
 		customer.setPostalcode(s[10]);
 		customer.setState(s[11]);
-		//customer.setEmployee(employee);
+		customer.setEmployee(employee);
 
 		em.persist(customer);
+		return true;
 	}
 }

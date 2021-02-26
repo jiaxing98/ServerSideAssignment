@@ -2,9 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-
 import javax.ejb.EJBException;
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
@@ -46,8 +43,8 @@ public class CustomerController extends HttpServlet {
 		String id = request.getParameter("id");
 		try {
 			Customer customer = customerbean.findCustomer(id); 
-			request.setAttribute("Customer", customer);
-			RequestDispatcher req = request.getRequestDispatcher("EmployeeUpdate.jsp"); // change the jsp
+			request.setAttribute("customer", customer);
+			RequestDispatcher req = request.getRequestDispatcher("CustomerUpdate.jsp"); // change the jsp
 			req.forward(request, response);
 		} catch (EJBException ex) {
 
@@ -61,7 +58,7 @@ public class CustomerController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String cno = request.getParameter("cno");
+		String cno = request.getParameter("id");
 		String address1 = request.getParameter("addressline1");
 		String address2 = request.getParameter("addressline2");
 		String city = request.getParameter("city");
@@ -91,7 +88,7 @@ public class CustomerController extends HttpServlet {
 			}
 			// this line is to redirect to notify record has been updated and redirect to
 			// another page
-			ValidateManageLogic.navigateJS(out);
+			ValidateManageLogic.navigateJS(out, "CustomerController");
 
 		} catch (EJBException ex) {
 		}

@@ -56,7 +56,7 @@ public class CustomerPagination extends HttpServlet {
 				currentPage = nOfPages;
 			}
 
-			List<Customer> lists = customerbean.readCustomer(currentPage, recordsPerPage, keyword);
+			List<Customer> lists = customerbean.readCustomers(currentPage, recordsPerPage, keyword);
 			request.setAttribute("customers", lists);
 
 		} catch (EJBException ex) {

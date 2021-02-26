@@ -12,13 +12,13 @@ public interface CustomerServiceInterface {
 
 	public Customer findCustomer(String id) throws EJBException;
 
-	public List<Customer> readCustomer(int currentPage, int recordsPerPage, String keyword) throws EJBException;
+	public List<Customer> readCustomers(int currentPage, int recordsPerPage, String keyword) throws EJBException;
 
 	public int getNumberOfRows(String keyword) throws EJBException;
 
-	public void updateCustomer(String[] s) throws EJBException;
+	public boolean updateCustomer(String[] s) throws EJBException;
 
 	public void deleteCustomer(String id) throws EJBException;
 
-	public void addCustomer(String[] s) throws EJBException;
+	public boolean addCustomer(String[] s) throws EJBException;
 }

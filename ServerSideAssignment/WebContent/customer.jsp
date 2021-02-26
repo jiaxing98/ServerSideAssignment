@@ -122,6 +122,8 @@ body {
 				<th>Sales Rep Employee LastName</th>
 				<th>Sales Rep Employee FirstName</th>
 				<th>Credit Limit</th>
+				<th>Update</th>
+				<th>Delete</th>
 			</tr>
 			<%
 				List<Customer> customer = (List<Customer>) request.getAttribute("customers");
@@ -143,6 +145,8 @@ body {
 						out.println("<td>" + t.getEmployee().getLastname() + "</td>");
 						out.println("<td>" + t.getEmployee().getFirstname() + "</td>");
 						out.println("<td>" + t.getCreditlimit() + "</td>");
+						out.println("<td><a href=\"CustomerController?id=" + t.getCustomernumber() + "\">Update</a></td>");
+						out.println("<td><a href=\"CustomerController?id=" + t.getCustomernumber() + "\">Delete</a></td>");
 						out.println("</tr>");
 					}
 				} else {
@@ -216,5 +220,37 @@ body {
 		src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+	<button class="open-button" onclick="openForm()">Add Customer</button>
+	<div class="form-popup" id="myForm">
+		<form action="CustomerController" class="form-container" method="post">
+			<h1>Add Customer</h1>
+			<fieldset>
+				<legend>Add Customer Details:</legend>
+				<br> Customer Name: <input type="text" name="customername" /> 
+				<br> Contact First Name: <input type="text" name="contactfname" /> 
+				<br> Contact Last Name: <input type="text" name="contactlname" /> 
+				<br> Phone No: <input type="text" name="phone" /> 
+				<br> Address Line 1: <input type="text" name="addressline1" /> 
+				<br> Address Line 2: <input type="text" name="addressline2" />
+				<br> City: <input type="text" name="city" /> 
+				<br> Postal Code: <input type="text" name="postalcode" /> 
+				<br> State: <input type="text" name="state" /> 
+				<br> Country: <input type="text" name="country" /> 
+				<br> Credit Limit: <input type="text" name="creditlimit" />
+				<br> Sales Rep EmployeeNo: <input type="text" name="empno" />
+			</fieldset>
+			<button type="submit" class="btn">Submit Test</button>
+			<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+			<button type="reset" class="btn">Reset</button>
+		</form>
+	</div>
+	<script>
+		function openForm() {
+			document.getElementById("myForm").style.display = "block";
+		}
+		function closeForm() {
+			document.getElementById("myForm").style.display = "none";
+		}
+	</script>
 </body>
 </html>
