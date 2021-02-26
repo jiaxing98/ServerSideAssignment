@@ -12,7 +12,7 @@ public interface CustomerServiceInterface {
 
 	public Customer findCustomer(String id) throws EJBException;
 
-	public List<Customer> readPayment(int currentPage, int recordsPerPage, String keyword) throws EJBException;
+	public List<Customer> readCustomer(int currentPage, int recordsPerPage, String keyword) throws EJBException;
 
 	public int getNumberOfRows(String keyword) throws EJBException;
 

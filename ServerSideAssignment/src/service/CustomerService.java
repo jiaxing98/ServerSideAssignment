@@ -37,12 +37,15 @@ public class CustomerService implements CustomerServiceInterface{
 	}
 
 	@Override
-	public List<Customer> readPayment(int currentPage, int recordsPerPage, String keyword) throws EJBException {
+	public List<Customer> readCustomer(int currentPage, int recordsPerPage, String keyword) throws EJBException {
 		Query q = null;
 
 		if (keyword.isEmpty()) {
 
-			q = em.createNativeQuery("select * from classicmodels.customer order by id OFFSET ? LIMIT ?",
+			q = em.createNativeQuery("select c.* from classicmodels.customers c "
+					+ "JOIN classicmodels.employees e "
+					+ "ON c.salesrepemployeenumber = e.employeenumber "
+					+ "order by customernumber OFFSET ? LIMIT ?",
 					Customer.class);
 
 			int start = currentPage * recordsPerPage - recordsPerPage;
@@ -50,7 +53,11 @@ public class CustomerService implements CustomerServiceInterface{
 			q.setParameter(2, Integer.valueOf(recordsPerPage));
 		} else {
 			q = em.createNativeQuery(
-					"SELECT * from classicmodels.customer WHERE concat(id,first_name,last_name,gender) LIKE ? order by id OFFSET ? LIMIT ?",
+					"SELECT c.* from classicmodels.customers c "
+					+ "JOIN classicmodels.employees e "
+					+ "ON c.salesrepemployeenumber = e.employeenumber "
+					+ "WHERE concat(customernumber,customername,contactlastname,contactfirstname,city,country,salesrepemployeenumber) LIKE ? "
+					+ "order by customernumber OFFSET ? LIMIT ?",
 					Customer.class);
 			int start = currentPage * recordsPerPage - recordsPerPage;
 			q.setParameter(1, "%" + keyword + "%");
@@ -67,11 +74,11 @@ public class CustomerService implements CustomerServiceInterface{
 	public int getNumberOfRows(String keyword) throws EJBException {
 		Query q = null;
 		if (keyword.isEmpty()) {
-			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow FROM classicmodels.customer");
+			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow FROM classicmodels.customers");
 
 		} else {
-			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow from classicmodels.customer "
-					+ "WHERE concat(customernumber,customername) LIKE ?");	//search condition
+			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow from classicmodels.customers "
+					+ "WHERE concat(customernumber,customername,contactlastname,contactfirstname,city,country,salesrepemployeenumber) LIKE ?");
 
 			q.setParameter(1, "%" + keyword + "%");
 		}
@@ -97,6 +104,7 @@ public class CustomerService implements CustomerServiceInterface{
 		customer.setPhone(s[9]);
 		customer.setPostalcode(s[10]);
 		customer.setState(s[11]);
+		//customer.setEmployee(employee);
 
 		em.merge(customer);
 	}
@@ -123,6 +131,7 @@ public class CustomerService implements CustomerServiceInterface{
 		customer.setPhone(s[9]);
 		customer.setPostalcode(s[10]);
 		customer.setState(s[11]);
+		//customer.setEmployee(employee);
 
 		em.persist(customer);
 	}

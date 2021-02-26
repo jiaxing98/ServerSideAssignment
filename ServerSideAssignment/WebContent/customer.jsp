@@ -1,12 +1,12 @@
 <%@page import="java.util.List"%>
-<%@page import="domain.Payment"%>
+<%@page import="domain.Customer"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Payment</title>
+<title>Customer List</title>
 <style>
 body {
 	font-family: Arial, Helvetica, sans-serif;
@@ -96,7 +96,7 @@ body {
 		String keyword = (String) request.getAttribute("keyword");
 	%>
 	<form class="form-inline md-form mr-auto mb-4"
-		action="PaymentPagination" method="get">
+		action="CustomerPagination" method="get">
 		<input class="form-control mr-sm-2" type="text" aria-label="Search"
 			name="keyword" />
 		<button class="btn aqua-gradient btn-rounded btn-sm my-0 btn btn-info"
@@ -109,28 +109,46 @@ body {
 			<tr>
 				<th>Customer Number</th>
 				<th>Customer Name</th>
-				<th>Check Number</th>
-				<th>Payment Date</th>
-				<th>Payment Method</th>
-				<th>Amount</th>
+				<th>Contact Last Name</th>
+				<th>Contact First Name</th>
+				<th>Phone No.</th>
+				<th>Address Line 1</th>
+				<th>Address Line 2</th>
+				<th>City</th>
+				<th>State</th>
+				<th>Postal Code</th>
+				<th>Country</th>
+				<th>Sales Rep EmployeeNo</th>
+				<th>Sales Rep Employee LastName</th>
+				<th>Sales Rep Employee FirstName</th>
+				<th>Credit Limit</th>
 			</tr>
 			<%
-				List<Payment> payment = (List<Payment>) request.getAttribute("payment");
-				if (payment.size() != 0) {
-					for (Payment t : payment) {
+				List<Customer> customer = (List<Customer>) request.getAttribute("customers");
+				if (customer.size() != 0) {
+					for (Customer t : customer) {
 						out.println("<tr>");
-						out.println("<td>" + t.getId().getCustomernumber() + "</td>");
-						out.println("<td>" + t.getCustomer().getCustomername() + "</td>");
-						out.println("<td>" + t.getId().getChecknumber() + "</td>");
-						out.println("<td>" + t.getPaymentdate() + "</td>");
-						out.println("<td>" + t.getPaymentmethod() + "</td>");
-						out.println("<td>" + t.getAmount() + "</td>");
+						out.println("<td>" + t.getCustomernumber() + "</td>");
+						out.println("<td>" + t.getCustomername() + "</td>");
+						out.println("<td>" + t.getContactlastname() + "</td>");
+						out.println("<td>" + t.getContactfirstname() + "</td>");
+						out.println("<td>" + t.getPhone() + "</td>");
+						out.println("<td>" + t.getAddressline1() + "</td>");
+						out.println("<td>" + t.getAddressline2() + "</td>");
+						out.println("<td>" + t.getCity() + "</td>");
+						out.println("<td>" + t.getState() + "</td>");
+						out.println("<td>" + t.getPostalcode() + "</td>");
+						out.println("<td>" + t.getCountry() + "</td>");
+						out.println("<td>" + t.getEmployee().getEmployeenumber() + "</td>");
+						out.println("<td>" + t.getEmployee().getLastname() + "</td>");
+						out.println("<td>" + t.getEmployee().getFirstname() + "</td>");
+						out.println("<td>" + t.getCreditlimit() + "</td>");
 						out.println("</tr>");
 					}
 				} else {
 					out.println("<tr>");
 					String status = "No records";
-					for (int i = 0; i < 6; i++) {
+					for (int i = 0; i < 13; i++) {
 						out.println("<td>" + status + "</td>");
 					}
 					out.println("</tr>");
@@ -145,13 +163,13 @@ body {
 			%>
 			<%
 				out.println("<li class=\"page-item\">");
-					out.println("<a class=\"page-link\" href=\"" + "PaymentPagination?recordsPerPage=" + recordsPerPage
+					out.println("<a class=\"page-link\" href=\"" + "CustomerPagination?recordsPerPage=" + recordsPerPage
 							+ "&currentPage=1" + "&keyword=" + keyword + "\">First</a>");
 					out.println("</li>");
 			%>
 			<li class="page-item">
 				<%
-					out.println("<a class=\"page-link\" href=\"" + "PaymentPagination?recordsPerPage=" + recordsPerPage
+					out.println("<a class=\"page-link\" href=\"" + "CustomerPagination?recordsPerPage=" + recordsPerPage
 								+ "&currentPage=" + (currentPage - 1) + "&keyword=" + keyword + "\">Previous</a>");
 				%>
 			</li>
@@ -166,7 +184,7 @@ body {
 						out.println("</li>");
 					} else {
 						out.println("<li class=\"page-item\">");
-						out.println("<a class=\"page-link\" href=\"" + "PaymentPagination?recordsPerPage=" + recordsPerPage
+						out.println("<a class=\"page-link\" href=\"" + "CustomerPagination?recordsPerPage=" + recordsPerPage
 								+ "&currentPage=" + i + "&keyword=" + keyword + "\">" + i + "</a>");
 						out.println("</li>");
 					}
@@ -175,11 +193,11 @@ body {
 			<%
 				if (currentPage < nOfPages) {
 					out.println("<li class=\"page-item\">");
-					out.println("<a class=\"page-link\" href=\"" + "PaymentPagination?recordsPerPage=" + recordsPerPage
+					out.println("<a class=\"page-link\" href=\"" + "CustomerPagination?recordsPerPage=" + recordsPerPage
 							+ "&currentPage=" + (currentPage + 1) + "&keyword=" + keyword + "\">Next</a>");
 					out.println("</li>");
 					out.println("<li class=\"page-item\">");
-					out.println("<a class=\"page-link\" href=\"" + "PaymentPagination?recordsPerPage=" + recordsPerPage
+					out.println("<a class=\"page-link\" href=\"" + "CustomerPagination?recordsPerPage=" + recordsPerPage
 							+ "&currentPage=" + nOfPages + "&keyword=" + keyword + "\">Last</a>");
 					out.println("</li>");
 				}

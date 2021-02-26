@@ -12,23 +12,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import domain.Payment;
-import service.PaymentService;
+import domain.Customer;
+import service.CustomerService;
 
 /**
- * Servlet implementation class PaymentPagination
+ * Servlet implementation class CustomerPagination
  */
-@WebServlet("/PaymentPagination")
-public class PaymentPagination extends HttpServlet {
+@WebServlet("/CustomerPagination")
+public class CustomerPagination extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	@Inject
-	private PaymentService paymentbean;
-	
+	private CustomerService customerbean;
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PaymentPagination() {
+    public CustomerPagination() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,7 +45,7 @@ public class PaymentPagination extends HttpServlet {
 		String keyword = request.getParameter("keyword");
 
 		try {
-			int rows = paymentbean.getNumberOfRows(keyword);
+			int rows = customerbean.getNumberOfRows(keyword);
 			nOfPages = rows / recordsPerPage;
 			System.out.println("At servlet" + nOfPages);
 			if (rows % recordsPerPage != 0) {
@@ -57,8 +56,8 @@ public class PaymentPagination extends HttpServlet {
 				currentPage = nOfPages;
 			}
 
-			List<Payment> lists = paymentbean.readPayment(currentPage, recordsPerPage, keyword);
-			request.setAttribute("payment", lists);
+			List<Customer> lists = customerbean.readCustomer(currentPage, recordsPerPage, keyword);
+			request.setAttribute("customers", lists);
 
 		} catch (EJBException ex) {
 
@@ -68,7 +67,7 @@ public class PaymentPagination extends HttpServlet {
 		request.setAttribute("currentPage", currentPage);
 		request.setAttribute("recordsPerPage", recordsPerPage);
 		request.setAttribute("keyword", keyword);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("payment.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("customer.jsp");
 		dispatcher.forward(request, response);
 	}
 
