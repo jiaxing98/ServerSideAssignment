@@ -141,9 +141,18 @@ body {
 						out.println("<td>" + t.getState() + "</td>");
 						out.println("<td>" + t.getPostalcode() + "</td>");
 						out.println("<td>" + t.getCountry() + "</td>");
-						out.println("<td>" + t.getEmployee().getEmployeenumber() + "</td>");
-						out.println("<td>" + t.getEmployee().getLastname() + "</td>");
-						out.println("<td>" + t.getEmployee().getFirstname() + "</td>");
+						
+						if(t.getEmployee() == null){
+							out.println("<td>" + "null" + "</td>");
+							out.println("<td>" + "null" + "</td>");
+							out.println("<td>" + "null" + "</td>");
+						}
+						else{
+							out.println("<td>" + t.getEmployee().getEmployeenumber() + "</td>");
+							out.println("<td>" + t.getEmployee().getLastname() + "</td>");
+							out.println("<td>" + t.getEmployee().getFirstname() + "</td>");
+						}
+						
 						out.println("<td>" + t.getCreditlimit() + "</td>");
 						out.println("<td><a href=\"CustomerController?id=" + t.getCustomernumber() + "\">Update</a></td>");
 						out.println("<td><a href=\"CustomerController?id=" + t.getCustomernumber() + "\">Delete</a></td>");

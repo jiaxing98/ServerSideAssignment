@@ -43,9 +43,7 @@ public class CustomerService implements CustomerServiceInterface{
 
 		if (keyword.isEmpty()) {
 
-			q = em.createNativeQuery("select c.* from classicmodels.customers c "
-					+ "JOIN classicmodels.employees e "
-					+ "ON c.salesrepemployeenumber = e.employeenumber "
+			q = em.createNativeQuery("select * from classicmodels.customers "
 					+ "order by customernumber OFFSET ? LIMIT ?",
 					Customer.class);
 
@@ -54,9 +52,7 @@ public class CustomerService implements CustomerServiceInterface{
 			q.setParameter(2, Integer.valueOf(recordsPerPage));
 		} else {
 			q = em.createNativeQuery(
-					"SELECT c.* from classicmodels.customers c "
-					+ "JOIN classicmodels.employees e "
-					+ "ON c.salesrepemployeenumber = e.employeenumber "
+					"SELECT * from classicmodels.customers "
 					+ "WHERE concat(customernumber,customername,contactlastname,contactfirstname,city,country,salesrepemployeenumber) LIKE ? "
 					+ "order by customernumber OFFSET ? LIMIT ?",
 					Customer.class);
@@ -91,16 +87,25 @@ public class CustomerService implements CustomerServiceInterface{
 
 	@Override
 	public boolean updateCustomer(String[] s) throws EJBException {
-		EmpService empService = new EmpService(em);
-		Employee employee = empService.findEmployee(s[12]);
-		
-		if(employee == null)
-			return false;
-		
 		Customer customer = findCustomer(s[0]);
 
+		if(!s[12].isBlank()) {
+			EmpService empService = new EmpService(em);
+			
+			try {
+				Employee employee = empService.findEmployee(s[12]);
+				
+				if(employee == null)
+					return false;
+				
+				customer.setEmployee(employee);
+			}catch (Exception ex) {
+			}
+		}
+		
 		customer.setAddressline1(s[1]);
-		customer.setAddressline2(s[2]);
+		customer.setAddressline2(s[2].isBlank() ? null : s[2]);
+		
 		customer.setCity(s[3]);
 		customer.setContactfirstname(s[4]);
 		customer.setContactlastname(s[5]);
@@ -111,7 +116,9 @@ public class CustomerService implements CustomerServiceInterface{
 		customer.setPhone(s[9]);
 		customer.setPostalcode(s[10]);
 		customer.setState(s[11]);
-		customer.setEmployee(employee);
+		
+		if(s[12].isBlank())
+			customer.setEmployee(null);
 
 		em.merge(customer);
 		return true;
@@ -125,16 +132,25 @@ public class CustomerService implements CustomerServiceInterface{
 
 	@Override
 	public boolean addCustomer(String[] s) throws EJBException {
-		EmpService empService = new EmpService(em);
-		Employee employee = empService.findEmployee(s[12]);
-		
-		if(employee == null)
-			return false;
-		
 		Customer customer = new Customer();
-
+		
+		if(!s[12].isBlank()) {
+			EmpService empService = new EmpService(em);
+			
+			try {
+				Employee employee = empService.findEmployee(s[12]);
+				
+				if(employee == null)
+					return false;
+				
+				customer.setEmployee(employee);
+			}catch (Exception ex) {
+			}
+		}
+		
 		customer.setAddressline1(s[1]);
-		customer.setAddressline2(s[2]);
+		customer.setAddressline2(s[2].isBlank() ? null : s[2]);
+
 		customer.setCity(s[3]);
 		customer.setContactfirstname(s[4]);
 		customer.setContactlastname(s[5]);
@@ -145,7 +161,9 @@ public class CustomerService implements CustomerServiceInterface{
 		customer.setPhone(s[9]);
 		customer.setPostalcode(s[10]);
 		customer.setState(s[11]);
-		customer.setEmployee(employee);
+		
+		if(s[12].isBlank())
+			customer.setEmployee(null);
 
 		em.persist(customer);
 		return true;

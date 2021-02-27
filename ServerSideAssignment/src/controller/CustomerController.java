@@ -44,7 +44,7 @@ public class CustomerController extends HttpServlet {
 		try {
 			Customer customer = customerbean.findCustomer(id); 
 			request.setAttribute("customer", customer);
-			RequestDispatcher req = request.getRequestDispatcher("CustomerUpdate.jsp"); // change the jsp
+			RequestDispatcher req = request.getRequestDispatcher("CustomerUpdate.jsp");
 			req.forward(request, response);
 		} catch (EJBException ex) {
 

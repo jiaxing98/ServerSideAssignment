@@ -122,7 +122,13 @@ tr:nth-child(even) {
 				<td>Sales Rep EmployeeNo</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"empno\" value=" + customer.getEmployee().getEmployeenumber());
+						if(customer.getEmployee() != null){
+							out.println("<input type=\"text\" name=\"empno\" value=" + customer.getEmployee().getEmployeenumber());
+
+						}
+						else{
+							out.println("<input type=\"text\" name=\"empno\" value=" + "null");
+						}
 					%>
 				</td>
 			</tr>
