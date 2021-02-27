@@ -38,9 +38,7 @@ public class EmpService implements EmpServiceInterface{
 
 		if (keyword.isEmpty()) {
 
-			q = em.createNativeQuery("select e.* from classicmodels.employees e "
-					+ "JOIN classicmodels.offices o "
-					+ "ON e.officecode = o.officecode "
+			q = em.createNativeQuery("select * from classicmodels.employees "
 					+ "order by employeenumber OFFSET ? LIMIT ?",
 					Customer.class);
 
@@ -49,9 +47,7 @@ public class EmpService implements EmpServiceInterface{
 			q.setParameter(2, Integer.valueOf(recordsPerPage));
 		} else {
 			q = em.createNativeQuery(
-					"SELECT e.* from classicmodels.employees e "
-					+ "JOIN classicmodels.offices o "
-					+ "ON e.officecode = o.officecode "
+					"SELECT * from classicmodels.employees "
 					+ "WHERE concat(employeenumber,lastname,firstname,jobtitle) LIKE ? "
 					+ "order by employeenumber OFFSET ? LIMIT ?",
 					Customer.class);
