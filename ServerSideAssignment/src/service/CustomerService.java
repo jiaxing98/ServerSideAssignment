@@ -110,7 +110,7 @@ public class CustomerService implements CustomerServiceInterface{
 		customer.setContactfirstname(s[4]);
 		customer.setContactlastname(s[5]);
 		customer.setCountry(s[6]);
-		customer.setCreditlimit(new BigDecimal(s[7]));
+		customer.setCreditlimit(s[7].isBlank() ? new BigDecimal(0.00) : new BigDecimal(s[7]));
 
 		customer.setCustomername(s[8]);
 		customer.setPhone(s[9]);
@@ -155,7 +155,7 @@ public class CustomerService implements CustomerServiceInterface{
 		customer.setContactfirstname(s[4]);
 		customer.setContactlastname(s[5]);
 		customer.setCountry(s[6]);
-		customer.setCreditlimit(new BigDecimal(s[7]));
+		customer.setCreditlimit(s[7].isBlank() ? new BigDecimal(0.00) : new BigDecimal(s[7]));
 
 		customer.setCustomername(s[8]);
 		customer.setPhone(s[9]);

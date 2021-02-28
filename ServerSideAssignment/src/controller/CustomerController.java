@@ -88,7 +88,7 @@ public class CustomerController extends HttpServlet {
 			}
 			// this line is to redirect to notify record has been updated and redirect to
 			// another page
-			ValidateManageLogic.navigateJS(out, "CustomerController");
+			ValidateManageLogic.navigateJS(out, "CustomerPagination");
 
 		} catch (EJBException ex) {
 		}
