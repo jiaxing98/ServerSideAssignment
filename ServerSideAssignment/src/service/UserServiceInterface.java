@@ -18,6 +18,6 @@ public interface UserServiceInterface {
 
 	public void deleteUser(String id) throws EJBException;
 
-	public void addUser(String[] s) throws EJBException;
+	public boolean addUser(String username, String password) throws EJBException;
 	
 }

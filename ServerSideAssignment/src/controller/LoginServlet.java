@@ -1,25 +1,33 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.ejb.EJBException;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import service.UserService;
+import utilities.ValidateManageLogic;
+
 /**
  * Servlet implementation class UserController
  */
-@WebServlet("/UserController")
-public class UserController extends HttpServlet {
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	@Inject
+	private UserService userbean;
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserController() {
+    public LoginServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,7 +37,7 @@ public class UserController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -39,12 +47,17 @@ public class UserController extends HttpServlet {
 		
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		
-		String[] s = { username, password };
+		PrintWriter out = response.getWriter();
 		
 		try {
 			//if username and password correct -> login session
 			//else response username or password is wrong
+			if(userbean.loginUser(username, password)) {
+				ValidateManageLogic.navigateLogin(out, true);
+			} else {
+				ValidateManageLogic.navigateLogin(out, false);
+			}
+			
 		}catch(EJBException ex) {
 			
 		}
