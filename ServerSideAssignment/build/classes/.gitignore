@@ -1,6 +1,4 @@
-/controller/
-/domain/
 /service/
 /utilities/
-/listener/
-/listeners/
+/domain/
+/controller/

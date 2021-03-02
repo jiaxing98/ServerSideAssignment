@@ -27,7 +27,7 @@ public class Payment implements Serializable {
 
 	//bi-directional many-to-one association to Customer
 	@ManyToOne
-	@JoinColumn(name="customernumber", insertable=false, updatable=false)
+	@JoinColumn(name="customernumber", insertable=true, updatable=false)
 	private Customer customer;
 
 	public Payment() {
