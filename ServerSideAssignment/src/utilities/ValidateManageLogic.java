@@ -23,5 +23,12 @@ public class ValidateManageLogic {
 		out.println("window.location.assign(\"" + directedURL + "?currentPage=1&recordsPerPage=70&keyword=\")");
 		out.println("</SCRIPT>");
 	}
+	
+	public static void registerAlert(PrintWriter out) {
+		out.println("<SCRIPT type=\"text/javascript\">");
+		out.println("alert(\"You have successfully registered! Proceed to homepage to login.\")");
+		out.println("window.location.assign(\"index.html\")");
+		out.println("</SCRIPT>");
+	}
 
 }

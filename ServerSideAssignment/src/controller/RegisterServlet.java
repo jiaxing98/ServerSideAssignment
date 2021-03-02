@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import service.CustomerService;
+import utilities.ValidateManageLogic;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -65,8 +66,7 @@ public class RegisterServlet extends HttpServlet {
 				country, creditlimit, customername, phone, postalcode, state, empno, username };
 	
 		customerbean.addCustomer(s);
-		
-		response.sendRedirect("index.html");
+		ValidateManageLogic.registerAlert(out);
 	}
-
+	
 }
