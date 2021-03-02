@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 
 import domain.Customer;
 import domain.Employee;
+import domain.User;
 
 @Dependent
 @Transactional
@@ -133,6 +134,8 @@ public class CustomerService implements CustomerServiceInterface{
 	@Override
 	public boolean addCustomer(String[] s) throws EJBException {
 		Customer customer = new Customer();
+		UserService userservice = new UserService(em);
+		User user = userservice.findUser(s[13]);
 		
 		if(!s[12].isBlank()) {
 			EmpService empService = new EmpService(em);
@@ -159,8 +162,9 @@ public class CustomerService implements CustomerServiceInterface{
 
 		customer.setCustomername(s[8]);
 		customer.setPhone(s[9]);
-		customer.setPostalcode(s[10]);
-		customer.setState(s[11]);
+		customer.setPostalcode(s[10].isBlank() ? null : s[10]);
+		customer.setState(s[11].isBlank() ? null : s[11]);
+		customer.setUser(user);
 		
 		if(s[12].isBlank())
 			customer.setEmployee(null);

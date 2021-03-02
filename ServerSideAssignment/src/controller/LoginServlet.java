@@ -5,11 +5,14 @@ import java.io.PrintWriter;
 
 import javax.ejb.EJBException;
 import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import service.UserService;
 import utilities.ValidateManageLogic;
@@ -53,9 +56,17 @@ public class LoginServlet extends HttpServlet {
 			//if username and password correct -> login session
 			//else response username or password is wrong
 			if(userbean.loginUser(username, password)) {
-				ValidateManageLogic.navigateLogin(out, true);
+				HttpSession session = request.getSession();
+				session.setAttribute("user", username);
+				session.setMaxInactiveInterval(60*60);
+				Cookie userName = new Cookie("user", username);
+				userName.setMaxAge(-1);
+				response.addCookie(userName);
+				response.sendRedirect("LoginSuccess.jsp");
 			} else {
-				ValidateManageLogic.navigateLogin(out, false);
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login.jsp");
+				out.println("<font color=red>Either user name or password is wrong.</font>");
+				dispatcher.include(request, response);
 			}
 			
 		}catch(EJBException ex) {

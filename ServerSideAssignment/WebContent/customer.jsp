@@ -122,6 +122,7 @@ body {
 				<th>Sales Rep Employee LastName</th>
 				<th>Sales Rep Employee FirstName</th>
 				<th>Credit Limit</th>
+				<th>Username</th>
 				<th>Update</th>
 				<th>Delete</th>
 			</tr>
@@ -154,6 +155,7 @@ body {
 						}
 						
 						out.println("<td>" + t.getCreditlimit() + "</td>");
+						out.println("<td>" + t.getUser().getUsername() + "</td>");
 						out.println("<td><a href=\"CustomerController?id=" + t.getCustomernumber() + "\">Update</a></td>");
 						out.println("<td><a href=\"CustomerController?id=" + t.getCustomernumber() + "\">Delete</a></td>");
 						out.println("</tr>");

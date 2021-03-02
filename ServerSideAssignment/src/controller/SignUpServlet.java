@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 
 import javax.ejb.EJBException;
 import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -55,9 +56,13 @@ public class SignUpServlet extends HttpServlet {
 			//if username and password correct -> login session
 			//else response username or password is wrong
 			if(userbean.addUser(username, password)) {
-				ValidateManageLogic.navigateSignUp(out, true);
+				request.setAttribute("username" , username);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/Register.jsp");
+				dispatcher.forward(request, response);
 			} else {
-				ValidateManageLogic.navigateSignUp(out, false);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/signup.jsp");
+				out.println("<font color=red>Username has been used!</font>");
+				dispatcher.include(request, response);
 			}
 			
 		}catch(EJBException ex) {

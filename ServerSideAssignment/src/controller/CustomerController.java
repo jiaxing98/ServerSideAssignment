@@ -72,11 +72,12 @@ public class CustomerController extends HttpServlet {
 		String postalcode = request.getParameter("postalcode");
 		String state = request.getParameter("state");
 		String empno = request.getParameter("empno");
+		String username = request.getParameter("username");
 		PrintWriter out = response.getWriter();
 		// this line is to package the whole values into one array string variable -
 		// easier just pass one parameter object
 		String[] s = { cno, address1, address2, city, contactfname, contactlname,
-						country, creditlimit, customername, phone, postalcode, state, empno };
+						country, creditlimit, customername, phone, postalcode, state, empno, username };
 
 		try {
 			if (ValidateManageLogic.validateManager(request).equals("UPDATE")) {
