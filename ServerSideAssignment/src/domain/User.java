@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 
+
 /**
  * The persistent class for the users database table.
  * 
@@ -20,6 +21,13 @@ public class User implements Serializable {
 
 	private String password;
 
+	@OneToOne(mappedBy="user")
+	private Customer customers;
+
+	//bi-directional many-to-one association to Employee
+	@OneToOne(mappedBy="user")
+	private Employee employees;
+	
 	public User() {
 	}
 

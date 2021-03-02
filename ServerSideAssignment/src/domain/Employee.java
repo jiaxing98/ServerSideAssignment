@@ -2,6 +2,7 @@ package domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -41,6 +42,10 @@ public class Employee implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="officecode", insertable=true, updatable=false)
 	private Office office;
+	
+	@OneToOne
+	@JoinColumn(name="username")
+	private User user;
 
 	public Employee() {
 	}
@@ -59,6 +64,14 @@ public class Employee implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public String getExtension() {

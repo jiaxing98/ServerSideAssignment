@@ -2,6 +2,7 @@ package domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -44,6 +45,10 @@ public class Customer implements Serializable {
 
 	private String state;
 
+	@OneToOne
+	@JoinColumn(name="username")
+	private User user;
+	
 	//bi-directional many-to-one association to Employee
 	@ManyToOne
 	@JoinColumn(name="salesrepemployeenumber", insertable=true, updatable=false)
@@ -162,6 +167,14 @@ public class Customer implements Serializable {
 
 	public List<Payment> getPayments() {
 		return this.payments;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public void setPayments(List<Payment> payments) {
