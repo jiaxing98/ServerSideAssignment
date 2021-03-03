@@ -18,11 +18,6 @@ body h4 {
 	<%
 		String username = (String) request.getAttribute("username");
 	%>
-	<script type="text/javascript">
-		function alertName() {
-			alert("You have signed up successfully! Fill up the Register form");
-		}
-	</script>
 	<div class="container">
 		<h2>Register Form</h2>
 		<h4>Field with * is required to filled!</h4>
@@ -87,8 +82,5 @@ body h4 {
 			<button type="reset" class="btn">Reset</button>
 		</form>
 	</div>
-	<script type="text/javascript">
-		window.onload = alertName;
-	</script>
 </body>
 </html>

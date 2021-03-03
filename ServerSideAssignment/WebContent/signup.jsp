@@ -11,13 +11,13 @@
 		var pw = signup.password.value;
 		var cpw = signup.confirm_pw.value;
 
-		if(name.length > 7){
-			alert("Length of username cannot more than 7 characters");
+		if(name.length > 30 || pw.length > 30){
+			alert("Length of username or password cannot more than 30 characters");
 			return false;
 		}
 		
 		if (pw !== cpw) {
-			alert("Password is not same!");
+			alert("Password is not matched!");
 			return false;
 		}
 	}
@@ -43,6 +43,7 @@
 				<label for="confirm_pw">Confirm Password:</label> <input type="password"
 					class="form-control" id="confirm_pw" name="confirm_pw">
 			</div>
+			<input type="hidden" name="role" value="user">
 			<button type="submit" class="btn btn-default">Submit</button>
 			<button type="reset" class="btn">Reset</button>
 		</form>

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import service.UserRoleService;
 import service.UserService;
 import utilities.ValidateManageLogic;
 
@@ -24,6 +25,9 @@ public class SignUpServlet extends HttpServlet {
     
 	@Inject
 	private UserService userbean;
+	
+	@Inject
+	private UserRoleService rolebean;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -50,6 +54,7 @@ public class SignUpServlet extends HttpServlet {
 		
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		String role = request.getParameter("role");
 		PrintWriter out = response.getWriter();
 		
 		try {
@@ -57,6 +62,14 @@ public class SignUpServlet extends HttpServlet {
 			//else response username or password is wrong
 			if(userbean.addUser(username, password)) {
 				request.setAttribute("username" , username);
+
+//				try {
+//					rolebean.addUserRole(username, role);
+//				} catch(EJBException ex) {
+//					
+//				}
+				
+				ValidateManageLogic.signupAlert(out);
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/Register.jsp");
 				dispatcher.forward(request, response);
 			} else {
