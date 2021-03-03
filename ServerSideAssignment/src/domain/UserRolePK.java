@@ -8,25 +8,31 @@ import javax.persistence.*;
  * 
  */
 @Embeddable
+@NamedQuery(name="UserRolePK.findbyNameRole", query="SELECT u FROM UserRole u WHERE u.user = :username AND u.role = :role")
 public class UserRolePK implements Serializable {
-	//default serial version id, required for serializable classes.
+	// default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
+	@Column(insertable = true, updatable = false)
 	private String username;
 
 	private String role;
 
 	public UserRolePK() {
 	}
+
 	public String getUsername() {
 		return this.username;
 	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
 	public String getRole() {
 		return this.role;
 	}
+
 	public void setRole(String role) {
 		this.role = role;
 	}
@@ -38,10 +44,8 @@ public class UserRolePK implements Serializable {
 		if (!(other instanceof UserRolePK)) {
 			return false;
 		}
-		UserRolePK castOther = (UserRolePK)other;
-		return 
-			this.username.equals(castOther.username)
-			&& this.role.equals(castOther.role);
+		UserRolePK castOther = (UserRolePK) other;
+		return this.username.equals(castOther.username) && this.role.equals(castOther.role);
 	}
 
 	public int hashCode() {
@@ -49,7 +53,7 @@ public class UserRolePK implements Serializable {
 		int hash = 17;
 		hash = hash * prime + this.username.hashCode();
 		hash = hash * prime + this.role.hashCode();
-		
+
 		return hash;
 	}
 }

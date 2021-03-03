@@ -25,23 +25,20 @@ public class UserService implements UserServiceInterface{
 	
 	@Override
 	public List<User> getAllUsers() throws EJBException {
-		// TODO Auto-generated method stub
 		return em.createNamedQuery("User.findAll").getResultList();
 	}
 
 	@Override
 	public User findUser(String id) throws EJBException {
-		User user = null;
-		Query q = em.createNamedQuery("User.findbyUsername");
-		q.setParameter("username", id);
-		
 		try {
-			user = (User) q.getSingleResult();
+			Query q = em.createNamedQuery("User.findbyUsername");
+			q.setParameter("username", id);
+			return (User) q.getSingleResult();
 		}
 		catch (Exception ex) {
 		}
 		
-		return user;
+		return null;
 	}
 
 	@Override
@@ -59,10 +56,9 @@ public class UserService implements UserServiceInterface{
 				return false;
 		}
 	}
-
+	
 	@Override
 	public void updateUser(String[] s, String action, String newInfo) throws EJBException {
-		// TODO Auto-generated method stub
 		User user = findUser(s[0]);
 		
 		if(action.equals("CHANGEUN")) {
@@ -77,7 +73,6 @@ public class UserService implements UserServiceInterface{
 
 	@Override
 	public void deleteUser(String username) throws EJBException {
-		// TODO Auto-generated method stub
 		User user = findUser(username);
 		em.remove(user);
 	}

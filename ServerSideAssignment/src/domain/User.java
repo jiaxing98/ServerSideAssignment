@@ -1,6 +1,8 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.*;
 
 
@@ -28,6 +30,10 @@ public class User implements Serializable {
 	@OneToOne(mappedBy="user")
 	private Employee employees;
 	
+	//bi-directional many-to-one association to UserRole
+	@OneToMany(mappedBy="user")
+	private List<UserRole> userRoles;
+	
 	public User() {
 	}
 
@@ -47,4 +53,25 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
+	public List<UserRole> getUserRoles() {
+		return this.userRoles;
+	}
+
+	public void setUserRoles(List<UserRole> userRoles) {
+		this.userRoles = userRoles;
+	}
+
+	public UserRole addUserRole(UserRole userRole) {
+		getUserRoles().add(userRole);
+		userRole.setUser(this);
+
+		return userRole;
+	}
+
+	public UserRole removeUserRole(UserRole userRole) {
+		getUserRoles().remove(userRole);
+		userRole.setUser(null);
+
+		return userRole;
+	}
 }

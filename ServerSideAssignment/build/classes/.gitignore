@@ -1,4 +1,6 @@
-/controller/
-/domain/
 /service/
 /utilities/
+/newdoamin/
+/domain/
+/META-INF/
+/controller/
