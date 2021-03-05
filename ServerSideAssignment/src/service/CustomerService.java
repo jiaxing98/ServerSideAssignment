@@ -17,14 +17,17 @@ import domain.User;
 
 @Dependent
 @Transactional
-public class CustomerService implements CustomerServiceInterface{
-	
+public class CustomerService implements CustomerServiceInterface {
+
 	private EntityManager em;
+	
+	@Inject
+	private UserService userbean; 
 
 	@Inject
-    public CustomerService(@PostGresDatabase EntityManager em) {
-    	this.em = em;
-    }
+	public CustomerService(@PostGresDatabase EntityManager em) {
+		this.em = em;
+	}
 
 	@Override
 	public List<Customer> getAllCustomers() throws EJBException {
@@ -33,8 +36,20 @@ public class CustomerService implements CustomerServiceInterface{
 
 	@Override
 	public Customer findCustomer(String id) throws EJBException {
-		Query q = em.createNamedQuery("Customer.findbyId");
-		q.setParameter("id", Long.valueOf(id));
+		try {
+			Query q = em.createNamedQuery("Customer.findbyId");
+			q.setParameter("id", Long.valueOf(id));
+			return (Customer) q.getSingleResult();
+		} catch (Exception ex) {
+		}
+
+		return null;
+	}
+
+	@Override
+	public Customer findCustomerbyUsername(String username) throws EJBException {
+		Query q = em.createNamedQuery("Customer.findbyUsername");
+		q.setParameter("username", username);
 		return (Customer) q.getSingleResult();
 	}
 
@@ -44,19 +59,17 @@ public class CustomerService implements CustomerServiceInterface{
 
 		if (keyword.isEmpty()) {
 
-			q = em.createNativeQuery("select * from classicmodels.customers "
-					+ "order by customernumber OFFSET ? LIMIT ?",
+			q = em.createNativeQuery(
+					"select * from classicmodels.customers " + "order by customernumber OFFSET ? LIMIT ?",
 					Customer.class);
 
 			int start = currentPage * recordsPerPage - recordsPerPage;
 			q.setParameter(1, Integer.valueOf(start));
 			q.setParameter(2, Integer.valueOf(recordsPerPage));
 		} else {
-			q = em.createNativeQuery(
-					"SELECT * from classicmodels.customers "
+			q = em.createNativeQuery("SELECT * from classicmodels.customers "
 					+ "WHERE concat(customernumber,customername,contactlastname,contactfirstname,city,country,salesrepemployeenumber) LIKE ? "
-					+ "order by customernumber OFFSET ? LIMIT ?",
-					Customer.class);
+					+ "order by customernumber OFFSET ? LIMIT ?", Customer.class);
 			int start = currentPage * recordsPerPage - recordsPerPage;
 			q.setParameter(1, "%" + keyword + "%");
 			q.setParameter(2, Integer.valueOf(start));
@@ -64,8 +77,13 @@ public class CustomerService implements CustomerServiceInterface{
 
 		}
 
-		List<Customer> results = q.getResultList();
-		return results;
+		try {
+			List<Customer> results = q.getResultList();
+			return results;
+		} catch (Exception ex) {
+		}
+
+		return null;
 	}
 
 	@Override
@@ -90,23 +108,23 @@ public class CustomerService implements CustomerServiceInterface{
 	public boolean updateCustomer(String[] s) throws EJBException {
 		Customer customer = findCustomer(s[0]);
 
-		if(!s[12].isBlank()) {
+		if (!s[12].isBlank()) {
 			EmpService empService = new EmpService(em);
-			
+
 			try {
 				Employee employee = empService.findEmployee(s[12]);
-				
-				if(employee == null)
+
+				if (employee == null)
 					return false;
-				
+
 				customer.setEmployee(employee);
-			}catch (Exception ex) {
+			} catch (Exception ex) {
 			}
 		}
-		
+
 		customer.setAddressline1(s[1]);
 		customer.setAddressline2(s[2].isBlank() ? null : s[2]);
-		
+
 		customer.setCity(s[3]);
 		customer.setContactfirstname(s[4]);
 		customer.setContactlastname(s[5]);
@@ -117,8 +135,8 @@ public class CustomerService implements CustomerServiceInterface{
 		customer.setPhone(s[9]);
 		customer.setPostalcode(s[10]);
 		customer.setState(s[11]);
-		
-		if(s[12].isBlank())
+
+		if (s[12].isBlank())
 			customer.setEmployee(null);
 
 		em.merge(customer);
@@ -134,23 +152,22 @@ public class CustomerService implements CustomerServiceInterface{
 	@Override
 	public boolean addCustomer(String[] s) throws EJBException {
 		Customer customer = new Customer();
-		UserService userservice = new UserService(em);
-		User user = userservice.findUser(s[13]);
-		
-		if(!s[12].isBlank()) {
+		User user = userbean.findUser(s[13]);
+
+		if (!s[12].isBlank()) {
 			EmpService empService = new EmpService(em);
-			
+
 			try {
 				Employee employee = empService.findEmployee(s[12]);
-				
-				if(employee == null)
+
+				if (employee == null)
 					return false;
-				
+
 				customer.setEmployee(employee);
-			}catch (Exception ex) {
+			} catch (Exception ex) {
 			}
 		}
-		
+
 		customer.setAddressline1(s[1]);
 		customer.setAddressline2(s[2].isBlank() ? null : s[2]);
 
@@ -165,8 +182,8 @@ public class CustomerService implements CustomerServiceInterface{
 		customer.setPostalcode(s[10].isBlank() ? null : s[10]);
 		customer.setState(s[11].isBlank() ? null : s[11]);
 		customer.setUser(user);
-		
-		if(s[12].isBlank())
+
+		if (s[12].isBlank())
 			customer.setEmployee(null);
 
 		em.persist(customer);

@@ -11,6 +11,8 @@ public interface CustomerServiceInterface {
 	public List<Customer> getAllCustomers() throws EJBException;
 
 	public Customer findCustomer(String id) throws EJBException;
+	
+	public Customer findCustomerbyUsername(String username) throws EJBException;
 
 	public List<Customer> readCustomers(int currentPage, int recordsPerPage, String keyword) throws EJBException;
 
