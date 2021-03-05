@@ -63,11 +63,11 @@ public class SignUpServlet extends HttpServlet {
 			if(userbean.addUser(username, password)) {
 				request.setAttribute("username" , username);
 
-//				try {
-//					rolebean.addUserRole(username, role);
-//				} catch(EJBException ex) {
-//					
-//				}
+				try {
+					rolebean.addUserRole(username, role);
+				} catch(EJBException ex) {
+					
+				}
 				
 				ValidateManageLogic.signupAlert(out);
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/Register.jsp");

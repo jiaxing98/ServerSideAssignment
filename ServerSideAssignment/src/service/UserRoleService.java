@@ -34,7 +34,7 @@ public class UserRoleService implements UserRoleServiceInterface{
 	@Override
 	public UserRole findUserRole(String username, String role) throws EJBException {
 		try {
-			Query q = em.createNamedQuery("UserRolePK.findbyNameRole");
+			Query q = em.createNamedQuery("UserRole.findbyNameRole");
 			q.setParameter("user", username);
 			q.setParameter("role", role);
 			return (UserRole) q.getSingleResult();
