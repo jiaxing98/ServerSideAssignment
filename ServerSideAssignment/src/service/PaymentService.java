@@ -1,5 +1,6 @@
 package service;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import domain.Payment;
+import domain.PaymentPK;
 
 @Dependent
 @Transactional
@@ -30,23 +32,42 @@ public class PaymentService implements PaymentServiceInterface {
 
 	@Override
 	public List<Payment> findCustomer(String customernumber) throws EJBException {
-		Query q = em.createNamedQuery("Payment.findbycustomernumber");
-		q.setParameter("customernumber", Integer.parseInt(customernumber));
-		return (List<Payment>) q.getResultList();
+		try {
+			Query q = em.createNamedQuery("Payment.findbycustomernumber");
+			q.setParameter("customernumber", Integer.parseInt(customernumber));
+			return (List<Payment>) q.getResultList();
+		} catch (Exception ex) {
+		}
+
+		return null;
 	}
 
 	@Override
 	public List<Payment> findPaymentMethod(String paymentmethod) throws EJBException {
-		Query q = em.createNamedQuery("Payment.findbypaymentmethod");
-		q.setParameter("paymentmethod", paymentmethod);
-		return (List<Payment>) q.getResultList();
+		try {
+			Query q = em.createNamedQuery("Payment.findbypaymentmethod");
+			q.setParameter("paymentmethod", paymentmethod);
+			return (List<Payment>) q.getResultList();
+		} catch (Exception ex) {
+		}
+
+		return null;
 	}
 
 	@Override
-	public Payment findCheckNumber(String checknumber) throws EJBException {
-		Query q = em.createNamedQuery("Payment.findbyCheckNumber");
-		q.setParameter("checknumber", checknumber);
-		return (Payment) q.getSingleResult();
+	public Payment findPayment(PaymentPK paymentPK) throws EJBException {
+		int customernumber = paymentPK.getCustomernumber();
+		String checknumber = paymentPK.getChecknumber();
+		
+		try {
+			Query q = em.createNamedQuery("Payment.findbypaymentPK");
+			q.setParameter("customernumber", customernumber);
+			q.setParameter("checknumber", checknumber);
+			return (Payment) q.getSingleResult();
+		} catch (Exception ex) {
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -94,6 +115,29 @@ public class PaymentService implements PaymentServiceInterface {
 		BigInteger results = (BigInteger) q.getSingleResult();
 		int i = results.intValue();
 		return i;
+	}
+
+	@Override
+	public void deletePayment(PaymentPK paymentPK) throws EJBException {
+		Payment payment = findPayment(paymentPK);
+		em.remove(payment);
+	}
+
+	@Override
+	public boolean addPayment(PaymentPK paymentPK, String[] s) throws EJBException {
+		Payment payment = findPayment(paymentPK);
+		
+		if(payment != null)
+			return false;
+		
+		Payment newPayment = new Payment();
+		newPayment.setId(paymentPK);
+		newPayment.setAmount(new BigDecimal(s[0]));
+		newPayment.setPaymentdate(s[1]);
+		newPayment.setPaymentmethod(s[2]);
+
+		em.persist(newPayment);
+		return true;
 	}
 
 }

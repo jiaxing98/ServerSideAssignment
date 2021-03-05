@@ -85,6 +85,16 @@ body {
 	font-weight: bold;
 }
 </style>
+<script>
+	function confirmDelete() {
+		var option = confirm("Delete this record?");
+		if (option == true) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+</script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
 </head>
@@ -113,6 +123,7 @@ body {
 				<th>Payment Date</th>
 				<th>Payment Method</th>
 				<th>Amount</th>
+				<th>Delete</th>
 			</tr>
 			<%
 				List<Payment> payment = (List<Payment>) request.getAttribute("payment");
@@ -125,6 +136,10 @@ body {
 						out.println("<td>" + t.getPaymentdate() + "</td>");
 						out.println("<td>" + t.getPaymentmethod() + "</td>");
 						out.println("<td>" + t.getAmount() + "</td>");
+						out.println("<form onSubmit='return confirmDelete()'action='PaymentController' method='post'id='delete'>");
+						out.println("<input type='hidden' name='customernumber' value=" + t.getId().getCustomernumber() + ">");
+						out.println("<input type='hidden' name='checknumber' value=" + t.getId().getChecknumber() + ">");
+						out.println("<td><button type='submit' form='delete' name='DELETE' value='DELETE'>Delete</button></td>");
 						out.println("</tr>");
 					}
 				} else {
