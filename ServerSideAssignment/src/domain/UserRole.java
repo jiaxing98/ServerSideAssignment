@@ -11,13 +11,13 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="user_roles", schema="classicmodels")
-@NamedQuery(name="UserRole.findbyUsername", query="SELECT u FROM UserRole u WHERE u.user =:username")
-@NamedQuery(name="UserRole.findbyNameRole", query="SELECT u FROM UserRole u WHERE u.userrolePK.username = :username AND u.userrolePK.role = :role")
+@NamedQuery(name="UserRole.findbyUsername", query="SELECT u FROM UserRole u WHERE u.id.username =:username")
+@NamedQuery(name="UserRole.findbyNameRole", query="SELECT u FROM UserRole u WHERE u.id.username = :username AND u.id.role = :role")
 public class UserRole implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private UserRolePK userrolePK;
+	private UserRolePK id;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
@@ -28,11 +28,11 @@ public class UserRole implements Serializable {
 	}
 
 	public UserRolePK getId() {
-		return this.userrolePK;
+		return this.id;
 	}
 
 	public void setId(UserRolePK id) {
-		this.userrolePK = id;
+		this.id = id;
 	}
 
 	public User getUser() {

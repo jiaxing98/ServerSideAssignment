@@ -22,7 +22,10 @@ public class CustomerService implements CustomerServiceInterface {
 	private EntityManager em;
 	
 	@Inject
-	private UserService userbean; 
+	private UserService userbean;
+	
+	@Inject
+	private EmpService empbean;
 
 	@Inject
 	public CustomerService(@PostGresDatabase EntityManager em) {
@@ -155,10 +158,8 @@ public class CustomerService implements CustomerServiceInterface {
 		User user = userbean.findUser(s[13]);
 
 		if (!s[12].isBlank()) {
-			EmpService empService = new EmpService(em);
-
 			try {
-				Employee employee = empService.findEmployee(s[12]);
+				Employee employee = empbean.findEmployee(s[12]);
 
 				if (employee == null)
 					return false;
