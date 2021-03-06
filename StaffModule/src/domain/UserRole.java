@@ -11,6 +11,8 @@ import javax.persistence.*;
 @Entity
 @Table(name="user_roles", schema="classicmodels")
 @NamedQuery(name="UserRole.findAll", query="SELECT u FROM UserRole u")
+@NamedQuery(name="UserRole.findbyUsername", query="SELECT u FROM UserRole u WHERE u.id.username =:username")
+@NamedQuery(name="UserRole.findbyNameRole", query="SELECT u FROM UserRole u WHERE u.id.username = :username AND u.id.role = :role")
 public class UserRole implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -99,10 +99,10 @@ tr:nth-child(even) {
 				</td>
 			</tr>
 			<tr>
-				<td>User Name</td>
+				<td>User Name(ReadOnly)</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"uname\" value=" + emp.getUser().getUsername());
+						out.println("<input type=\"text\" name=\"uname\" readonly value=" + emp.getUser().getUsername());
 					%>
 				</td>
 			</tr>

@@ -23,11 +23,13 @@ public class OfficeService implements OfficeServiceInterface {
 		this.em = em;
 	}
 
+	@Override
 	public List<Office> getAllOffices() throws EJBException {
 		// TODO Auto-generated method stub
 		return em.createNamedQuery("Office.findAll").getResultList();
 	}
 
+	@Override
 	public List<Office> readOffice(int currentPage, int recordsPerPage, String keyword) throws EJBException {
 		// Write some codes here…
 		Query q = null;
@@ -50,6 +52,7 @@ public class OfficeService implements OfficeServiceInterface {
 		return results;
 	}
 
+	@Override
 	public int getNumberOfRows(String keyword) throws EJBException {
 		// Write some codes here…
 		Query q = null;
@@ -65,6 +68,7 @@ public class OfficeService implements OfficeServiceInterface {
 		return i;
 	}
 
+	@Override
 	public Office findOffice(String id) throws EJBException {
 		// Write some codes here…
 		Query q = em.createNamedQuery("Office.findbyId");
@@ -72,6 +76,7 @@ public class OfficeService implements OfficeServiceInterface {
 		return (Office) q.getSingleResult();
 	}
 
+	@Override
 	public void updateOffice(String[] s) throws EJBException {
 		// Write some codes here…
 		Office o = findOffice(s[0]);
@@ -88,6 +93,7 @@ public class OfficeService implements OfficeServiceInterface {
 		em.merge(o);
 	}
 
+	@Override
 	public void deleteOffice(String id) throws EJBException {
 		// Write some codes here…
 		Office o = findOffice(id);

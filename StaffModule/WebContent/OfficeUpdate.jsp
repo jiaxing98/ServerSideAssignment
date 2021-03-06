@@ -66,7 +66,11 @@ tr:nth-child(even) {
 				<td>Address Line 2</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"adr2\" value=" + off.getAddressline2());
+						if (off.getAddressline2() != null) {
+							out.println("<input type=\"text\" name=\"adr2\" value=" + off.getAddressline2());
+						} else {
+							out.println("<input type=\"text\" name=\"adr2\" value=" + "null");
+						}
 					%>
 				</td>
 			</tr>
@@ -74,7 +78,11 @@ tr:nth-child(even) {
 				<td>State</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"state\" value=" + off.getState());
+						if (off.getState() != null) {
+							out.println("<input type=\"text\" name=\"state\" value=" + off.getState());
+						} else {
+							out.println("<input type=\"text\" name=\"state\" value=" + "null");
+						}
 					%>
 				</td>
 			</tr>

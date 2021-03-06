@@ -32,11 +32,13 @@ public class EmployeeService implements EmployeeServiceInterface{
 		this.em = em;
 	}
 
+	@Override
 	public List<Employee> getAllEmployees() throws EJBException {
 		// TODO Auto-generated method stub
 		return em.createNamedQuery("Employee.findAll").getResultList();
 	}
 
+	@Override
 	public List<Employee> readStaff(int currentPage, int recordsPerPage, String keyword) throws EJBException {
 		// Write some codes here…
 		Query q = null;
@@ -59,6 +61,7 @@ public class EmployeeService implements EmployeeServiceInterface{
 		return results;
 	}
 
+	@Override
 	public int getNumberOfRows(String keyword) throws EJBException {
 		// Write some codes here…
 		Query q = null;
@@ -75,6 +78,7 @@ public class EmployeeService implements EmployeeServiceInterface{
 		return i;
 	}
 
+	@Override
 	public Employee findEmployee(String id) throws EJBException {
 		// Write some codes here…
 		Query q = em.createNamedQuery("Employee.findbyId");
@@ -82,6 +86,7 @@ public class EmployeeService implements EmployeeServiceInterface{
 		return (Employee) q.getSingleResult();
 	}
 
+	@Override
 	public boolean updateEmployee(String[] s) throws EJBException {
 		// Write some codes here…
 		Employee e = findEmployee(s[0]);
@@ -108,18 +113,22 @@ public class EmployeeService implements EmployeeServiceInterface{
 		e.setEmail(s[4]);
 		e.setReportsto(s[6].isBlank() ? null : s[6]);
 		e.setJobtitle(s[7]);
-		e.setUser(user);;
+		e.setUser(user);
+		
+		
 
 		em.merge(e);
 		return true;
 	}
 
+	@Override
 	public void deleteEmployee(String id) throws EJBException {
 		// Write some codes here…
 		Employee e = findEmployee(id);
 		em.remove(e);
 	}
 
+	@Override
 	public boolean addEmployee(String[] s) throws EJBException {
 		// Write some codes here…
 		
