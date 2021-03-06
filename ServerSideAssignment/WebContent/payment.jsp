@@ -84,6 +84,19 @@ body {
 	text-align: center;
 	font-weight: bold;
 }
+
+.button {
+  background-color: white;
+  border: none;
+  color: #008CBA;
+  padding: 4px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
 </style>
 <script>
 	function confirmDelete() {
@@ -139,7 +152,7 @@ body {
 						out.println("<form onSubmit='return confirmDelete()'action='PaymentController' method='post'id='delete'>");
 						out.println("<input type='hidden' name='customernumber' value=" + t.getId().getCustomernumber() + ">");
 						out.println("<input type='hidden' name='checknumber' value=" + t.getId().getChecknumber() + ">");
-						out.println("<td><button type='submit' form='delete' name='DELETE' value='DELETE'>Delete</button></td>");
+						out.println("<td><button class='button' type='submit' form='delete' name='DELETE' value='DELETE'>Delete</button></td>");
 						out.println("</tr>");
 					}
 				} else {
@@ -201,6 +214,7 @@ body {
 			%>
 		</ul>
 	</nav>
+	<a href="UserSession.jsp">Back to Home Page</a>
 	<%
 		if (nOfPages != 0) {
 			out.println("<p class=\"pageref\">");

@@ -18,8 +18,12 @@ public interface PaymentServiceInterface {
 	public List<Payment> findPaymentMethod(String paymentmethod) throws EJBException;
 
 	public List<Payment> readPayment(int currentPage, int recordsPerPage, String keyword) throws EJBException;
+	
+	public List<Payment> readPayment(int currentPage, int recordsPerPage, String keyword, String username) throws EJBException;
 
 	public int getNumberOfRows(String keyword) throws EJBException;
+	
+	public int getNumberOfRows(String keyword, String username) throws EJBException;
 	
 	public void deletePayment(PaymentPK paymentPK) throws EJBException;
 

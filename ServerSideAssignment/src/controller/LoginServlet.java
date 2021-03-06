@@ -6,11 +6,9 @@ import java.util.List;
 
 import javax.ejb.EJBException;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +17,6 @@ import javax.servlet.http.HttpSession;
 import domain.UserRole;
 import service.UserRoleService;
 import service.UserService;
-import utilities.ValidateManageLogic;
 
 /**
  * Servlet implementation class UserController
@@ -30,7 +27,10 @@ public class LoginServlet extends HttpServlet {
        
 	@Inject
 	private UserService userbean;
-	private EntityManager em;
+	
+	@Inject
+	private UserRoleService rolebean;
+	
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -53,7 +53,6 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		UserRoleService service = new UserRoleService(em);
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		PrintWriter out = response.getWriter();
@@ -62,23 +61,19 @@ public class LoginServlet extends HttpServlet {
 			//if username and password correct -> login session
 			//else response username or password is wrong
 			if(userbean.loginUser(username, password)) {
-				HttpSession session = request.getSession();
-				session.setAttribute("user", username);
-				session.setMaxInactiveInterval(60*60);
-				Cookie userName = new Cookie("user", username);
-				userName.setMaxAge(-1);
-				response.addCookie(userName);
-				
-				List<UserRole> role = service.getAllUserRole(username);
-				for(int i = 0; i < role.size(); i++) {
-					if(role.get(i).getId().getRole() == "user") {
-						response.sendRedirect("LoginSuccess.jsp");
-					}
-					else {
-						response.sendRedirect("index.html");
-					}
+				if(validateRole(username)) {
+					HttpSession session = request.getSession();
+					session.setAttribute("user", username);
+					session.setAttribute("role", "user");
+					RequestDispatcher req = request.getRequestDispatcher("UserSession.jsp");
+					req.forward(request, response);
+				} else {
+					HttpSession session = request.getSession();
+					session.setAttribute("staff", username);
+					session.setAttribute("role", "staff");
+					RequestDispatcher req = request.getRequestDispatcher("LoginSuccess.jsp");
+					req.forward(request, response);
 				}
-
 			} else {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login.jsp");
 				out.println("<font color=red>Either user name or password is wrong.</font>");
@@ -89,6 +84,17 @@ public class LoginServlet extends HttpServlet {
 			
 		}
 		
+	}
+	
+	private boolean validateRole(String username) {
+		List<UserRole> role = rolebean.getAllUserRole(username);
+		
+		for(int i = 0; i < role.size(); i++) {
+			if(role.get(i).getId().getRole().equals("user"))
+				return true;
+		}
+		
+		return false;
 	}
 
 }

@@ -44,9 +44,19 @@ public class PaymentPagination extends HttpServlet {
 		int currentPage = Integer.valueOf(request.getParameter("currentPage"));
 		int recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
 		String keyword = request.getParameter("keyword");
+		String username = request.getParameter("username");
+		String role = request.getParameter("role");
 
 		try {
-			int rows = paymentbean.getNumberOfRows(keyword);
+			int rows;
+			
+			if(role.equals("user")) {
+				rows = paymentbean.getNumberOfRows(keyword, username);
+			}
+			else {
+				rows = paymentbean.getNumberOfRows(keyword);
+			}
+			
 			nOfPages = rows / recordsPerPage;
 			System.out.println("At servlet" + nOfPages);
 			if (rows % recordsPerPage != 0) {
@@ -57,9 +67,14 @@ public class PaymentPagination extends HttpServlet {
 				currentPage = nOfPages;
 			}
 
-			List<Payment> lists = paymentbean.readPayment(currentPage, recordsPerPage, keyword);
-			request.setAttribute("payment", lists);
-
+			if(role.equals("user")) {
+				List<Payment> lists = paymentbean.readPayment(currentPage, recordsPerPage, keyword, username);
+				request.setAttribute("payment", lists);
+			} else {
+				List<Payment> lists = paymentbean.readPayment(currentPage, recordsPerPage, keyword);
+				request.setAttribute("payment", lists);
+			}
+			
 		} catch (EJBException ex) {
 
 		}

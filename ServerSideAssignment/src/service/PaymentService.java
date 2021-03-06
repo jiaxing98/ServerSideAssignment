@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
+import domain.Customer;
 import domain.Payment;
 import domain.PaymentPK;
 
@@ -18,6 +19,9 @@ import domain.PaymentPK;
 @Transactional
 public class PaymentService implements PaymentServiceInterface {
 
+	@Inject
+	private CustomerService customerbean;
+	
 	private EntityManager em;
 
 	@Inject
@@ -75,13 +79,14 @@ public class PaymentService implements PaymentServiceInterface {
 		Query q = null;
 
 		if (keyword.isEmpty()) {
-
-			q = em.createNativeQuery("select * from classicmodels.payments order by customernumber OFFSET ? LIMIT ?",
+			
+			q = em.createNativeQuery("select * from classicmodels.payments WHERE customernumber = ? OFFSET ? LIMIT ?",
 					Payment.class);
 
 			int start = currentPage * recordsPerPage - recordsPerPage;
-			q.setParameter(1, Integer.valueOf(start));
-			q.setParameter(2, Integer.valueOf(recordsPerPage));
+			q.setParameter(1, 103);
+			q.setParameter(2, Integer.valueOf(start));
+			q.setParameter(3, Integer.valueOf(recordsPerPage));
 		} else {
 			q = em.createNativeQuery(
 					"SELECT * from classicmodels.payments "
@@ -97,11 +102,47 @@ public class PaymentService implements PaymentServiceInterface {
 
 		List<Payment> results = q.getResultList();
 		return results;
+
+	}
+	
+	@Override
+	public List<Payment> readPayment(int currentPage, int recordsPerPage, String keyword, String username) throws EJBException {
+		Query q = null;
+		Customer customer = customerbean.findCustomerbyUsername(username);
+			
+		if (keyword.isEmpty()) {
+
+			q = em.createNativeQuery("select * from classicmodels.payments WHERE customernumber = ? OFFSET ? LIMIT ?",
+					Payment.class);
+
+			int start = currentPage * recordsPerPage - recordsPerPage;
+			q.setParameter(1, customer.getCustomernumber());
+			q.setParameter(2, Integer.valueOf(start));
+			q.setParameter(3, Integer.valueOf(recordsPerPage));
+		} else {
+			q = em.createNativeQuery(
+					"SELECT * from classicmodels.payments "
+					+ "WHERE customernumber = ? "
+					+ "AND concat(checknumber,paymentmethod) LIKE ? "
+					+ "OFFSET ? LIMIT ?",
+					Payment.class);
+			int start = currentPage * recordsPerPage - recordsPerPage;
+			q.setParameter(1, customer.getCustomernumber());
+			q.setParameter(2, "%" + keyword + "%");
+			q.setParameter(3, Integer.valueOf(start));
+			q.setParameter(4, Integer.valueOf(recordsPerPage));
+
+		}
+
+		List<Payment> results = q.getResultList();
+		return results;
+
 	}
 
 	@Override
 	public int getNumberOfRows(String keyword) throws EJBException {
 		Query q = null;
+		
 		if (keyword.isEmpty()) {
 			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow FROM classicmodels.payments");
 
@@ -110,6 +151,28 @@ public class PaymentService implements PaymentServiceInterface {
 					+ "WHERE concat(customernumber,checknumber,paymentmethod) LIKE ?");	//search condition
 
 			q.setParameter(1, "%" + keyword + "%");
+		}
+
+		BigInteger results = (BigInteger) q.getSingleResult();
+		int i = results.intValue();
+		return i;
+	}
+	
+	@Override
+	public int getNumberOfRows(String keyword, String username) throws EJBException {
+		Query q = null;
+		Customer customer = customerbean.findCustomerbyUsername(username);
+		
+		if (keyword.isEmpty()) {
+			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow FROM classicmodels.payments WHERE customernumber = ?");
+			q.setParameter(1, customer.getCustomernumber());
+		} else {
+			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow from classicmodels.payments "
+					+ "WHERE customernumber = ?"
+					+ "AND concat(checknumber,paymentmethod) LIKE ?");	//search condition
+
+			q.setParameter(1, customer.getCustomernumber());
+			q.setParameter(2, "%" + keyword + "%");
 		}
 
 		BigInteger results = (BigInteger) q.getSingleResult();
