@@ -31,6 +31,13 @@ public class EmpService implements EmpServiceInterface{
 		q.setParameter("id", Long.valueOf(id));
 		return (Employee) q.getSingleResult();
 	}
+	
+	@Override
+	public Employee findEmployeebyUsername(String username) throws EJBException {
+		Query q = em.createNamedQuery("Employee.findbyUsername");
+		q.setParameter("username", username);
+		return (Employee) q.getSingleResult();
+	}
 
 	@Override
 	public List<Employee> readEmployees(int currentPage, int recordsPerPage, String keyword) throws EJBException {

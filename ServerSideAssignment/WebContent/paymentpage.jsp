@@ -9,10 +9,6 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
 <body class="m-3">
-<%
-	String username = (String) request.getParameter("username");
-	String role = (String) request.getParameter("role");
-%>
 	<h1>Payment history</h1>
 	<form action="PaymentPagination">
 		<input type="hidden" name="currentPage" value="1"> <input
@@ -26,8 +22,6 @@
 				<option value="100">100</option>
 			</select>
 		</div>
-		<input type="hidden" name="username" value=<%=username%>>
-		<input type="hidden" name="role" value=<%=role%>>
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
 	

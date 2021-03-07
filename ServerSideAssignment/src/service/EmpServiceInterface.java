@@ -11,6 +11,8 @@ public interface EmpServiceInterface {
 	public List<Employee> getAllEmployees() throws EJBException;
 
 	public Employee findEmployee(String id) throws EJBException;
+	
+	public Employee findEmployeebyUsername(String username) throws EJBException;
 
 	public List<Employee> readEmployees(int currentPage, int recordsPerPage, String keyword) throws EJBException;
 

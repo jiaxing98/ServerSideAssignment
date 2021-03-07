@@ -141,8 +141,7 @@ tr:nth-child(even) {
 				</td>
 			</tr>
 		</table>
-		<input type="submit" name="UPDATE" value="UPDATE" /> <input
-			type="submit" name="DELETE" value="DELETE" />
+		<input type="submit" name="UPDATE" value="UPDATE"/>
 	</form>
 </body>
 </html>

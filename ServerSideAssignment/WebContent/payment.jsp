@@ -107,6 +107,18 @@ body {
 			return false;
 		}
 	}
+
+	function homepage() {
+		var role = (String) "<%= session.getAttribute( "role" ) %>";
+		
+		if(role.equals("user")) {
+			document.getElementById("homepage").href="UserSession.jsp"; 
+		} else if (role.equals("staff")) {
+			document.getElementById("homepage").href="StaffSession.jsp"; 
+		} else if (role.equals("admin")) {
+			document.getElementById("homepage").href="AdminSession.jsp"; 
+		}
+	}
 </script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
@@ -117,6 +129,7 @@ body {
 		int recordsPerPage = (int) request.getAttribute("recordsPerPage");
 		int nOfPages = (int) request.getAttribute("nOfPages");
 		String keyword = (String) request.getAttribute("keyword");
+		String role = (String) session.getAttribute("role");
 	%>
 	<form class="form-inline md-form mr-auto mb-4"
 		action="PaymentPagination" method="get">
@@ -214,7 +227,7 @@ body {
 			%>
 		</ul>
 	</nav>
-	<a href="UserSession.jsp">Back to Home Page</a>
+	<a href="#" id="homepage" onclick="homepage()">Back to Home Page</a>
 	<%
 		if (nOfPages != 0) {
 			out.println("<p class=\"pageref\">");

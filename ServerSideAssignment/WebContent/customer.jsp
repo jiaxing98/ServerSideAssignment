@@ -84,7 +84,30 @@ body {
 	text-align: center;
 	font-weight: bold;
 }
+
+.button {
+	background-color: white;
+	border: none;
+	color: #008CBA;
+	padding: 4px 16px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+}
 </style>
+<script type="text/javascript">
+	function confirmDelete() {
+		var option = confirm("Delete this record?");
+		if (option == true) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+</script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
 </head>
@@ -142,22 +165,25 @@ body {
 						out.println("<td>" + t.getState() + "</td>");
 						out.println("<td>" + t.getPostalcode() + "</td>");
 						out.println("<td>" + t.getCountry() + "</td>");
-						
-						if(t.getEmployee() == null){
+
+						if (t.getEmployee() == null) {
 							out.println("<td>" + "null" + "</td>");
 							out.println("<td>" + "null" + "</td>");
 							out.println("<td>" + "null" + "</td>");
-						}
-						else{
+						} else {
 							out.println("<td>" + t.getEmployee().getEmployeenumber() + "</td>");
 							out.println("<td>" + t.getEmployee().getLastname() + "</td>");
 							out.println("<td>" + t.getEmployee().getFirstname() + "</td>");
 						}
-						
+
 						out.println("<td>" + t.getCreditlimit() + "</td>");
 						out.println("<td>" + t.getUser().getUsername() + "</td>");
 						out.println("<td><a href=\"CustomerController?id=" + t.getCustomernumber() + "\">Update</a></td>");
-						out.println("<td><a href=\"CustomerController?id=" + t.getCustomernumber() + "\">Delete</a></td>");
+						out.println(
+								"<form onSubmit='return confirmDelete()'action='CustomerController' method='post'id='delete'>");
+						out.println("<input type='hidden' name='id' value=" + t.getCustomernumber() + ">");
+						out.println(
+								"<td><button class='button' type='submit' form='delete' name='DELETE' value='DELETE'>Delete</button></td>");
 						out.println("</tr>");
 					}
 				} else {
@@ -219,6 +245,7 @@ body {
 			%>
 		</ul>
 	</nav>
+	<a href="UserSession.jsp">Back to Home Page</a>
 	<%
 		if (nOfPages != 0) {
 			out.println("<p class=\"pageref\">");
@@ -231,37 +258,5 @@ body {
 		src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
-	<button class="open-button" onclick="openForm()">Add Customer</button>
-	<div class="form-popup" id="myForm">
-		<form action="CustomerController" class="form-container" method="post">
-			<h1>Add Customer</h1>
-			<fieldset>
-				<legend>Add Customer Details:</legend>
-				<br> Customer Name: <input type="text" name="customername" /> 
-				<br> Contact First Name: <input type="text" name="contactfname" /> 
-				<br> Contact Last Name: <input type="text" name="contactlname" /> 
-				<br> Phone No: <input type="text" name="phone" /> 
-				<br> Address Line 1: <input type="text" name="addressline1" /> 
-				<br> Address Line 2: <input type="text" name="addressline2" />
-				<br> City: <input type="text" name="city" /> 
-				<br> Postal Code: <input type="text" name="postalcode" /> 
-				<br> State: <input type="text" name="state" /> 
-				<br> Country: <input type="text" name="country" /> 
-				<br> Credit Limit: <input type="text" name="creditlimit" />
-				<br> Sales Rep EmployeeNo: <input type="text" name="empno" />
-			</fieldset>
-			<button type="submit" class="btn">Submit Test</button>
-			<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-			<button type="reset" class="btn">Reset</button>
-		</form>
-	</div>
-	<script>
-		function openForm() {
-			document.getElementById("myForm").style.display = "block";
-		}
-		function closeForm() {
-			document.getElementById("myForm").style.display = "none";
-		}
-	</script>
 </body>
 </html>

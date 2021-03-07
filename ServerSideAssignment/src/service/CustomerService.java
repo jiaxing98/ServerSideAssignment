@@ -2,6 +2,7 @@ package service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJBException;
@@ -13,6 +14,7 @@ import javax.transaction.Transactional;
 
 import domain.Customer;
 import domain.Employee;
+import domain.Payment;
 import domain.User;
 
 @Dependent
@@ -57,13 +59,12 @@ public class CustomerService implements CustomerServiceInterface {
 	}
 
 	@Override
-	public List<Customer> readCustomers(int currentPage, int recordsPerPage, String keyword) throws EJBException {
+	public List<Customer> adminReadRecords(int currentPage, int recordsPerPage, String keyword) throws EJBException {
 		Query q = null;
 
 		if (keyword.isEmpty()) {
 
-			q = em.createNativeQuery(
-					"select * from classicmodels.customers " + "order by customernumber OFFSET ? LIMIT ?",
+			q = em.createNativeQuery("select * from classicmodels.customers order by customernumber OFFSET ? LIMIT ?",
 					Customer.class);
 
 			int start = currentPage * recordsPerPage - recordsPerPage;
@@ -88,9 +89,62 @@ public class CustomerService implements CustomerServiceInterface {
 
 		return null;
 	}
+	
+	@Override
+	public List<Customer> userReadRecords(int currentPage, int recordsPerPage, String keyword, String username) throws EJBException {
+		return null;
+	}
 
 	@Override
-	public int getNumberOfRows(String keyword) throws EJBException {
+	public List<Customer> staffReadRecords(int currentPage, int recordsPerPage, String keyword, String username) throws EJBException {
+		Query q = null;
+		Employee employee = empbean.findEmployeebyUsername(username);
+		List<Customer> customerList = employee.getCustomers();
+		List<Long> customernumbers = new ArrayList<Long>();
+		
+		for(int i = 0; i < customerList.size(); i++) {
+			customernumbers.add(customerList.get(i).getCustomernumber());
+		}
+		
+		if (keyword.isEmpty()) {
+
+			q = em.createNativeQuery("select * from classicmodels.customers "
+					+ "WHERE customernumber IN :customernumbers "
+					+ "AND concat(customernumber,customername, contactlastname, contactfirstname, city, country) LIKE :keyword "
+					+ "order by customernumber "
+					+ "OFFSET :offset LIMIT :limit",
+					Customer.class);
+
+			int start = currentPage * recordsPerPage - recordsPerPage;
+			q.setParameter("customernumbers", customernumbers);
+			q.setParameter("keyword", "%" + keyword + "%");
+			q.setParameter("offset", Integer.valueOf(start));
+			q.setParameter("limit", Integer.valueOf(recordsPerPage));
+		} else {
+			q = em.createNativeQuery("SELECT * from classicmodels.customers "
+					+ "WHERE customernumber IN :customernumbers "
+					+ "AND concat(customernumber,customername, contactlastname, contactfirstname, city, country) LIKE :keyword "
+					+ "order by customernumber OFFSET :offset LIMIT :limit", 
+					Customer.class);
+			int start = currentPage * recordsPerPage - recordsPerPage;
+			q.setParameter("customernumbers", customernumbers);
+			q.setParameter("keyword", "%" + keyword + "%");
+			q.setParameter("offset", Integer.valueOf(start));
+			q.setParameter("limit", Integer.valueOf(recordsPerPage));
+
+		}
+
+		try {
+			List<Customer> results = q.getResultList();
+			return results;
+		} catch (Exception ex) {
+		}
+
+		return null;
+	}
+
+	@Override
+	public int adminGetNumberOfRows(String keyword) throws EJBException {
 		Query q = null;
 		if (keyword.isEmpty()) {
 			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow FROM classicmodels.customers");
@@ -105,6 +159,40 @@ public class CustomerService implements CustomerServiceInterface {
 		BigInteger results = (BigInteger) q.getSingleResult();
 		int i = results.intValue();
 		return i;
+	}
+	
+	@Override
+	public int userGetNumberOfRows(String keyword, String username) throws EJBException {
+		return 0;
+	}
+
+	@Override
+	public int staffGetNumberOfRows(String keyword, String username) throws EJBException {
+		Query q = null;
+		Employee employee = empbean.findEmployeebyUsername(username);
+		List<Customer> customerList = employee.getCustomers();
+		List<Long> customernumbers = new ArrayList<Long>();
+		
+		for(int i = 0; i < customerList.size(); i++) {
+			customernumbers.add(customerList.get(i).getCustomernumber());
+		}
+		
+		if (keyword.isEmpty()) {
+			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow FROM classicmodels.customers WHERE customernumber IN :customernumbers");
+			q.setParameter("customernumbers", customernumbers);
+		} else {
+			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow from classicmodels.customers "
+					+ "WHERE customernumber IN :customernumbers "
+					+ "AND concat(customernumber,customername, contactlastname, contactfirstname, city, country) LIKE :keyword");
+
+			q.setParameter("customernumbers", customernumbers);
+			q.setParameter("keyword", "%" + keyword + "%");
+		}
+
+		BigInteger results = (BigInteger) q.getSingleResult();
+		int i = results.intValue();
+		return i;
+		
 	}
 
 	@Override
@@ -190,4 +278,5 @@ public class CustomerService implements CustomerServiceInterface {
 		em.persist(customer);
 		return true;
 	}
+	
 }

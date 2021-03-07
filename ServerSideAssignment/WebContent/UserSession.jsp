@@ -34,7 +34,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 </head>
 <%
 	//In case, if Admin session is not set, redirect to Login page
-	if ((request.getSession(false).getAttribute("user") == null)) {
+	if ((request.getSession(false).getAttribute("username") == null)) {
 %>
 <jsp:forward page="login.jsp"></jsp:forward>
 <%
@@ -45,7 +45,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
     <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
 	<%
-		String username = (String) session.getAttribute("user");
+		String username = (String) session.getAttribute("username");
 		String role = (String) session.getAttribute("role");
 	%>
 
@@ -101,7 +101,8 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 								<li><a href="#">Home</a></li>
 								<li><a href="#">Catalogs</a></li>
 								<li><a href="#">FAQs</a></li>
-								<li><a href="paymentpage.jsp?username=<%=username%>&role=<%=role%>">Payment</a></li>
+								<li><a href="CustomerController">Account</a></li>
+								<li><a href="paymentpage.jsp">Payment</a></li>
 							</ul>
 						</div>
 						<!-- /.main-menu -->

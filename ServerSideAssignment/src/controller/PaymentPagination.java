@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import domain.Payment;
 import service.PaymentService;
@@ -44,17 +45,21 @@ public class PaymentPagination extends HttpServlet {
 		int currentPage = Integer.valueOf(request.getParameter("currentPage"));
 		int recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
 		String keyword = request.getParameter("keyword");
-		String username = request.getParameter("username");
-		String role = request.getParameter("role");
+		
+		HttpSession session = request.getSession(false);
+		String username = (String) session.getAttribute("username");
+		String role = (String) session.getAttribute("role");
 
 		try {
 			int rows;
 			
 			if(role.equals("user")) {
-				rows = paymentbean.getNumberOfRows(keyword, username);
+				rows = paymentbean.userGetNumberOfRows(keyword, username);
+			} else if (role.equals("staff")) {
+				rows = paymentbean.staffGetNumberOfRows(keyword, username);
 			}
 			else {
-				rows = paymentbean.getNumberOfRows(keyword);
+				rows = paymentbean.adminGetNumberOfRows(keyword);
 			}
 			
 			nOfPages = rows / recordsPerPage;
@@ -68,10 +73,14 @@ public class PaymentPagination extends HttpServlet {
 			}
 
 			if(role.equals("user")) {
-				List<Payment> lists = paymentbean.readPayment(currentPage, recordsPerPage, keyword, username);
+				List<Payment> lists = paymentbean.userReadRecords(currentPage, recordsPerPage, keyword, username);
 				request.setAttribute("payment", lists);
-			} else {
-				List<Payment> lists = paymentbean.readPayment(currentPage, recordsPerPage, keyword);
+			} else if (role.equals("staff")) {
+				List<Payment> lists = paymentbean.staffReadRecords(currentPage, recordsPerPage, keyword, username);
+				request.setAttribute("payment", lists);
+			}
+			else {
+				List<Payment> lists = paymentbean.adminReadRecords(currentPage, recordsPerPage, keyword);
 				request.setAttribute("payment", lists);
 			}
 			

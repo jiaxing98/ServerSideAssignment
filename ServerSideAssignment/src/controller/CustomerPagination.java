@@ -11,8 +11,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import domain.Customer;
+import domain.Payment;
 import service.CustomerService;
 
 /**
@@ -43,10 +45,24 @@ public class CustomerPagination extends HttpServlet {
 		int currentPage = Integer.valueOf(request.getParameter("currentPage"));
 		int recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
 		String keyword = request.getParameter("keyword");
+		
+		HttpSession session = request.getSession(false);
+		String username = (String) session.getAttribute("username");
+		String role = (String) session.getAttribute("role");
 
 		try {
-			int rows = customerbean.getNumberOfRows(keyword);
-			nOfPages = rows / recordsPerPage;
+			int rows = 0;
+			
+			if (role.equals("staff")) {
+				rows = customerbean.staffGetNumberOfRows(keyword, username);
+			}
+			else if (role.equals("admin")){
+				rows = customerbean.adminGetNumberOfRows(keyword);
+			}
+			
+			if(rows != 0) {
+				nOfPages = rows / recordsPerPage;
+			}
 			System.out.println("At servlet" + nOfPages);
 			if (rows % recordsPerPage != 0) {
 				nOfPages++;
@@ -56,8 +72,14 @@ public class CustomerPagination extends HttpServlet {
 				currentPage = nOfPages;
 			}
 
-			List<Customer> lists = customerbean.readCustomers(currentPage, recordsPerPage, keyword);
-			request.setAttribute("customers", lists);
+			if(role.equals("staff")) {
+				List<Customer> lists = customerbean.staffReadRecords(currentPage, recordsPerPage, keyword, username);
+				request.setAttribute("customers", lists);
+			}
+			else if (role.equals("admin")){
+				List<Customer> lists = customerbean.adminReadRecords(currentPage, recordsPerPage, keyword);
+				request.setAttribute("customers", lists);
+			}
 
 		} catch (EJBException ex) {
 

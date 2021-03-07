@@ -14,6 +14,7 @@ import java.util.List;
 @Table(name="employees", schema="classicmodels")
 @NamedQuery(name="Employee.findAll", query="SELECT e FROM Employee e")
 @NamedQuery(name="Employee.findbyId", query="SELECT e FROM Employee e WHERE e.id = :id")
+@NamedQuery(name="Employee.findbyUsername", query="SELECT e FROM Employee e WHERE e.user.username = :username")
 public class Employee implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -61,17 +61,23 @@ public class LoginServlet extends HttpServlet {
 			//if username and password correct -> login session
 			//else response username or password is wrong
 			if(userbean.loginUser(username, password)) {
-				if(validateRole(username)) {
+				if(validateRole(username).equals("user")) {
 					HttpSession session = request.getSession();
-					session.setAttribute("user", username);
+					session.setAttribute("username", username);
 					session.setAttribute("role", "user");
 					RequestDispatcher req = request.getRequestDispatcher("UserSession.jsp");
 					req.forward(request, response);
+				} else if (validateRole(username).equals("staff")){
+					HttpSession session = request.getSession();
+					session.setAttribute("username", username);
+					session.setAttribute("role", "staff");
+					RequestDispatcher req = request.getRequestDispatcher("StaffSession.jsp");
+					req.forward(request, response);
 				} else {
 					HttpSession session = request.getSession();
-					session.setAttribute("staff", username);
-					session.setAttribute("role", "staff");
-					RequestDispatcher req = request.getRequestDispatcher("LoginSuccess.jsp");
+					session.setAttribute("username", username);
+					session.setAttribute("role", "admin");
+					RequestDispatcher req = request.getRequestDispatcher("AdminSession.jsp");
 					req.forward(request, response);
 				}
 			} else {
@@ -86,15 +92,17 @@ public class LoginServlet extends HttpServlet {
 		
 	}
 	
-	private boolean validateRole(String username) {
+	private String validateRole(String username) {
 		List<UserRole> role = rolebean.getAllUserRole(username);
 		
 		for(int i = 0; i < role.size(); i++) {
 			if(role.get(i).getId().getRole().equals("user"))
-				return true;
+				return "user";
+			else if(role.get(i).getId().getRole().equals("staff"))
+				return "staff";
 		}
 		
-		return false;
+		return "admin";
 	}
 
 }
