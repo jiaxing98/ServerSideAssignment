@@ -113,6 +113,15 @@ body h4 {
 		}
 	}
 
+	function confirmRemove() {
+		var option = confirm("Remove this customer from your customer list?");
+		if (option == true) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	function homepage() {
 		var role = "${sessionScope.role}";
 
@@ -134,6 +143,7 @@ body h4 {
 		int recordsPerPage = (int) request.getAttribute("recordsPerPage");
 		int nOfPages = (int) request.getAttribute("nOfPages");
 		String keyword = (String) request.getAttribute("keyword");
+		String role = (String) session.getAttribute("role");
 	%>
 	<form class="form-inline md-form mr-auto mb-4"
 		action="CustomerPagination" method="get">
@@ -197,12 +207,19 @@ body h4 {
 						out.println("<td>" + t.getCreditlimit() + "</td>");
 						out.println("<td>" + t.getUser().getUsername() + "</td>");
 						out.println("<td><a href=\"CustomerController?id=" + t.getCustomernumber() + "\">Update</a></td>");
-						out.println(
-								"<form onSubmit='return confirmDelete()'action='CustomerController' method='post'id='delete'>");
-						out.println("<input type='hidden' name='id' value=" + t.getCustomernumber() + ">");
-						out.println(
-								"<td><button class='button' type='submit' form='delete' name='DELETE' value='DELETE'>Delete</button></td>");
-						out.println("</tr>");
+						
+						if(role.equals("admin")) {
+							out.println("<form onSubmit='return confirmDelete()'action='CustomerController' method='post'id='delete'>");
+							out.println("<input type='hidden' name='id' value=" + t.getCustomernumber() + ">");
+							out.println("<td><button class='button' type='submit' form='delete' name='DELETE' value='DELETE'>Delete</button></td>");
+							out.println("</tr>");
+						} else if (role.equals("staff")) {
+							//out.println("<form onSubmit='return confirmRemove()'action='CustomerController' method='post'id='delete'>");
+							//out.println("<input type='hidden' name='id' value=" + t.getCustomernumber() + ">");
+							//out.println("<td><button class='button' type='submit' form='delete' name='DELETE' value='DELETE'>Delete</button></td>");
+							//out.println("</tr>");
+						}
+						
 					}
 				} else {
 					out.println("<tr>");
