@@ -109,13 +109,13 @@ body {
 	}
 
 	function homepage() {
-		var role = (String) "<%= session.getAttribute( "role" ) %>";
+		var role = "${sessionScope.role}";
 		
-		if(role.equals("user")) {
+		if(role === "user") {
 			document.getElementById("homepage").href="UserSession.jsp"; 
-		} else if (role.equals("staff")) {
+		} else if (role === "staff") {
 			document.getElementById("homepage").href="StaffSession.jsp"; 
-		} else if (role.equals("admin")) {
+		} else if (role === "admin") {
 			document.getElementById("homepage").href="AdminSession.jsp"; 
 		}
 	}

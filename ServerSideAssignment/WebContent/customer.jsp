@@ -107,6 +107,18 @@ body {
 			return false;
 		}
 	}
+
+	function homepage() {
+		var role = "${sessionScope.role}";
+
+		if(role === "user") {
+			document.getElementById("homepage").href="UserSession.jsp"; 
+		} else if (role === "staff") {
+			document.getElementById("homepage").href="StaffSession.jsp"; 
+		} else if (role === "admin") {
+			document.getElementById("homepage").href="AdminSession.jsp"; 
+		}	
+	}
 </script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
@@ -245,7 +257,7 @@ body {
 			%>
 		</ul>
 	</nav>
-	<a href="UserSession.jsp">Back to Home Page</a>
+	<a href="#" id="homepage" onclick="homepage()">Back to Home Page</a>
 	<%
 		if (nOfPages != 0) {
 			out.println("<p class=\"pageref\">");
