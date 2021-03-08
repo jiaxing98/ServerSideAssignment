@@ -97,6 +97,11 @@ body {
 	margin: 4px 2px;
 	cursor: pointer;
 }
+
+body h4 {
+	color: red;
+	font-style: italic;
+}
 </style>
 <script type="text/javascript">
 	function confirmDelete() {
@@ -139,6 +144,7 @@ body {
 		<input type="hidden" name="currentPage" value="<%=currentPage%>" /> <input
 			type="hidden" name="recordsPerPage" value="<%=recordsPerPage%>" />
 	</form>
+	<h4>Search by: Customer Number, Customer Name, Contact Last Name, Contact First Name, City and Country</h4>
 	<div class="row col-md-6">
 		<table class="table table-striped table-bordered table-sm">
 			<tr>
@@ -257,6 +263,8 @@ body {
 			%>
 		</ul>
 	</nav>
+	<a href="CustomerPagination?recordsPerPage=<%=recordsPerPage%>&currentPage=1&keyword=">Clear search conditions</a>
+	<br>
 	<a href="#" id="homepage" onclick="homepage()">Back to Home Page</a>
 	<%
 		if (nOfPages != 0) {
