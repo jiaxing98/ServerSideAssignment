@@ -51,7 +51,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                 <div class="row">
                     <div class="col-md-6 col-sm-6">
                         <div class="top-header-left">
-                            <a href="/ServerSideAssignment/LogoutServlet">Log Out</a> <label
+                            <a href="LogoutServlet">Log Out</a> <label
 								for="username">Welcome, <%=username%>
 							</label>
                         </div> <!-- /.top-header-left -->
@@ -85,8 +85,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                             </a>
                             <ul class="menu">
                                 <li><a href="#">Account</a></li>
-                                <li><a href="#">Catalogs</a></li>
-                                <li><a href="#">FAQs</a></li>
+                                <li><a href="#">Employee List</a></li>
                                 <li><a href="customerpage.jsp">Customer List</a></li>
                                 <li><a href="paymentpage.jsp">Payment List</a></li>
                             </ul>

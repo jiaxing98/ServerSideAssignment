@@ -34,5 +34,12 @@ public class ValidateManageLogic {
 		out.println("alert(\"You have signed up successfully! Fill up the Register form.\")");
 		out.println("</SCRIPT>");
 	}
+	
+	public static void logoutAlert(PrintWriter out) {
+		out.println("<SCRIPT type=\"text/javascript\">");
+		out.println("alert(\"You have logged out successfully!\")");
+		out.println("window.location.assign(\"index.html\")");
+		out.println("</SCRIPT>");
+	}
 
 }
