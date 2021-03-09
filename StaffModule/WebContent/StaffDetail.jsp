@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Employee Detail Informations</title>
+<title>Your Detail</title>
 <style>
 body {
 	font-family: Arial, Helvetica, sans-serif;
@@ -98,17 +98,7 @@ body {
 		String username = (String) request.getParameter("username");
 		String role = (String) request.getParameter("role");
 	%>
-	<form class="form-inline md-form mr-auto mb-4"
-		action="EmpPaginationServlet" method="get">
-		<input class="form-control mr-sm-2" type="text" aria-label="Search"
-			name="keyword" />
-		<button class="btn aqua-gradient btn-rounded btn-sm my-0 btn btn-info"
-			type="submit">Search</button>
-		<input type="hidden" name="currentPage" value="<%=currentPage%>" /> <input
-			type="hidden" name="recordsPerPage" value="<%=recordsPerPage%>" /> <input
-			type="hidden" name="username" value="<%=username%>"> <input
-			type="hidden" name="role" value="<%=role%>">
-	</form>
+	
 	<div class="row col-md-6">
 		<table class="table table-striped table-bordered table-sm">
 			<tr>
@@ -121,8 +111,6 @@ body {
 				<th>Reports to</th>
 				<th>Job Title</th>
 				<th>User Name</th>
-				<th>Update</th>
-				<th>Delete</th>
 			</tr>
 			<%
 				List<Employee> staffs = (List<Employee>) request.getAttribute("staffs");
@@ -141,15 +129,13 @@ body {
 						else
 							out.println("<td>" + t.getReportsto() + "</td>");
 						out.println("<td>" + t.getJobtitle() + "</td>");
-						out.println("<td>" + t.getUser().getUsername() + "</td>");					
-						out.println("<td><a href=\"EmployeeController?id=" + t.getId() + "\">Update</a></td>");
-						out.println("<td><a href=\"EmployeeController?id=" + t.getId() + "\">Delete</a></td>");
+						out.println("<td>" + t.getUser().getUsername() + "</td>");
 						out.println("</tr>");
 					}
 				} else {
 					out.println("<tr>");
 					String status = "No records";
-					for (int i = 0; i < 11; i++) {
+					for (int i = 0; i < 8; i++) {
 						out.println("<td>" + status + "</td>");
 					}
 					out.println("</tr>");

@@ -34,13 +34,18 @@ public class EmployeeService implements EmployeeServiceInterface{
 
 	@Override
 	public List<Employee> getAllEmployees() throws EJBException {
-		// TODO Auto-generated method stub
 		return em.createNamedQuery("Employee.findAll").getResultList();
+	}
+	
+	@Override
+	public Employee findEmployeebyUsername(String username) throws EJBException {
+		Query q = em.createNamedQuery("Employee.findbyUsername");
+		q.setParameter("username", username);
+		return (Employee) q.getSingleResult();
 	}
 
 	@Override
 	public List<Employee> readStaff(int currentPage, int recordsPerPage, String keyword) throws EJBException {
-		// Write some codes here…
 		Query q = null;
 		if (keyword.isEmpty()) {
 			q = em.createNativeQuery("select * from classicmodels.employees order by employeenumber OFFSET ? LIMIT ?",
@@ -49,8 +54,7 @@ public class EmployeeService implements EmployeeServiceInterface{
 			q.setParameter(1, Integer.valueOf(start));
 			q.setParameter(2, Integer.valueOf(recordsPerPage));
 		} else {
-			q = em.createNativeQuery(
-					"SELECT * from classicmodels.employees WHERE concat(employeenumber,lastname,firstname,extension,email,officecode,reportsto,jobtitle,username) LIKE? order by id OFFSET ? LIMIT ?",
+			q = em.createNativeQuery("SELECT * from classicmodels.employees WHERE concat(employeenumber,lastname,firstname,extension,email,officecode,reportsto,jobtitle,username) LIKE ? order by employeenumber OFFSET ? LIMIT ?",
 					Employee.class);
 			int start = currentPage * recordsPerPage - recordsPerPage;
 			q.setParameter(1, "%" + keyword + "%");
@@ -60,10 +64,43 @@ public class EmployeeService implements EmployeeServiceInterface{
 		List<Employee> results = q.getResultList();
 		return results;
 	}
+	
+	@Override
+	public List<Employee> readStaff(int currentPage, int recordsPerPage, String keyword, String username) throws EJBException {
+		Query q = null;
+		Employee employee = findEmployeebyUsername(username);
+			
+		if (keyword.isEmpty()) {
+
+			q = em.createNativeQuery("select * from classicmodels.employees WHERE employeenumber = ? OFFSET ? LIMIT ?",
+					Employee.class);
+
+			int start = currentPage * recordsPerPage - recordsPerPage;
+			q.setParameter(1, employee.getId());
+			q.setParameter(2, Integer.valueOf(start));
+			q.setParameter(3, Integer.valueOf(recordsPerPage));
+		} else {
+			q = em.createNativeQuery(
+					"SELECT * from classicmodels.employees "
+					+ "WHERE employeenumber = ? "
+					+ "AND concat(employeenumber,lastname,firstname,extension,email,officecode,reportsto,jobtitle,username) LIKE ? "
+					+ "OFFSET ? LIMIT ?",
+					Employee.class);
+			int start = currentPage * recordsPerPage - recordsPerPage;
+			q.setParameter(1, employee.getId());
+			q.setParameter(2, "%" + keyword + "%");
+			q.setParameter(3, Integer.valueOf(start));
+			q.setParameter(4, Integer.valueOf(recordsPerPage));
+
+		}
+
+		List<Employee> results = q.getResultList();
+		return results;
+
+	}
 
 	@Override
 	public int getNumberOfRows(String keyword) throws EJBException {
-		// Write some codes here…
 		Query q = null;
 		
 		if (keyword.isEmpty()) {
@@ -77,10 +114,28 @@ public class EmployeeService implements EmployeeServiceInterface{
 		int i = results.intValue();
 		return i;
 	}
+	
+	@Override
+	public int getNumberOfRows(String keyword, String username) throws EJBException {
+		Query q = null;
+		Employee employee = findEmployeebyUsername(username);
+		
+		if (keyword.isEmpty()) {
+			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow FROM classicmodels.employees WHERE employeenumber = ?");
+			q.setParameter(1, employee.getId());
+		} else {
+			q = em.createNativeQuery(
+					"SELECT COUNT(*) AS totalrow from classicmodels.employees WHERE concat(employeenumber,lastname,firstname,extension,email,officecode,reportsto,jobtitle,username) LIKE ?");
+			q.setParameter(1, employee.getId());
+			q.setParameter(2, "%" + keyword + "%");
+		}
+		BigInteger results = (BigInteger) q.getSingleResult();
+		int i = results.intValue();
+		return i;
+	}
 
 	@Override
 	public Employee findEmployee(String id) throws EJBException {
-		// Write some codes here…
 		Query q = em.createNamedQuery("Employee.findbyId");
 		q.setParameter("id", Long.valueOf(id));
 		return (Employee) q.getSingleResult();
@@ -88,13 +143,10 @@ public class EmployeeService implements EmployeeServiceInterface{
 
 	@Override
 	public boolean updateEmployee(String[] s) throws EJBException {
-		// Write some codes here…
 		Employee e = findEmployee(s[0]);
 		User user = userbean.findUser(s[8]);
 		
 		if (!s[5].isBlank()) {
-			//OfficeService offService = new OfficeService(em);
-
 			try {
 				Office office = offbean.findOffice(s[5]);
 
@@ -115,31 +167,24 @@ public class EmployeeService implements EmployeeServiceInterface{
 		e.setJobtitle(s[7]);
 		e.setUser(user);
 		
-		
-
 		em.merge(e);
 		return true;
 	}
 
 	@Override
 	public void deleteEmployee(String id) throws EJBException {
-		// Write some codes here…
 		Employee e = findEmployee(id);
 		em.remove(e);
 	}
 
 	@Override
 	public boolean addEmployee(String[] s) throws EJBException {
-		// Write some codes here…
 		
 		Employee e = new Employee();
 		
-		//UserService userservice = new UserService(em);
 		User user = userbean.findUser(s[8]);
 		
 		if (!s[5].isBlank()) {
-			//OfficeService offService = new OfficeService(em);
-
 			try {
 				Office office = offbean.findOffice(s[5]);
 

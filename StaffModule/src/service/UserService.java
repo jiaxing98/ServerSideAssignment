@@ -3,12 +3,16 @@ package service;
 import java.util.List;
 
 import javax.ejb.EJBException;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import domain.User;
 
+@Dependent
+@Transactional
 public class UserService implements UserServiceInterface {
 	
 	private EntityManager em;

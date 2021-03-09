@@ -19,8 +19,8 @@ import utilities.ValidateManageLogic;
 /**
  * Servlet implementation class SignUpServlet
  */
-@WebServlet("/SignUpServlet")
-public class SignUpServlet extends HttpServlet {
+@WebServlet("/EmpSignUpServlet")
+public class EmpSignUpServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	@Inject
@@ -32,25 +32,21 @@ public class SignUpServlet extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SignUpServlet() {
+    public EmpSignUpServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
+
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
 		
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -70,10 +66,10 @@ public class SignUpServlet extends HttpServlet {
 				}
 				
 				ValidateManageLogic.signupAlert(out);
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/Register.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/EmpRegister.jsp");
 				dispatcher.forward(request, response);
 			} else {
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/signup.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/Empsignup.jsp");
 				out.println("<font color=red>Username has been used!</font>");
 				dispatcher.include(request, response);
 			}

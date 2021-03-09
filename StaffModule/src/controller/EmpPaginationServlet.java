@@ -40,33 +40,58 @@ public class EmpPaginationServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		// response.getWriter().append("Served at: ").append(request.getContextPath());
 		response.setContentType("text/html;charset=UTF-8");
 		int nOfPages = 0;
 		int currentPage = Integer.valueOf(request.getParameter("currentPage"));
 		int recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
 		String keyword = request.getParameter("keyword");
+		String username = request.getParameter("username");
+		String role = request.getParameter("role");
 		try {
-			int rows = empser.getNumberOfRows(keyword);
-			nOfPages = rows / recordsPerPage;
-			System.out.println("At servlet" + nOfPages);
-			if (rows % recordsPerPage != 0) {
-				nOfPages++;
+
+			if (role.equals("admin")) {
+				int rows = empser.getNumberOfRows(keyword);
+				nOfPages = rows / recordsPerPage;
+				System.out.println("At servlet" + nOfPages);
+				if (rows % recordsPerPage != 0) {
+					nOfPages++;
+				}
+				if (currentPage > nOfPages && nOfPages != 0) {
+					currentPage = nOfPages;
+				}
+				List<Employee> lists = empser.readStaff(currentPage, recordsPerPage, keyword);
+				request.setAttribute("staffs", lists);
+			} else if (role.equals("staff")) {
+				int rows = empser.getNumberOfRows(keyword, username);
+				nOfPages = rows / recordsPerPage;
+				System.out.println("At servlet" + nOfPages);
+				if (rows % recordsPerPage != 0) {
+					nOfPages++;
+				}
+				if (currentPage > nOfPages && nOfPages != 0) {
+					currentPage = nOfPages;
+				}
+				List<Employee> lists = empser.readStaff(currentPage, recordsPerPage, keyword, username);
+				request.setAttribute("staffs", lists);
 			}
-			if (currentPage > nOfPages && nOfPages != 0) {
-				currentPage = nOfPages;
-			}
-			List<Employee> lists = empser.readStaff(currentPage, recordsPerPage, keyword);
-			request.setAttribute("staffs", lists);
 		} catch (EJBException ex) {
 		}
 		request.setAttribute("nOfPages", nOfPages);
 		request.setAttribute("currentPage", currentPage);
 		request.setAttribute("recordsPerPage", recordsPerPage);
 		request.setAttribute("keyword", keyword);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("Emppagination.jsp");
-		dispatcher.forward(request, response);
+		request.setAttribute("username", username);
+		request.setAttribute("role", role);
+		RequestDispatcher dispatcher;
+		if (role.equals("admin")) {
+			dispatcher = request.getRequestDispatcher("Emppagination.jsp");
+			dispatcher.forward(request, response);
+		}
+		else if (role.equals("staff")) {
+			dispatcher = request.getRequestDispatcher("StaffDetail.jsp");
+			dispatcher.forward(request, response);
+		}
+
 	}
 
 	/**
@@ -75,8 +100,19 @@ public class EmpPaginationServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
+
+		/*
+		 * String username = request.getParameter("username"); String role =
+		 * request.getParameter("role"); try {
+		 * 
+		 * }
+		 * 
+		 * 
+		 * 
+		 * request.setAttribute("username", username); request.setAttribute("role",
+		 * role);
+		 */
+
 	}
 
 }

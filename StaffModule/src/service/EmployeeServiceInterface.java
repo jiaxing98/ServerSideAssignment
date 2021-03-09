@@ -9,12 +9,18 @@ import domain.Employee;
 public interface EmployeeServiceInterface {
 	
 	public List<Employee> getAllEmployees() throws EJBException;
+	
+	public Employee findEmployeebyUsername(String username) throws EJBException; 
 
 	public Employee findEmployee(String id) throws EJBException;
 
 	public List<Employee> readStaff(int currentPage, int recordsPerPage, String keyword) throws EJBException;
+	
+	public List<Employee> readStaff(int currentPage, int recordsPerPage, String keyword, String username) throws EJBException; 
 
 	public int getNumberOfRows(String keyword) throws EJBException;
+	
+	public int getNumberOfRows(String keyword, String username) throws EJBException;
 
 	public boolean updateEmployee(String[] s) throws EJBException;
 

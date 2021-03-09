@@ -33,7 +33,6 @@ public class EmployeeController extends HttpServlet {
 	 */
 	public EmployeeController() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -43,10 +42,14 @@ public class EmployeeController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String id = request.getParameter("id");
+		String username = request.getParameter("username");
+		String role = request.getParameter("role");
 
 		try {
 			Employee emp = empser.findEmployee(id);
 			request.setAttribute("EMP", emp);
+			request.setAttribute("username", username);
+			request.setAttribute("role", role);
 			RequestDispatcher req = request.getRequestDispatcher("EmployeeUpdate.jsp");
 			req.forward(request, response);
 		} catch (EJBException ex) {
@@ -60,8 +63,6 @@ public class EmployeeController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		// doGet(request, response);
 	
 		String eid = request.getParameter("id");
 		String lname = request.getParameter("lname");
@@ -72,6 +73,8 @@ public class EmployeeController extends HttpServlet {
 		String report = request.getParameter("repto");
 		String jobt = request.getParameter("jobt");	
 		String uname = request.getParameter("uname");
+		String username = request.getParameter("username");
+		String role = request.getParameter("role");
 
 		PrintWriter out = response.getWriter();
 		
@@ -91,6 +94,8 @@ public class EmployeeController extends HttpServlet {
 			}
 			// this line is to redirect to notify record has been updated and redirect to
 			// another page
+			request.setAttribute("username", username);
+			request.setAttribute("role", role);
 			ValidateManageLogic.navigateJSemp(out);
 		} catch (EJBException ex) {
 		}

@@ -16,8 +16,8 @@ import utilities.ValidateManageLogic;
 /**
  * Servlet implementation class RegisterServlet
  */
-@WebServlet("/RegisterServlet")
-public class RegisterServlet extends HttpServlet {
+@WebServlet("/EmpRegisterServlet")
+public class EmpRegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	@Inject
@@ -26,17 +26,15 @@ public class RegisterServlet extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RegisterServlet() {
+    public EmpRegisterServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
+
 	}
 
 	/**
@@ -62,7 +60,7 @@ public class RegisterServlet extends HttpServlet {
 		  
 		empbean.addEmployee(s);
 		 
-		ValidateManageLogic.registerAlert(out);
+		ValidateManageLogic.EmpregisterAlert(out);
 	}
 	
 }

@@ -31,7 +31,6 @@ public class OfficeController extends HttpServlet {
 	 */
 	public OfficeController() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -40,8 +39,6 @@ public class OfficeController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		// response.getWriter().append("Served at: ").append(request.getContextPath());
 
 		String id = request.getParameter("id");
 
@@ -61,8 +58,6 @@ public class OfficeController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
 		
 		String ocode = request.getParameter("id");
 		String city = request.getParameter("city");

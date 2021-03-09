@@ -30,7 +30,6 @@ public class OffPaginationServlet extends HttpServlet {
 	 */
 	public OffPaginationServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -39,11 +38,8 @@ public class OffPaginationServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		// response.getWriter().append("Served at: ").append(request.getContextPath());
 
 		response.setContentType("text/html;charset=UTF-8");
-		// Write some codes here…
 		int nOfPages = 0;
 		int currentPage = Integer.valueOf(request.getParameter("currentPage"));
 		int recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
@@ -77,8 +73,6 @@ public class OffPaginationServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		// doGet(request, response);
 	}
 
 }

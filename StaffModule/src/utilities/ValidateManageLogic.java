@@ -13,12 +13,10 @@ public class ValidateManageLogic {
 		return "ADD";
 	}
 
-	// this method is used to notify a user that a record has been updated and to
-	// redirect to another page
 	public static void navigateJSemp(PrintWriter out) {
 		out.println("<SCRIPT type=\"text/javascript\">");
 		out.println("alert(\"Record has been updated and url will be redirected\")");
-		out.println("window.location.assign(\"EmpPaginationServlet?currentPage=1&recordsPerPage=70&keyword=\")");
+		out.println("window.location.assign(\"EmpPaginationServlet?currentPage=1&keyword=&recordsPerPage=70&username=admin&role=admin\")");
 		out.println("</SCRIPT>");
 	}
 	
@@ -29,9 +27,9 @@ public class ValidateManageLogic {
 		out.println("</SCRIPT>");
 	}
 	
-	public static void registerAlert(PrintWriter out) {
+	public static void EmpregisterAlert(PrintWriter out) {
 		out.println("<SCRIPT type=\"text/javascript\">");
-		out.println("alert(\"You have successfully registered! Proceed to homepage to login.\")");
+		out.println("alert(\"You have successfully registered a new employee! You may try to log in the new employee account\")");
 		out.println("window.location.assign(\"index.html\")");
 		out.println("</SCRIPT>");
 	}

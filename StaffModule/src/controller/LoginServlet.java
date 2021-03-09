@@ -37,15 +37,14 @@ public class LoginServlet extends HttpServlet {
      */
     public LoginServlet() {
         super();
-        // TODO Auto-generated constructor stub
+        
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
+
 	}
 
 	/**
@@ -67,11 +66,19 @@ public class LoginServlet extends HttpServlet {
 					session.setAttribute("role", "user");
 					RequestDispatcher req = request.getRequestDispatcher("UserSession.jsp");
 					req.forward(request, response);
-				} else {
+				}  
+				else if(validateRoleAdmin(username)){
+					HttpSession session = request.getSession();
+					session.setAttribute("admin", username);
+					session.setAttribute("role", "admin");
+					RequestDispatcher req = request.getRequestDispatcher("adminSession.jsp");
+					req.forward(request, response);
+				}
+				else if(validateRoleStaff(username)){
 					HttpSession session = request.getSession();
 					session.setAttribute("staff", username);
-					session.setAttribute("role", "staffs");
-					RequestDispatcher req = request.getRequestDispatcher("LoginSuccess.jsp");
+					session.setAttribute("role", "staff");
+					RequestDispatcher req = request.getRequestDispatcher("StaffSession.jsp");
 					req.forward(request, response);
 				}
 			} else {
@@ -91,6 +98,28 @@ public class LoginServlet extends HttpServlet {
 		
 		for(int i = 0; i < role.size(); i++) {
 			if(role.get(i).getId().getRole().equals("user"))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	private boolean validateRoleStaff(String username) {
+		List<UserRole> role = rolebean.getAllUserRole(username);
+		
+		for(int i = 0; i < role.size(); i++) {
+			if(role.get(i).getId().getRole().equals("staff"))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	private boolean validateRoleAdmin(String username) {
+		List<UserRole> role = rolebean.getAllUserRole(username);
+		
+		for(int i = 0; i < role.size(); i++) {
+			if(role.get(i).getId().getRole().equals("admin"))
 				return true;
 		}
 		

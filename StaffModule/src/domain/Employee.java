@@ -13,6 +13,7 @@ import java.util.List;
 @Table(name = "employees", schema = "classicmodels")
 @NamedQuery(name = "Employee.findAll", query = "SELECT e FROM Employee e")
 @NamedQuery(name = "Employee.findbyId", query = "SELECT e FROM Employee e WHERE e.id = :id")
+@NamedQuery(name= "Employee.findbyUsername", query= "SELECT e FROM Employee e WHERE e.user.username = :username")
 public class Employee implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,11 +34,9 @@ public class Employee implements Serializable {
 
 	private String reportsto;
 
-	// private String username;
-
 	// bi-directional many-to-one association to Office
 	@ManyToOne
-	@JoinColumn(name = "officecode", insertable = false, updatable = false)
+	@JoinColumn(name = "officecode", insertable = true, updatable = true)
 	private Office office;
 
 	@OneToOne
@@ -118,13 +117,5 @@ public class Employee implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-//	public String getUsername() {
-//		return username;
-//	}
-//
-//	public void setUsername(String username) {
-//		this.username = username;
-//	}
 
 }

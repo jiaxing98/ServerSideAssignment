@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Office Record</title>
+<title>Office Detail Informations</title>
 <style>
 body {
 	font-family: Arial, Helvetica, sans-serif;
@@ -211,12 +211,12 @@ body {
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-
 alpha.6/js/bootstrap.min.js"></script>
-	<button class="open-button" onclick="openForm()">Open Form</button>
+	<button class="open-button" onclick="openForm()">Add Office</button>
 	<div class="form-popup" id="myForm">
 		<form action="OfficeController" class="form-container" method="post">
-			<h1>Add Employee</h1>
+			<h1>Add Office</h1>
 			<fieldset>
-				<legend>Add Office Details: </legend>
+				<legend>Fill Office Details: </legend>
 				<br> City: <input type="text" name="city" /> <br>
 				Phone: <input type="text" name="phone" /> <br> Address Line 1: <input
 					type="text" name="adr1" /> <br> Address Line 2: <input type="text"

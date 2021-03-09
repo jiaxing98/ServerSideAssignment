@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Sign Up</title>
+<title>New Employee Sign Up</title>
 <script>
 	function validateSignUp() {
 		var name = signup.username.value;
@@ -27,9 +27,9 @@
 <body>
 <body>
 <div class="container">
-		<h2>Sign Up</h2>
+		<h2>Sign Up to add New Employee</h2>
 		<form name="signup" onSubmit="return validateSignUp();"
-			action="SignUpServlet" method="post">
+			action="EmpSignUpServlet" method="post">
 			<div class="form-group">
 				<label for="username">Username:</label> <input type="text"
 					class="form-control" id="username" name="username">
@@ -42,13 +42,11 @@
 				<label for="confirm_pw">Confirm Password:</label> <input type="password"
 					class="form-control" id="confirm_pw" name="confirm_pw">
 			</div>
-			<input type="hidden" name="role" value="user">
+			<input type="hidden" name="role" value="staff">
 			<button type="submit" class="btn btn-default">Submit</button>
 			<button type="reset" class="btn">Reset</button>
 		</form>
-	<br>
-	<br>
-	<a href="index.html"> Back to Homepage </a>
+	
 </div>
 </body>
 </html>

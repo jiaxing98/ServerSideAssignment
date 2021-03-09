@@ -18,7 +18,6 @@ public class Office implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
 	@Id
-	
 	@Column(name="officecode")
 	private Long id;
 
@@ -125,12 +124,12 @@ public class Office implements Serializable {
 		this.employees = employees;
 	}
 
-//	public Employee addEmployee(Employee employee) {
-//		getEmployees().add(employee);
-//		employee.setOffice(this);
-//
-//		return employee;
-//	}
+	public Employee addEmployee(Employee employee) {
+		getEmployees().add(employee);
+		employee.setOffice(this);
+
+		return employee;
+	}
 
 	public Employee removeEmployee(Employee employee) {
 		getEmployees().remove(employee);

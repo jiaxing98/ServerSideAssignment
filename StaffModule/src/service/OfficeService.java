@@ -25,13 +25,11 @@ public class OfficeService implements OfficeServiceInterface {
 
 	@Override
 	public List<Office> getAllOffices() throws EJBException {
-		// TODO Auto-generated method stub
 		return em.createNamedQuery("Office.findAll").getResultList();
 	}
 
 	@Override
 	public List<Office> readOffice(int currentPage, int recordsPerPage, String keyword) throws EJBException {
-		// Write some codes here…
 		Query q = null;
 		if (keyword.isEmpty()) {
 			q = em.createNativeQuery("select * from classicmodels.offices order by officecode OFFSET ? LIMIT ?",
@@ -41,7 +39,7 @@ public class OfficeService implements OfficeServiceInterface {
 			q.setParameter(2, Integer.valueOf(recordsPerPage));
 		} else {
 			q = em.createNativeQuery(
-					"SELECT * from classicmodels.offices WHERE concat(officecode,city,phone,addressline1) LIKE? order by officecode OFFSET ? LIMIT ?",
+					"SELECT * from classicmodels.offices WHERE concat(officecode,city,phone,addressline1,addressline2,state,country,postalcode,territory) LIKE ? order by officecode OFFSET ? LIMIT ?",
 					Office.class);
 			int start = currentPage * recordsPerPage - recordsPerPage;
 			q.setParameter(1, "%" + keyword + "%");
@@ -54,7 +52,6 @@ public class OfficeService implements OfficeServiceInterface {
 
 	@Override
 	public int getNumberOfRows(String keyword) throws EJBException {
-		// Write some codes here…
 		Query q = null;
 		if (keyword.isEmpty()) {
 			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow FROM classicmodels.offices");
@@ -70,7 +67,6 @@ public class OfficeService implements OfficeServiceInterface {
 
 	@Override
 	public Office findOffice(String id) throws EJBException {
-		// Write some codes here…
 		Query q = em.createNamedQuery("Office.findbyId");
 		q.setParameter("id", Long.valueOf(id));
 		return (Office) q.getSingleResult();
@@ -78,7 +74,6 @@ public class OfficeService implements OfficeServiceInterface {
 
 	@Override
 	public void updateOffice(String[] s) throws EJBException {
-		// Write some codes here…
 		Office o = findOffice(s[0]);
 
 		o.setCity(s[1]);
@@ -95,14 +90,12 @@ public class OfficeService implements OfficeServiceInterface {
 
 	@Override
 	public void deleteOffice(String id) throws EJBException {
-		// Write some codes here…
 		Office o = findOffice(id);
 		em.remove(o);
 	}
 
 	@Override
 	public void addOffice(String[] s) throws EJBException {
-		// Write some codes here…
 
 		Office o = new Office();
 

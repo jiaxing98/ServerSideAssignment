@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Employee Update Page</title>
 <style>
 table {
 	font-family: arial, sans-serif;
@@ -27,6 +27,8 @@ tr:nth-child(even) {
 <body>
 	<%
 		Employee emp = (Employee) request.getAttribute("EMP");
+		String username = (String) request.getParameter("username");
+		String role = (String) request.getParameter("role");
 	%>
 	<form action="EmployeeController" method="post">
 		<table>
@@ -109,6 +111,9 @@ tr:nth-child(even) {
 		</table>
 		<input type="submit" name="UPDATE" value="UPDATE" /> <input
 			type="submit" name="DELETE" value="DELETE" />
+			<input type="hidden" name="username" value="<%=username%>" />
+			<input type="hidden" name="role" value="<%=role%>" />
+
 	</form>
 </body>
 </html>
