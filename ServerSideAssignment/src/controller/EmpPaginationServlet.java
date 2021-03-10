@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import domain.Employee;
-import service.EmployeeService;
+import service.EmpService;
 
 /**
  * Servlet implementation class EmpPaginationServlet
@@ -23,7 +23,7 @@ import service.EmployeeService;
 public class EmpPaginationServlet extends HttpServlet {
 
 	@Inject
-	private EmployeeService empser;
+	private EmpService empser;
 
 	private static final long serialVersionUID = 1L;
 

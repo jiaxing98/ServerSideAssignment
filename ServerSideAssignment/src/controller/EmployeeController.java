@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import domain.Employee;
-import service.EmployeeService;
+import service.EmpService;
 import utilities.ValidateManageLogic;
 /**
  * Servlet implementation class EmployeeController
@@ -26,7 +26,7 @@ public class EmployeeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	private EmployeeService empser;
+	private EmpService empser;
 
 	/**
 	 * @see HttpServlet#HttpServlet()

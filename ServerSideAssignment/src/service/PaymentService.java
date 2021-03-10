@@ -25,7 +25,7 @@ public class PaymentService implements PaymentServiceInterface {
 	private CustomerService customerbean;
 	
 	@Inject
-	private EmployeeService empbean;
+	private EmpService empbean;
 	
 	private EntityManager em;
 

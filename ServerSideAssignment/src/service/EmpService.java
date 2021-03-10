@@ -13,7 +13,7 @@ import domain.Employee;
 import domain.Office;
 import domain.User;
 
-public class EmployeeService implements EmployeeServiceInterface{
+public class EmpService implements EmpServiceInterface{
 
 	private EntityManager em;
 	
@@ -24,7 +24,7 @@ public class EmployeeService implements EmployeeServiceInterface{
 	private UserService userbean;
 	
 	@Inject
-    public EmployeeService(@PostGresDatabase EntityManager em) {
+    public EmpService(@PostGresDatabase EntityManager em) {
     	this.em = em;
     }
 	

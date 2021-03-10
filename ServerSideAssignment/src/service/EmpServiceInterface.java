@@ -6,7 +6,7 @@ import javax.ejb.EJBException;
 
 import domain.Employee;
 
-public interface EmployeeServiceInterface extends CommonServiceInterface<Employee> {
+public interface EmpServiceInterface extends CommonServiceInterface<Employee> {
 	
 	public List<Employee> getAllEmployees() throws EJBException;
 

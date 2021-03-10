@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import service.EmployeeService;
+import service.EmpService;
 import utilities.ValidateManageLogic;
 
 /**
@@ -21,7 +21,7 @@ public class EmpRegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	@Inject
-	private EmployeeService empbean;
+	private EmpService empbean;
 	
     /**
      * @see HttpServlet#HttpServlet()
