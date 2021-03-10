@@ -55,7 +55,7 @@ public class EmpService implements EmpServiceInterface{
 
 			q = em.createNativeQuery("select * from classicmodels.employees "
 					+ "order by employeenumber OFFSET ? LIMIT ?",
-					Customer.class);
+					Employee.class);
 
 			int start = currentPage * recordsPerPage - recordsPerPage;
 			q.setParameter(1, Integer.valueOf(start));
@@ -65,7 +65,7 @@ public class EmpService implements EmpServiceInterface{
 					"SELECT * from classicmodels.employees "
 					+ "WHERE concat(employeenumber,lastname,firstname,jobtitle) LIKE ? "
 					+ "order by employeenumber OFFSET ? LIMIT ?",
-					Customer.class);
+					Employee.class);
 			int start = currentPage * recordsPerPage - recordsPerPage;
 			q.setParameter(1, "%" + keyword + "%");
 			q.setParameter(2, Integer.valueOf(start));
