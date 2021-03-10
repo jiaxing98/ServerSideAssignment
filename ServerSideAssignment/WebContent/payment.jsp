@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Payment</title>
 <style>
 body {
 	font-family: Arial, Helvetica, sans-serif;
@@ -84,7 +84,47 @@ body {
 	text-align: center;
 	font-weight: bold;
 }
+
+.button {
+  background-color: white;
+  border: none;
+  color: #008CBA;
+  padding: 4px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+body h4 {
+	color: red;
+	font-style: italic;
+}
 </style>
+<script>
+	function confirmDelete() {
+		var option = confirm("Delete this record?");
+		if (option == true) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function homepage() {
+		var role = "${sessionScope.role}";
+		
+		if(role === "user") {
+			document.getElementById("homepage").href="UserSession.jsp"; 
+		} else if (role === "staff") {
+			document.getElementById("homepage").href="StaffSession.jsp"; 
+		} else if (role === "admin") {
+			document.getElementById("homepage").href="AdminSession.jsp"; 
+		}
+	}
+</script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
 </head>
@@ -94,6 +134,7 @@ body {
 		int recordsPerPage = (int) request.getAttribute("recordsPerPage");
 		int nOfPages = (int) request.getAttribute("nOfPages");
 		String keyword = (String) request.getAttribute("keyword");
+		String role = (String) session.getAttribute("role");
 	%>
 	<form class="form-inline md-form mr-auto mb-4"
 		action="PaymentPagination" method="get">
@@ -104,6 +145,7 @@ body {
 		<input type="hidden" name="currentPage" value="<%=currentPage%>" /> <input
 			type="hidden" name="recordsPerPage" value="<%=recordsPerPage%>" />
 	</form>
+	<h4>Search by: Customer Number, Check Number and Payment Method</h4>
 	<div class="row col-md-6">
 		<table class="table table-striped table-bordered table-sm">
 			<tr>
@@ -113,6 +155,7 @@ body {
 				<th>Payment Date</th>
 				<th>Payment Method</th>
 				<th>Amount</th>
+				<th>Delete</th>
 			</tr>
 			<%
 				List<Payment> payment = (List<Payment>) request.getAttribute("payment");
@@ -125,12 +168,16 @@ body {
 						out.println("<td>" + t.getPaymentdate() + "</td>");
 						out.println("<td>" + t.getPaymentmethod() + "</td>");
 						out.println("<td>" + t.getAmount() + "</td>");
+						out.println("<form onSubmit='return confirmDelete()'action='PaymentController' method='post'id='delete'>");
+						out.println("<input type='hidden' name='customernumber' value=" + t.getId().getCustomernumber() + ">");
+						out.println("<input type='hidden' name='checknumber' value=" + t.getId().getChecknumber() + ">");
+						out.println("<td><button class='button' type='submit' form='delete' name='DELETE' value='DELETE'>Delete</button></td>");
 						out.println("</tr>");
 					}
 				} else {
 					out.println("<tr>");
 					String status = "No records";
-					for (int i = 0; i < 8; i++) {
+					for (int i = 0; i < 6; i++) {
 						out.println("<td>" + status + "</td>");
 					}
 					out.println("</tr>");
@@ -186,6 +233,9 @@ body {
 			%>
 		</ul>
 	</nav>
+	<a href="PaymentPagination?recordsPerPage=<%=recordsPerPage%>&currentPage=1&keyword=">Clear search conditions</a>
+	<br>
+	<a href="#" id="homepage" onclick="homepage()">Back to Home Page</a>
 	<%
 		if (nOfPages != 0) {
 			out.println("<p class=\"pageref\">");

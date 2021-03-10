@@ -16,7 +16,9 @@ public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private Integer ordernumber;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="ordernumber")
+	private Long id;
 
 	private String comments;
 
@@ -37,12 +39,12 @@ public class Order implements Serializable {
 	public Order() {
 	}
 
-	public Integer getOrdernumber() {
-		return this.ordernumber;
+	public Long getOrdernumber() {
+		return this.id;
 	}
 
-	public void setOrdernumber(Integer ordernumber) {
-		this.ordernumber = ordernumber;
+	public void setOrdernumber(Long id) {
+		this.id = id;
 	}
 
 	public String getComments() {

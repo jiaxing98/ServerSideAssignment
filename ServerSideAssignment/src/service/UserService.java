@@ -25,15 +25,20 @@ public class UserService implements UserServiceInterface{
 	
 	@Override
 	public List<User> getAllUsers() throws EJBException {
-		// TODO Auto-generated method stub
-		return em.createNamedQuery("Customer.findAll").getResultList();
+		return em.createNamedQuery("User.findAll").getResultList();
 	}
 
 	@Override
 	public User findUser(String id) throws EJBException {
-		// TODO Auto-generated method stub
-		Query q = em.createNamedQuery("user.findbyUsername");
-		return (User) q.getSingleResult();
+		try {
+			Query q = em.createNamedQuery("User.findbyUsername");
+			q.setParameter("username", id);
+			return (User) q.getSingleResult();
+		}
+		catch (Exception ex) {
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -51,10 +56,9 @@ public class UserService implements UserServiceInterface{
 				return false;
 		}
 	}
-
+	
 	@Override
 	public void updateUser(String[] s, String action, String newInfo) throws EJBException {
-		// TODO Auto-generated method stub
 		User user = findUser(s[0]);
 		
 		if(action.equals("CHANGEUN")) {
@@ -69,18 +73,23 @@ public class UserService implements UserServiceInterface{
 
 	@Override
 	public void deleteUser(String username) throws EJBException {
-		// TODO Auto-generated method stub
 		User user = findUser(username);
 		em.remove(user);
 	}
 
 	@Override
-	public void addUser(String[] s) throws EJBException {
-		User user = new User();
+	public boolean addUser(String username, String password) throws EJBException {
+		User user = findUser(username);
 		
-		user.setUsername(s[0]);
-		user.setPassword(s[1]);
-		em.persist(user);
+		if(user != null)
+			return false;
+		
+		User newUser = new User();
+		
+		newUser.setUsername(username);
+		newUser.setPassword(password);
+		em.persist(newUser);
+		return true;
 	}
 	
 }

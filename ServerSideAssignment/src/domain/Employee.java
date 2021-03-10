@@ -2,6 +2,7 @@ package domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -12,6 +13,8 @@ import java.util.List;
 @Entity
 @Table(name="employees", schema="classicmodels")
 @NamedQuery(name="Employee.findAll", query="SELECT e FROM Employee e")
+@NamedQuery(name="Employee.findbyId", query="SELECT e FROM Employee e WHERE e.id = :id")
+@NamedQuery(name="Employee.findbyUsername", query="SELECT e FROM Employee e WHERE e.user.username = :username")
 public class Employee implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -38,8 +41,12 @@ public class Employee implements Serializable {
 
 	//bi-directional many-to-one association to Office
 	@ManyToOne
-	@JoinColumn(name="officecode", insertable=false, updatable=false)
+	@JoinColumn(name="officecode", insertable=true, updatable=true)
 	private Office office;
+	
+	@OneToOne
+	@JoinColumn(name="username")
+	private User user;
 
 	public Employee() {
 	}
@@ -58,6 +65,14 @@ public class Employee implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public String getExtension() {

@@ -12,11 +12,14 @@ import java.util.List;
 @Entity
 @Table(name="offices", schema="classicmodels")
 @NamedQuery(name="Office.findAll", query="SELECT o FROM Office o")
+@NamedQuery(name = "Office.findbyId", query ="SELECT o FROM Office o WHERE o.id = :id")
 public class Office implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private Integer officecode;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="officecode")
+	private Long id;
 
 	private String addressline1;
 
@@ -41,12 +44,12 @@ public class Office implements Serializable {
 	public Office() {
 	}
 
-	public Integer getOfficecode() {
-		return this.officecode;
+	public Long getOfficecode() {
+		return this.id;
 	}
 
-	public void setOfficecode(Integer officecode) {
-		this.officecode = officecode;
+	public void setOfficecode(Long id) {
+		this.id = id;
 	}
 
 	public String getAddressline1() {

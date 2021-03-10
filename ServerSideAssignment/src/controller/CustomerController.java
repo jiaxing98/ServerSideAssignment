@@ -2,9 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-
 import javax.ejb.EJBException;
 import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
@@ -13,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import domain.Customer;
 import service.CustomerService;
@@ -44,11 +42,26 @@ public class CustomerController extends HttpServlet {
 			throws ServletException, IOException {
 
 		String id = request.getParameter("id");
+		
+		HttpSession session = request.getSession(false);
+		String username = (String) session.getAttribute("username");
+		String role = (String) session.getAttribute("role");
+		
 		try {
-			Customer customer = customerbean.findCustomer(id); 
-			request.setAttribute("Customer", customer);
-			RequestDispatcher req = request.getRequestDispatcher("EmployeeUpdate.jsp"); // change the jsp
-			req.forward(request, response);
+			if(id != null) {
+				Customer customer = customerbean.findCustomer(id);
+				request.setAttribute("customer", customer);
+				request.setAttribute("role", role);
+				RequestDispatcher req = request.getRequestDispatcher("CustomerUpdate.jsp");
+				req.forward(request, response);
+			}
+			else {
+				Customer customer = customerbean.findCustomerbyUsername(username);
+				request.setAttribute("customer", customer);
+				request.setAttribute("role", role);
+				RequestDispatcher req = request.getRequestDispatcher("CustomerAccount.jsp");
+				req.forward(request, response);
+			}
 		} catch (EJBException ex) {
 
 		}
@@ -61,7 +74,7 @@ public class CustomerController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String cno = request.getParameter("cno");
+		String cno = request.getParameter("id");
 		String address1 = request.getParameter("addressline1");
 		String address2 = request.getParameter("addressline2");
 		String city = request.getParameter("city");
@@ -74,11 +87,17 @@ public class CustomerController extends HttpServlet {
 		String phone = request.getParameter("phone");
 		String postalcode = request.getParameter("postalcode");
 		String state = request.getParameter("state");
+		String empno = request.getParameter("empno");
+		
+		HttpSession session = request.getSession(false);
+		String username = (String) session.getAttribute("username");
+		String role = (String) session.getAttribute("role");
+		
 		PrintWriter out = response.getWriter();
 		// this line is to package the whole values into one array string variable -
 		// easier just pass one parameter object
 		String[] s = { cno, address1, address2, city, contactfname, contactlname,
-						country, creditlimit, customername, phone, postalcode, state };
+						country, creditlimit, customername, phone, postalcode, state, empno, username };
 
 		try {
 			if (ValidateManageLogic.validateManager(request).equals("UPDATE")) {
@@ -88,9 +107,15 @@ public class CustomerController extends HttpServlet {
 			} else {
 				customerbean.addCustomer(s);
 			}
-			// this line is to redirect to notify record has been updated and redirect to
-			// another page
-			ValidateManageLogic.navigateJS(out);
+		
+			if(role.equals("admin")) {
+				ValidateManageLogic.navigateJS(out, "CustomerPagination");
+			} else if (role.equals("user")) {
+				Customer customer = customerbean.findCustomer(cno);
+				request.setAttribute("customer", customer);
+				RequestDispatcher req = request.getRequestDispatcher("CustomerAccount.jsp");
+				req.forward(request, response);
+			}
 
 		} catch (EJBException ex) {
 		}
