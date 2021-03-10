@@ -29,6 +29,13 @@ public class ValidateManageLogic {
 		out.println("</SCRIPT>");
 	}
 	
+	public static void EmpregisterAlert(PrintWriter out) {
+		out.println("<SCRIPT type=\"text/javascript\">");
+		out.println("alert(\"You have successfully registered a new employee! You may try to log in the new employee account\")");
+		out.println("window.location.assign(\"index.html\")");
+		out.println("</SCRIPT>");
+	}
+	
 	public static void signupAlert(PrintWriter out) {
 		out.println("<SCRIPT type=\"text/javascript\">");
 		out.println("alert(\"You have signed up successfully! Fill up the Register form.\")");

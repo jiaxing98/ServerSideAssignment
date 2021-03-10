@@ -12,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name="offices", schema="classicmodels")
 @NamedQuery(name="Office.findAll", query="SELECT o FROM Office o")
+@NamedQuery(name = "Office.findbyId", query ="SELECT o FROM Office o WHERE o.id = :id")
 public class Office implements Serializable {
 	private static final long serialVersionUID = 1L;
 

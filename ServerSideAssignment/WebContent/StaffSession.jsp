@@ -98,7 +98,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 							<a href="#" class="toggle-menu"> <i class="fa fa-bars"></i>
 							</a>
 							<ul class="menu">
-								<li><a href="#">Account</a></li>
+								<li><a href="EmpOwn.jsp">Account</a></li>
 								<li><a href="customerpage.jsp">Customer List</a></li>
 								<li><a href="paymentpage.jsp">Payment List</a></li>
 							</ul>

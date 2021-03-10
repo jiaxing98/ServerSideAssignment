@@ -85,7 +85,8 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                             </a>
                             <ul class="menu">
                                 <li><a href="#">Account</a></li>
-                                <li><a href="#">Employee List</a></li>
+                                <li><a href="EmpAdmin.jsp">Employee List</a></li>
+                                <li><a href="Office.jsp">Office List</a></li>
                                 <li><a href="customerpage.jsp">Customer List</a></li>
                                 <li><a href="paymentpage.jsp">Payment List</a></li>
                             </ul>
