@@ -30,13 +30,14 @@ body h4 {
 <body>
 	<%
 		String customernumber = (String) request.getAttribute("customernumber");
+		String checknumber = (String) request.getAttribute("checknumber");
 	%>
 	<div class="container">
 		<h2>Make New Payment</h2>
 		<form action="PaymentController" method="post" onSubmit="getDate()">
 			<div class="form-group">
 				<label for="checknumber">Check Number:</label> <input type="text"
-					class="form-control" id="checknumber" name="checknumber" required>
+					class="form-control" name="checknumber" readonly value="<%=checknumber%>">
 			</div>
 			<div class="form-group">
 				<label for="paymentmethod">Payment Method:</label> <select
