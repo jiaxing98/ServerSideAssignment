@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 
+
 /**
  * The persistent class for the customers database table.
  * 
