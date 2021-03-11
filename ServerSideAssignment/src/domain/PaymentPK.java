@@ -8,13 +8,11 @@ import javax.persistence.*;
  * 
  */
 @Embeddable
-@NamedQuery(name="PaymentPK.findbycustomernumber", query="SELECT p FROM PaymentPK p WHERE p.customernumber = :customernumber")
-@NamedQuery(name="PaymentPK.findbychecknumber", query="SELECT p FROM PaymentPK p WHERE p.checknumber = :checknumber")
 public class PaymentPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(insertable=false, updatable=false)
+	@Column(insertable=true, updatable=false)
 	private Integer customernumber;
 
 	private String checknumber;

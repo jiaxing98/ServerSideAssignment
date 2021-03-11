@@ -1,7 +1,10 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.*;
+
 
 
 /**
@@ -11,6 +14,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="users", schema="classicmodels")
 @NamedQuery(name="User.findAll", query="SELECT u FROM User u")
+@NamedQuery(name="User.findbyUsername", query="SELECT u FROM User u WHERE u.username = :username")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -19,6 +23,17 @@ public class User implements Serializable {
 
 	private String password;
 
+	@OneToOne(mappedBy="user")
+	private Customer customers;
+
+	//bi-directional many-to-one association to Employee
+	@OneToOne(mappedBy="user")
+	private Employee employees;
+	
+	//bi-directional many-to-one association to UserRole
+	@OneToMany(mappedBy="user")
+	private List<UserRole> userRoles;
+	
 	public User() {
 	}
 
@@ -38,4 +53,25 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
+	public List<UserRole> getUserRoles() {
+		return this.userRoles;
+	}
+
+	public void setUserRoles(List<UserRole> userRoles) {
+		this.userRoles = userRoles;
+	}
+
+	public UserRole addUserRole(UserRole userRole) {
+		getUserRoles().add(userRole);
+		userRole.setUser(this);
+
+		return userRole;
+	}
+
+	public UserRole removeUserRole(UserRole userRole) {
+		getUserRoles().remove(userRole);
+		userRole.setUser(null);
+
+		return userRole;
+	}
 }

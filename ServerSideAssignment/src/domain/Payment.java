@@ -13,11 +13,13 @@ import java.math.BigDecimal;
 @Table(name="payments", schema="classicmodels")
 @NamedQuery(name="Payment.findAll", query="SELECT p FROM Payment p")
 @NamedQuery(name="Payment.findbypaymentmethod", query="SELECT p FROM Payment p WHERE p.paymentmethod = :paymentmethod")
+@NamedQuery(name="Payment.findbycustomernumber", query="SELECT p FROM Payment p WHERE p.paymentPK.customernumber = :customernumber")
+@NamedQuery(name="Payment.findbypaymentPK", query="SELECT p FROM Payment p WHERE p.paymentPK.customernumber = :customernumber AND p.paymentPK.checknumber = :checknumber")
 public class Payment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private PaymentPK id;
+	private PaymentPK paymentPK;
 
 	private BigDecimal amount;
 
@@ -34,11 +36,11 @@ public class Payment implements Serializable {
 	}
 
 	public PaymentPK getId() {
-		return this.id;
+		return this.paymentPK;
 	}
 
 	public void setId(PaymentPK id) {
-		this.id = id;
+		this.paymentPK = id;
 	}
 
 	public BigDecimal getAmount() {

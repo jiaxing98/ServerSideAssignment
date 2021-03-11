@@ -39,7 +39,7 @@ public class Product implements Serializable {
 
 	//bi-directional many-to-one association to Productline
 	@ManyToOne
-	@JoinColumn(name="productline", insertable=false, updatable=false)
+	@JoinColumn(name="productline", insertable=true, updatable=false)
 	private Productline productlineBean;
 
 	public Product() {

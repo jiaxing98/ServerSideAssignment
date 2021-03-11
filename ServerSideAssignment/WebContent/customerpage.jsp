@@ -2,14 +2,13 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Customer List</title>
 </head>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
 <body class="m-3">
-	<h1>Account</h1>
-	<h2>Payment history</h2>
-	<form action="PaymentPagination">
+<h1>Customer List</h1>
+	<form action="CustomerPagination">
 		<input type="hidden" name="currentPage" value="1"> <input
 			type="hidden" name="keyword" value="" />
 		<div class="form-group col-md-4">

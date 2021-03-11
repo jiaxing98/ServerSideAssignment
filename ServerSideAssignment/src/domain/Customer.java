@@ -2,6 +2,7 @@ package domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import java.util.List;
 @Entity
 @Table(name="customers", schema="classicmodels")
 @NamedQuery(name="Customer.findAll", query="SELECT c FROM Customer c")
+@NamedQuery(name="Customer.findbyId", query="SELECT c FROM Customer c WHERE c.id = :id")
+@NamedQuery(name="Customer.findbyUsername", query="SELECT c FROM Customer c WHERE c.user.username = :username")
 public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -43,9 +46,13 @@ public class Customer implements Serializable {
 
 	private String state;
 
+	@OneToOne
+	@JoinColumn(name="username")
+	private User user;
+	
 	//bi-directional many-to-one association to Employee
 	@ManyToOne
-	@JoinColumn(name="salesrepemployeenumber", insertable=false, updatable=false)
+	@JoinColumn(name="salesrepemployeenumber", insertable=true, updatable=false)
 	private Employee employee;
 
 	//bi-directional many-to-one association to Payment
@@ -161,6 +168,14 @@ public class Customer implements Serializable {
 
 	public List<Payment> getPayments() {
 		return this.payments;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public void setPayments(List<Payment> payments) {

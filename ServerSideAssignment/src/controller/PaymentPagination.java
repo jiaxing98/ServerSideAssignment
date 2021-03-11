@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import domain.Payment;
 import service.PaymentService;
@@ -44,9 +45,23 @@ public class PaymentPagination extends HttpServlet {
 		int currentPage = Integer.valueOf(request.getParameter("currentPage"));
 		int recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
 		String keyword = request.getParameter("keyword");
+		
+		HttpSession session = request.getSession(false);
+		String username = (String) session.getAttribute("username");
+		String role = (String) session.getAttribute("role");
 
 		try {
-			int rows = paymentbean.getNumberOfRows(keyword);
+			int rows;
+			
+			if(role.equals("user")) {
+				rows = paymentbean.userGetNumberOfRows(keyword, username);
+			} else if (role.equals("staff")) {
+				rows = paymentbean.staffGetNumberOfRows(keyword, username);
+			}
+			else {
+				rows = paymentbean.adminGetNumberOfRows(keyword);
+			}
+			
 			nOfPages = rows / recordsPerPage;
 			System.out.println("At servlet" + nOfPages);
 			if (rows % recordsPerPage != 0) {
@@ -57,9 +72,18 @@ public class PaymentPagination extends HttpServlet {
 				currentPage = nOfPages;
 			}
 
-			List<Payment> lists = paymentbean.readPayment(currentPage, recordsPerPage, keyword);
-			request.setAttribute("payment", lists);
-
+			if(role.equals("user")) {
+				List<Payment> lists = paymentbean.userReadRecords(currentPage, recordsPerPage, keyword, username);
+				request.setAttribute("payment", lists);
+			} else if (role.equals("staff")) {
+				List<Payment> lists = paymentbean.staffReadRecords(currentPage, recordsPerPage, keyword, username);
+				request.setAttribute("payment", lists);
+			}
+			else {
+				List<Payment> lists = paymentbean.adminReadRecords(currentPage, recordsPerPage, keyword);
+				request.setAttribute("payment", lists);
+			}
+			
 		} catch (EJBException ex) {
 
 		}
@@ -77,7 +101,7 @@ public class PaymentPagination extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		//doGet(request, response);
 	}
 
 }

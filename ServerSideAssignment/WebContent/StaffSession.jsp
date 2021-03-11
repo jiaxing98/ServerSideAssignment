@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -28,12 +30,24 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 <link rel="stylesheet" href="css/templatemo-style.css">
 
 <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+
 </head>
+<%
+	//In case, if Admin session is not set, redirect to Login page
+	if ((request.getSession(false).getAttribute("username") == null)) {
+%>
+<jsp:forward page="login.jsp"></jsp:forward>
+<%
+	}
+%>
 <body>
 	<!--[if lt IE 7]>
     <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
-
+	<%
+		String username = (String) session.getAttribute("username");
+		String role = (String) session.getAttribute("role");
+	%>
 
 	<header class="site-header">
 		<div class="top-header">
@@ -41,7 +55,9 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 				<div class="row">
 					<div class="col-md-6 col-sm-6">
 						<div class="top-header-left">
-							<a href="signup.jsp">Sign Up</a> <a href="login.jsp">Log In</a>
+							<a href="LogoutServlet">Log Out</a> <label
+								for="username">Welcome, <%=username%>
+							</label>
 						</div>
 						<!-- /.top-header-left -->
 					</div>
@@ -82,9 +98,9 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 							<a href="#" class="toggle-menu"> <i class="fa fa-bars"></i>
 							</a>
 							<ul class="menu">
-								<li><a href="#">Home</a></li>
-								<li><a href="#">Catalogs</a></li>
-								<li><a href="#">FAQs</a></li>
+								<li><a href="EmpOwn.jsp">Account</a></li>
+								<li><a href="customerpage.jsp">Customer List</a></li>
+								<li><a href="paymentpage.jsp">Payment List</a></li>
 							</ul>
 						</div>
 						<!-- /.main-menu -->

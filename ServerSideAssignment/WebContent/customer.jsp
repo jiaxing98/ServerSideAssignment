@@ -1,12 +1,12 @@
 <%@page import="java.util.List"%>
-<%@page import="domain.Payment"%>
+<%@page import="domain.Customer"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Payment</title>
+<title>Customer List</title>
 <style>
 body {
 	font-family: Arial, Helvetica, sans-serif;
@@ -86,16 +86,16 @@ body {
 }
 
 .button {
-  background-color: white;
-  border: none;
-  color: #008CBA;
-  padding: 4px 16px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
+	background-color: white;
+	border: none;
+	color: #008CBA;
+	padding: 4px 16px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
 }
 
 body h4 {
@@ -103,7 +103,7 @@ body h4 {
 	font-style: italic;
 }
 </style>
-<script>
+<script type="text/javascript">
 	function confirmDelete() {
 		var option = confirm("Delete this record?");
 		if (option == true) {
@@ -113,16 +113,25 @@ body h4 {
 		}
 	}
 
+	function confirmRemove() {
+		var option = confirm("Remove this customer from your customer list?");
+		if (option == true) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	function homepage() {
 		var role = "${sessionScope.role}";
-		
+
 		if(role === "user") {
 			document.getElementById("homepage").href="UserSession.jsp"; 
 		} else if (role === "staff") {
 			document.getElementById("homepage").href="StaffSession.jsp"; 
 		} else if (role === "admin") {
 			document.getElementById("homepage").href="AdminSession.jsp"; 
-		}
+		}	
 	}
 </script>
 <link rel="stylesheet"
@@ -137,7 +146,7 @@ body h4 {
 		String role = (String) session.getAttribute("role");
 	%>
 	<form class="form-inline md-form mr-auto mb-4"
-		action="PaymentPagination" method="get">
+		action="CustomerPagination" method="get">
 		<input class="form-control mr-sm-2" type="text" aria-label="Search"
 			name="keyword" />
 		<button class="btn aqua-gradient btn-rounded btn-sm my-0 btn btn-info"
@@ -145,39 +154,77 @@ body h4 {
 		<input type="hidden" name="currentPage" value="<%=currentPage%>" /> <input
 			type="hidden" name="recordsPerPage" value="<%=recordsPerPage%>" />
 	</form>
-	<h4>Search by: Customer Number, Check Number and Payment Method</h4>
+	<h4>Search by: Customer Number, Customer Name, Contact Last Name, Contact First Name, City and Country</h4>
 	<div class="row col-md-6">
 		<table class="table table-striped table-bordered table-sm">
 			<tr>
 				<th>Customer Number</th>
 				<th>Customer Name</th>
-				<th>Check Number</th>
-				<th>Payment Date</th>
-				<th>Payment Method</th>
-				<th>Amount</th>
+				<th>Contact Last Name</th>
+				<th>Contact First Name</th>
+				<th>Phone No.</th>
+				<th>Address Line 1</th>
+				<th>Address Line 2</th>
+				<th>City</th>
+				<th>State</th>
+				<th>Postal Code</th>
+				<th>Country</th>
+				<th>Sales Rep EmployeeNo</th>
+				<th>Sales Rep Employee LastName</th>
+				<th>Sales Rep Employee FirstName</th>
+				<th>Credit Limit</th>
+				<th>Username</th>
+				<th>Update</th>
 				<th>Delete</th>
 			</tr>
 			<%
-				List<Payment> payment = (List<Payment>) request.getAttribute("payment");
-				if (payment.size() != 0) {
-					for (Payment t : payment) {
+				List<Customer> customer = (List<Customer>) request.getAttribute("customers");
+				if (customer.size() != 0) {
+					for (Customer t : customer) {
 						out.println("<tr>");
-						out.println("<td>" + t.getId().getCustomernumber() + "</td>");
-						out.println("<td>" + t.getCustomer().getCustomername() + "</td>");
-						out.println("<td>" + t.getId().getChecknumber() + "</td>");
-						out.println("<td>" + t.getPaymentdate() + "</td>");
-						out.println("<td>" + t.getPaymentmethod() + "</td>");
-						out.println("<td>" + t.getAmount() + "</td>");
-						out.println("<form onSubmit='return confirmDelete()'action='PaymentController' method='post'id='delete'>");
-						out.println("<input type='hidden' name='customernumber' value=" + t.getId().getCustomernumber() + ">");
-						out.println("<input type='hidden' name='checknumber' value=" + t.getId().getChecknumber() + ">");
-						out.println("<td><button class='button' type='submit' form='delete' name='DELETE' value='DELETE'>Delete</button></td>");
-						out.println("</tr>");
+						out.println("<td>" + t.getCustomernumber() + "</td>");
+						out.println("<td>" + t.getCustomername() + "</td>");
+						out.println("<td>" + t.getContactlastname() + "</td>");
+						out.println("<td>" + t.getContactfirstname() + "</td>");
+						out.println("<td>" + t.getPhone() + "</td>");
+						out.println("<td>" + t.getAddressline1() + "</td>");
+						out.println("<td>" + t.getAddressline2() + "</td>");
+						out.println("<td>" + t.getCity() + "</td>");
+						out.println("<td>" + t.getState() + "</td>");
+						out.println("<td>" + t.getPostalcode() + "</td>");
+						out.println("<td>" + t.getCountry() + "</td>");
+
+						if (t.getEmployee() == null) {
+							out.println("<td>" + "null" + "</td>");
+							out.println("<td>" + "null" + "</td>");
+							out.println("<td>" + "null" + "</td>");
+						} else {
+							out.println("<td>" + t.getEmployee().getEmployeenumber() + "</td>");
+							out.println("<td>" + t.getEmployee().getLastname() + "</td>");
+							out.println("<td>" + t.getEmployee().getFirstname() + "</td>");
+						}
+
+						out.println("<td>" + t.getCreditlimit() + "</td>");
+						out.println("<td>" + t.getUser().getUsername() + "</td>");
+						out.println("<td><a href=\"CustomerController?id=" + t.getCustomernumber() + "\">Update</a></td>");
+						
+						if(role.equals("admin")) {
+							out.println("<form onSubmit='return confirmDelete()'action='CustomerController' method='post'id='delete'>");
+							out.println("<input type='hidden' name='id' value=" + t.getCustomernumber() + ">");
+							out.println("<td><button class='button' type='submit' form='delete' name='DELETE' value='DELETE'>Delete</button></td>");
+							out.println("</tr>");
+						} else if (role.equals("staff")) {
+							//out.println("<form onSubmit='return confirmRemove()'action='CustomerController' method='post'id='delete'>");
+							//out.println("<input type='hidden' name='id' value=" + t.getCustomernumber() + ">");
+							//out.println("<td><button class='button' type='submit' form='delete' name='DELETE' value='DELETE'>Delete</button></td>");
+							//out.println("</tr>");
+						}
+						
 					}
 				} else {
 					out.println("<tr>");
 					String status = "No records";
-					for (int i = 0; i < 6; i++) {
+					for (int i = 0; i < 13; i++) {
 						out.println("<td>" + status + "</td>");
 					}
 					out.println("</tr>");
@@ -192,13 +239,13 @@ body h4 {
 			%>
 			<%
 				out.println("<li class=\"page-item\">");
-					out.println("<a class=\"page-link\" href=\"" + "PaymentPagination?recordsPerPage=" + recordsPerPage
+					out.println("<a class=\"page-link\" href=\"" + "CustomerPagination?recordsPerPage=" + recordsPerPage
 							+ "&currentPage=1" + "&keyword=" + keyword + "\">First</a>");
 					out.println("</li>");
 			%>
 			<li class="page-item">
 				<%
-					out.println("<a class=\"page-link\" href=\"" + "PaymentPagination?recordsPerPage=" + recordsPerPage
+					out.println("<a class=\"page-link\" href=\"" + "CustomerPagination?recordsPerPage=" + recordsPerPage
 								+ "&currentPage=" + (currentPage - 1) + "&keyword=" + keyword + "\">Previous</a>");
 				%>
 			</li>
@@ -213,7 +260,7 @@ body h4 {
 						out.println("</li>");
 					} else {
 						out.println("<li class=\"page-item\">");
-						out.println("<a class=\"page-link\" href=\"" + "PaymentPagination?recordsPerPage=" + recordsPerPage
+						out.println("<a class=\"page-link\" href=\"" + "CustomerPagination?recordsPerPage=" + recordsPerPage
 								+ "&currentPage=" + i + "&keyword=" + keyword + "\">" + i + "</a>");
 						out.println("</li>");
 					}
@@ -222,18 +269,18 @@ body h4 {
 			<%
 				if (currentPage < nOfPages) {
 					out.println("<li class=\"page-item\">");
-					out.println("<a class=\"page-link\" href=\"" + "PaymentPagination?recordsPerPage=" + recordsPerPage
+					out.println("<a class=\"page-link\" href=\"" + "CustomerPagination?recordsPerPage=" + recordsPerPage
 							+ "&currentPage=" + (currentPage + 1) + "&keyword=" + keyword + "\">Next</a>");
 					out.println("</li>");
 					out.println("<li class=\"page-item\">");
-					out.println("<a class=\"page-link\" href=\"" + "PaymentPagination?recordsPerPage=" + recordsPerPage
+					out.println("<a class=\"page-link\" href=\"" + "CustomerPagination?recordsPerPage=" + recordsPerPage
 							+ "&currentPage=" + nOfPages + "&keyword=" + keyword + "\">Last</a>");
 					out.println("</li>");
 				}
 			%>
 		</ul>
 	</nav>
-	<a href="PaymentPagination?recordsPerPage=<%=recordsPerPage%>&currentPage=1&keyword=">Clear search conditions</a>
+	<a href="CustomerPagination?recordsPerPage=<%=recordsPerPage%>&currentPage=1&keyword=">Clear search conditions</a>
 	<br>
 	<a href="#" id="homepage" onclick="homepage()">Back to Home Page</a>
 	<%
