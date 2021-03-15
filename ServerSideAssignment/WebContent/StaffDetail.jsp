@@ -8,209 +8,60 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Your Detail</title>
-<style>
-body {
-	font-family: Arial, Helvetica, sans-serif;
+<script type="text/javascript">
+function homepage() {
+	var role = "${sessionScope.role}";
+
+	if(role === "user") {
+		document.getElementById("homepage").href="UserSession.jsp"; 
+	} else if (role === "staff") {
+		document.getElementById("homepage").href="StaffSession.jsp"; 
+	} else if (role === "admin") {
+		document.getElementById("homepage").href="AdminSession.jsp"; 
+	}	
 }
-* {
-	box-sizing: border-box;
-}
-/* Button used to open the contact form - fixed at the bottom of the page */
-.open-button {
-	background-color: #555;
-	color: white;
-	padding: 16px 20px;
-	border: none;
-	cursor: pointer;
-	opacity: 0.8;
-	position: fixed;
-	bottom: 23px;
-	right: 28px;
-	width: 280px;
-}
-/* The popup form - hidden by default */
-.form-popup {
-	overflow-x: hidden;
-	overflow-y: auto;
-	height: 400px;
-	display: none;
-	position: fixed;
-	top: 60%;
-	left: 50%;
-	-webkit-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-}
-/* Add styles to the form container */
-.form-container {
-	max-width: 500px;
-	padding: 10px;
-	background-color: white;
-}
-/* Full-width input fields */
-.form-container input[type=text], .form-container input[type=password] {
-	width: 100%;
-	padding: 15px;
-	margin: 5px 0 22px 0;
-	border: none;
-	background: #f1f1f1;
-}
-/* When the inputs get focus, do something */
-.form-container input[type=text]:focus, .form-container input[type=password]:focus
-	{
-	background-color: #ddd;
-	outline: none;
-}
-/* Set a style for the submit button */
-.form-container .btn {
-	background-color: #4CAF50;
-	color: white;
-	padding: 16px 20px;
-	border: none;
-	cursor: pointer;
-	width: 100%;
-	margin-bottom: 10px;
-	opacity: 0.8;
-}
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-	background-color: red;
-}
-.form-container .btn:hover, .open-button:hover {
-	opacity: 1;
-}
-.pageref {
-	text-align: center;
-	font-weight: bold;
-}
-</style>
+</script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
 </head>
 <body class="m-3">
-	<%
-		int currentPage = (int) request.getAttribute("currentPage");
-		int recordsPerPage = (int) request.getAttribute("recordsPerPage");
-		int nOfPages = (int) request.getAttribute("nOfPages");
-		String keyword = (String) request.getAttribute("keyword");
-		String username = (String) request.getParameter("username");
-		String role = (String) request.getParameter("role");
-	%>
-	
+	<h1>Account Information</h1>
+
 	<div class="row col-md-6">
 		<table class="table table-striped table-bordered table-sm">
-			<tr>
-				<th>ID</th>
-				<th>Last Name</th>
-				<th>First Name</th>
-				<th>Extension</th>
-				<th>Email</th>
-				<th>Office Code</th>
-				<th>Reports to</th>
-				<th>Job Title</th>
-				<th>User Name</th>
-			</tr>
 			<%
-				List<Employee> staffs = (List<Employee>) request.getAttribute("staffs");
-				if (staffs.size() != 0) {
-					for (Employee t : staffs) {
-						out.println("<tr>");
-						out.println("<td>" + t.getEmployeenumber() + "</td>");
-						out.println("<td>" + t.getLastname() + "</td>");
-						out.println("<td>" + t.getFirstname() + "</td>");
-						out.println("<td>" + t.getExtension() + "</td>");
-						out.println("<td>" + t.getEmail() + "</td>");
-						out.println("<td>" + t.getOffice().getOfficecode() + "</td>");
-						if (t.getReportsto() == null)
-							out.println("<td>" + "null" + "</td>");
-						else
-							out.println("<td>" + t.getReportsto() + "</td>");
-						out.println("<td>" + t.getJobtitle() + "</td>");
-						out.println("<td>" + t.getUser().getUsername() + "</td>");
-						out.println("</tr>");
-					}
-				} else {
-					out.println("<tr>");
-					String status = "No records";
-					for (int i = 0; i < 8; i++) {
-						out.println("<td>" + status + "</td>");
-					}
-					out.println("</tr>");
-				}
+				Employee emp = (Employee) request.getAttribute("EMP");
+				out.println("<tr><td>Employee Number</td>");
+				out.println("<td>" + emp.getEmployeenumber() + "</td></tr>");
+				out.println("<tr><td>Last Name</td>");
+				out.println("<td>" + emp.getLastname() + "</td></tr>");
+				out.println("<tr><td>First Name</td>");
+				out.println("<td>" + emp.getFirstname() + "</td></tr>");
+				out.println("<tr><td>Extension</td>");
+				out.println("<td>" + emp.getExtension() + "</td></tr>");
+				out.println("<tr><td>Email</td>");
+				out.println("<td>" + emp.getEmail() + "</td></tr>");
+				out.println("<tr><td>Office Code</td>");
+				out.println("<td>" + emp.getOffice().getOfficecode() + "</td></tr>");
+				out.println("<tr><td>Reports To</td>");
+				out.println("<td>" + emp.getReportsto() + "</td></tr>");
+				out.println("<tr><td>Job Title</td>");
+				out.println("<td>" + emp.getJobtitle() + "</td></tr>");
+				out.println("<tr><td>User Name</td>");
+				out.println("<td>" + emp.getUser().getUsername() + "</td></tr>");
+				out.println("<tr><td>Update</td>");
+				out.println("<td><a href=\"EmployeeController?id=" + emp.getEmployeenumber() + "\">Update</a></td>");
+				out.println("</tr>");
 			%>
 		</table>
 	</div>
-	<nav aria-label="Navigation for staffs">
-		<ul class="pagination">
-			<%
-				if (currentPage != 1 && nOfPages != 0) {
-			%>
-			<%
-				out.println("<li class=\"page-item\">");
-					out.println("<a class=\"page-link\" href=\"" + "EmpPaginationServlet?recordsPerPage=" + recordsPerPage
-							+ "&currentPage=1" + "&keyword=" + keyword + "\">First</a>");
-					out.println("</li>");
-			%>
-			<li class="page-item">
-				<%
-					out.println("<a class=\"page-link\" href=\"" + "EmpPaginationServlet?recordsPerPage=" + recordsPerPage
-								+ "&currentPage=" + (currentPage - 1) + "&keyword=" + keyword + "\">Previous</a>");
-				%>
-			</li>
-			<%
-				}
-			%>
-			<%
-				for (int i = 1; i <= nOfPages; i++) {
-					if (currentPage == i) {
-						out.println("<li class=\"page-item active\">");
-						out.println("<a class=\"page-link\">" + i + "<span class=\"sronly\">(current)</span></a></li>");
-						out.println("</li>");
-					} else {
-						out.println("<li class=\"page-item\">");
-						out.println("<a class=\"page-link\" href=\"" + "EmpPaginationServlet?recordsPerPage="
-								+ recordsPerPage + "&currentPage=" + i + "&keyword=" + keyword + "\">" + i + "</a>");
-						out.println("</li>");
-					}
-				}
-			%>
-			<%
-				if (currentPage < nOfPages) {
-					out.println("<li class=\"page-item\">");
-					out.println("<a class=\"page-link\" href=\"" + "EmpPaginationServlet?recordsPerPage=" + recordsPerPage
-							+ "&currentPage=" + (currentPage + 1) + "&keyword=" + keyword + "\">Next</a>");
-					out.println("</li>");
-					out.println("<li class=\"page-item\">");
-					out.println("<a class=\"page-link\" href=\"" + "EmpPaginationServlet?recordsPerPage=" + recordsPerPage
-							+ "&currentPage=" + nOfPages + "&keyword=" + keyword + "\">Last</a>");
-					out.println("</li>");
-				}
-			%>
-		</ul>
-	</nav>
-	<%
-		if (nOfPages != 0) {
-			out.println("<p class=\"pageref\">");
-			out.println(currentPage + " of " + nOfPages);
-			out.println("</p>");
-		}
-	%>
-
-	<input type="hidden" name="username" value="<%=username%>">
-	<input type="hidden" name="role" value="<%=role%>">
-	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+	<a href="#" id="homepage" onclick="homepage()">Back to Home Page</a>
 	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-
-alpha.6/js/bootstrap.min.js"></script>
-
-	<script>
-		function openForm() {
-			document.getElementById("myForm").style.display = "block";
-		}
-		function closeForm() {
-			document.getElementById("myForm").style.display = "none";
-		}
-	</script>
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

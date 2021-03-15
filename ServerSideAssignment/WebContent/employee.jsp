@@ -240,6 +240,7 @@ body {
 			<button type="reset" class="btn">Reset</button>
 		</form>
 	</div>
+	
 	<script>
 		function openForm() {
 			document.getElementById("myForm").style.display = "block";

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; char=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -12,7 +12,7 @@
 Kool Store Template
 http://www.templatemo.com/preview/templatemo_428_kool_store
 -->
-<meta charset="utf-8">
+<meta char="utf-8">
 <title>Kool Store - Responsive eCommerce Template</title>
 
 <meta name="description" content="">
@@ -33,7 +33,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 
 </head>
 <%
-	//In case, if Admin session is not set, redirect to Login page
+	//In case, if Admin session is not , redirect to Login page
 	if ((request.getSession(false).getAttribute("username") == null)) {
 %>
 <jsp:forward page="login.jsp"></jsp:forward>

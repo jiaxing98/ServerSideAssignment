@@ -4,15 +4,20 @@ import java.math.BigInteger;
 import java.util.List;
 
 import javax.ejb.EJBException;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import domain.Customer;
 import domain.Employee;
 import domain.Office;
 import domain.User;
 
+
+@Dependent
+@Transactional
 public class EmpService implements EmpServiceInterface{
 
 	private EntityManager em;

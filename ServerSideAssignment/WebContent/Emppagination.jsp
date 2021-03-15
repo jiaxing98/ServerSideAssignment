@@ -12,6 +12,7 @@
 body {
 	font-family: Arial, Helvetica, sans-serif;
 }
+
 * {
 	box-sizing: border-box;
 }
@@ -75,14 +76,37 @@ body {
 .form-container .cancel {
 	background-color: red;
 }
+
 .form-container .btn:hover, .open-button:hover {
 	opacity: 1;
 }
+
 .pageref {
 	text-align: center;
 	font-weight: bold;
 }
 </style>
+<script type="text/javascript">
+	function homepage() {
+		var role = "${sessionScope.role}";
+
+		if (role === "user") {
+			document.getElementById("homepage").href = "UserSession.jsp";
+		} else if (role === "staff") {
+			document.getElementById("homepage").href = "StaffSession.jsp";
+		} else if (role === "admin") {
+			document.getElementById("homepage").href = "AdminSession.jsp";
+		}
+	}
+	function confirmDelete() {
+		var option = confirm("Delete this record?");
+		if (option == true) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+</script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
 </head>
@@ -137,9 +161,13 @@ body {
 						else
 							out.println("<td>" + t.getReportsto() + "</td>");
 						out.println("<td>" + t.getJobtitle() + "</td>");
-						out.println("<td>" + t.getUser().getUsername() + "</td>");					
+						out.println("<td>" + t.getUser().getUsername() + "</td>");
 						out.println("<td><a href=\"EmployeeController?id=" + t.getEmployeenumber() + "\">Update</a></td>");
-						out.println("<td><a href=\"EmployeeController?id=" + t.getEmployeenumber() + "\">Delete</a></td>");
+						out.println(
+								"<form onSubmit='return confirmDelete()'action='EmployeeController' method='post'id='delete'>");
+						out.println("<input type='hidden' name='id' value=" + t.getEmployeenumber() + ">");
+						out.println(
+								"<td><button class='button' type='submit' form='delete' name='DELETE' value='DELETE'>Delete</button></td>");
 						out.println("</tr>");
 					}
 				} else {
@@ -211,6 +239,11 @@ body {
 
 	<input type="hidden" name="username" value="<%=username%>">
 	<input type="hidden" name="role" value="<%=role%>">
+	<a
+		href="EmpPaginationServlet?recordsPerPage=<%=recordsPerPage%>&currentPage=1&keyword=">Clear
+		search conditions</a>
+	<br>
+	<a href="#" id="homepage" onclick="homepage()">Back to Home Page</a>
 	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>

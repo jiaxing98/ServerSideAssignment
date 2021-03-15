@@ -12,6 +12,7 @@
 body {
 	font-family: Arial, Helvetica, sans-serif;
 }
+
 * {
 	box-sizing: border-box;
 }
@@ -75,14 +76,29 @@ body {
 .form-container .cancel {
 	background-color: red;
 }
+
 .form-container .btn:hover, .open-button:hover {
 	opacity: 1;
 }
+
 .pageref {
 	text-align: center;
 	font-weight: bold;
 }
 </style>
+<script type="text/javascript">
+function homepage() {
+	var role = "${sessionScope.role}";
+
+	if(role === "user") {
+		document.getElementById("homepage").href="UserSession.jsp"; 
+	} else if (role === "staff") {
+		document.getElementById("homepage").href="StaffSession.jsp"; 
+	} else if (role === "admin") {
+		document.getElementById("homepage").href="AdminSession.jsp"; 
+	}	
+}
+</script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
 </head>
@@ -117,117 +133,106 @@ body {
 				<th>Update</th>
 				<th>Delete</th>
 			</tr>
-			<%
-				List<Office> offices = (List<Office>) request.getAttribute("offices");
-				if (offices.size() != 0) {
-					for (Office t : offices) {
-						out.println("<tr>");
-						out.println("<td>" + t.getOfficecode() + "</td>");
-						out.println("<td>" + t.getCity() + "</td>");
-						out.println("<td>" + t.getPhone() + "</td>");
-						out.println("<td>" + t.getAddressline1() + "</td>");
-						out.println("<td>" + t.getAddressline2() + "</td>");
-						out.println("<td>" + t.getState()+ "</td>");
-						out.println("<td>" + t.getCountry()+ "</td>");
-						out.println("<td>" + t.getPostalcode()+ "</td>");
-						out.println("<td>" + t.getTerritory()+ "</td>");
-						out.println("<td><a href=\"OfficeController?id=" + t.getOfficecode() + "\">Update</a></td>");
-						out.println("<td><a href=\"OfficeController?id=" + t.getOfficecode() + "\">Delete</a></td>");
-						out.println("</tr>");
-					}
-				} else {
+			<%List<Office> offices = (List<Office>) request.getAttribute("offices");
+			if (offices.size() != 0) {
+				for (Office t : offices) {
 					out.println("<tr>");
-					String status = "No records";
-					for (int i = 0; i < 11; i++) {
-						out.println("<td>" + status + "</td>");
-					}
+					out.println("<td>" + t.getOfficecode() + "</td>");
+					out.println("<td>" + t.getCity() + "</td>");
+					out.println("<td>" + t.getPhone() + "</td>");
+					out.println("<td>" + t.getAddressline1() + "</td>");
+					out.println("<td>" + t.getAddressline2() + "</td>");
+					out.println("<td>" + t.getState() + "</td>");
+					out.println("<td>" + t.getCountry() + "</td>");
+					out.println("<td>" + t.getPostalcode() + "</td>");
+					out.println("<td>" + t.getTerritory() + "</td>");
+					out.println("<td><a href=\"OfficeController?id=" + t.getOfficecode() + "\">Update</a></td>");
+					out.println("<td><a href=\"OfficeController?id=" + t.getOfficecode() + "\">Delete</a></td>");
 					out.println("</tr>");
 				}
-			%>
+			} else {
+				out.println("<tr>");
+				String status = "No records";
+				for (int i = 0; i < 11; i++) {
+					out.println("<td>" + status + "</td>");
+				}
+				out.println("</tr>");
+			}%>
 		</table>
 	</div>
 	<nav aria-label="Navigation for staffs">
 		<ul class="pagination">
-			<%
-				if (currentPage != 1 && nOfPages != 0) {
-			%>
-			<%
-				out.println("<li class=\"page-item\">");
-					out.println("<a class=\"page-link\" href=\"" + "OffPaginationServlet?recordsPerPage=" + recordsPerPage
-							+ "&currentPage=1" + "&keyword=" + keyword + "\">First</a>");
-					out.println("</li>");
-			%>
+			<%if (currentPage != 1 && nOfPages != 0) {%>
+			<%out.println("<li class=\"page-item\">");
+				out.println("<a class=\"page-link\" href=\"" + "OffPaginationServlet?recordsPerPage=" + recordsPerPage
+						+ "&currentPage=1" + "&keyword=" + keyword + "\">First</a>");
+				out.println("</li>");%>
 			<li class="page-item">
-				<%
-					out.println("<a class=\"page-link\" href=\"" + "OffPaginationServlet?recordsPerPage=" + recordsPerPage
-								+ "&currentPage=" + (currentPage - 1) + "&keyword=" + keyword + "\">Previous</a>");
-				%>
+				<%out.println("<a class=\"page-link\" href=\"" + "OffPaginationServlet?recordsPerPage=" + recordsPerPage
+						+ "&currentPage=" + (currentPage - 1) + "&keyword=" + keyword + "\">Previous</a>");%>
 			</li>
-			<%
-				}
-			%>
-			<%
-				for (int i = 1; i <= nOfPages; i++) {
-					if (currentPage == i) {
-						out.println("<li class=\"page-item active\">");
-						out.println("<a class=\"page-link\">" + i + "<span class=\"sronly\">(current)</span></a></li>");
-						out.println("</li>");
-					} else {
-						out.println("<li class=\"page-item\">");
-						out.println("<a class=\"page-link\" href=\"" + "OffPaginationServlet?recordsPerPage=" + recordsPerPage
-								+ "&currentPage=" + i + "\">" + i + "</a>");
-						out.println("</li>");
-					}
-				}
-			%>
-			<%
-				if (currentPage < nOfPages) {
-					out.println("<li class=\"page-item\">");
-					out.println("<a class=\"page-link\" href=\"" + "OffPaginationServlet?recordsPerPage=" + recordsPerPage
-							+ "&currentPage=" + (currentPage + 1) + "&keyword=" + keyword + "\">Next</a>");
+			<%}%>
+			<%for (int i = 1; i <= nOfPages; i++) {
+				if (currentPage == i) {
+					out.println("<li class=\"page-item active\">");
+					out.println("<a class=\"page-link\">" + i + "<span class=\"sronly\">(current)</span></a></li>");
 					out.println("</li>");
+				} else {
 					out.println("<li class=\"page-item\">");
-					out.println("<a class=\"page-link\" href=\"" + "OffPaginationServlet?recordsPerPage=" + recordsPerPage
-							+ "&currentPage=" + nOfPages + "&keyword=" + keyword + "\">Last</a>");
+					out.println("<a class=\"page-link\" href=\"" + "OffPaginationServlet?recordsPerPage="
+							+ recordsPerPage + "&currentPage=" + i + "\">" + i + "</a>");
 					out.println("</li>");
 				}
-			%>
+			}%>
+			<%if (currentPage < nOfPages) {
+				out.println("<li class=\"page-item\">");
+				out.println("<a class=\"page-link\" href=\"" + "OffPaginationServlet?recordsPerPage=" + recordsPerPage
+						+ "&currentPage=" + (currentPage + 1) + "&keyword=" + keyword + "\">Next</a>");
+				out.println("</li>");
+				out.println("<li class=\"page-item\">");
+				out.println("<a class=\"page-link\" href=\"" + "OffPaginationServlet?recordsPerPage=" + recordsPerPage
+						+ "&currentPage=" + nOfPages + "&keyword=" + keyword + "\">Last</a>");
+				out.println("</li>");
+			}%>
 		</ul>
 	</nav>
-	<%
-		if (nOfPages != 0) {
-			out.println("<p class=\"pageref\">");
-			out.println(currentPage + " of " + nOfPages);
-			out.println("</p>");
-		}
-	%>
+	<%if (nOfPages != 0) {
+				out.println("<p class=\"pageref\">");
+				out.println(currentPage + " of " + nOfPages);
+				out.println("</p>");
+			}%>
 	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-
 alpha.6/js/bootstrap.min.js"></script>
-	<button class="open-button" onclick="openForm()">Add Office</button>
-	<div class="form-popup" id="myForm">
-		<form action="OfficeController" class="form-container" method="post">
-			<h1>Add Office</h1>
-			<fieldset>
-				<legend>Fill Office Details: </legend>
-				<br> City: <input type="text" name="city" /> <br>
-				Phone: <input type="text" name="phone" /> <br> Address Line 1: <input
-					type="text" name="adr1" /> <br> Address Line 2: <input type="text"
-					name="adr2" /> <br> State: <input type="text"
-					name="state" /> <br> Country: <input type="text"
-					name="country" /> <br> Postal Code: <input type="text"
-					name="pcode" /> <br> Territory: <input type="text"
-					name="terr" />
-			</fieldset>
-			<button type="submit" class="btn">Submit Test</button>
-			<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-			<button type="reset" class="btn">Reset</button>
-		</form>
-	</div>
-	<script>
+<button class="open-button" onclick="openForm()">Add Office</button>
+<div class="form-popup" id="myForm">
+	<form action="OfficeController" class="form-container" method="post">
+		<h1>Add Office</h1>
+		<fieldset>
+			<legend>Fill Office Details: </legend>
+			<br> City: <input type="text" name="city" /> <br> Phone: <input
+				type="text" name="phone" /> <br> Address Line 1: <input
+				type="text" name="adr1" /> <br> Address Line 2: <input
+				type="text" name="adr2" /> <br> State: <input type="text"
+				name="state" /> <br> Country: <input type="text"
+				name="country" /> <br> Postal Code: <input type="text"
+				name="pcode" /> <br> Territory: <input type="text" name="terr" />
+		</fieldset>
+		<button type="submit" class="btn">Submit Test</button>
+		<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+		<button type="reset" class="btn">Reset</button>
+	</form>
+</div>
+<a
+	href="OffPaginationServlet?recordsPerPage=<%=recordsPerPage%>&currentPage=1&keyword=">Clear
+	search conditions</a>
+<br>
+<a href="#" id="homepage" onclick="homepage()">Back to Home Page</a>
+
+<script>
 		function openForm() {
 			document.getElementById("myForm").style.display = "block";
 		}

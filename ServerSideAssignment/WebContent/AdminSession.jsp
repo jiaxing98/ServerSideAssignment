@@ -84,7 +84,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
                                 <i class="fa fa-bars"></i>
                             </a>
                             <ul class="menu">
-                                <li><a href="EmpOwn.jsp">Account</a></li>
+                                <li><a href="EmployeeController">Account</a></li>
                                 <li><a href="EmpAdmin.jsp">Employee List</a></li>
                                 <li><a href="Office.jsp">Office List</a></li>
                                 <li><a href="customerpage.jsp">Customer List</a></li>
