@@ -126,7 +126,7 @@ body {
 
 					for (Product t : products) {
 						out.println("<tr>");
-						out.println("<td>" + t.getId() + "</td>");
+						out.println("<td>" + t.getProductcode() + "</td>");
 						out.println("<td>" + t.getProductname() + "</td>");
 						out.println("<td>" + t.getProductlineBean().getProductline() + "</td>");
 						out.println("<td>" + t.getProductscale() + "</td>");
@@ -136,9 +136,9 @@ body {
 						out.println("<td>" + t.getBuyprice() + "</td>");
 						out.println("<td>" + t.getMsrp() + "</td>");
 						out.println(
-								"<td><a href=\"ProductController?id=" + t.getId() + "\">Update</a></td>");
+								"<td><a href=\"ProductController?productcode=" + t.getProductcode() + "\">Update</a></td>");
 						out.println(
-								"<td><a href=\"ProductController?id=" + t.getId() + "\">Delete</a></td>");
+								"<td><a href=\"ProductController?productcode=" + t.getProductcode() + "\">Delete</a></td>");
 						out.println("</tr>");
 					}
 				} else {
@@ -220,12 +220,15 @@ alpha.6/js/bootstrap.min.js"></script>
 			<h1>Add Product</h1>
 			<fieldset>
 				<legend>Add Product Records: </legend>
-				<br> Product Code <input type="text" name="id" /> <br>
-				Product Name: <input type="text" name="pname" /> <br> Extension:
-				<input type="text" name="ext" /> <br> Email: <input
-					type="text" name="email" /> <br> Job Title: <input
-					type="text" name="jobt" /> <br> Report to: <input type="text"
-					name="repto" />
+				<br> Product Code <input type="text" name="productcode" /> 
+				<br>Product Name: <input type="text" name="pname" />
+				<br> Product Line: <input type="text" name="pline" /> 
+				<br> Product Scale <input type="text" name="pscale" /> 
+				<br> Product Vendor: <input type="text" name="pvendor" /> 
+				<br> Product Description: <input type="text" name="pdescription" />
+				<br> Quantity in Stock: <input type="text" name="quantity" />
+				<br> Buy Price: <input type="text" name="buyp" />
+				<br> MSRP: <input type="text" name="rsp" />
 			</fieldset>
 			<button type="submit" class="btn">Submit Test</button>
 			<button type="button" class="btn cancel" onclick="closeForm()">Close</button>

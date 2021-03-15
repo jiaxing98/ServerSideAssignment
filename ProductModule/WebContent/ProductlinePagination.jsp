@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Productline Paginaiton</title>
+<title>Productline Pagination</title>
 <style>
 body {
 	font-family: Arial, Helvetica, sans-serif;
@@ -97,7 +97,7 @@ body {
 		String keyword = (String) request.getAttribute("keyword");
 	%>
 	<form class="form-inline md-form mr-auto mb-4"
-		action="ProductPaginationServlet" method="get">
+		action="ProductlinePaginationServlet" method="get">
 		<input class="form-control mr-sm-2" type="text" aria-label="Search"
 			name="keyword" />
 		<button class="btn aqua-gradient btn-rounded btn-sm my-0 btn btn-info"
@@ -109,8 +109,8 @@ body {
 		<table class="table table-striped table-bordered table-sm">
 			<tr>
 				<th>Product Line</th>
-				<th>HTML Description</th>
 				<th>Text Description</th>
+				<th>HTML Description</th>
 				<th>Image</th>
 				<th>Update</th>
 				<th>Delete</th>
@@ -122,14 +122,14 @@ body {
 					for (Productline t : productlines) {
 						out.println("<tr>");
 						out.println("<td>" + t.getProductline() + "</td>");
-						out.println("<td>" + t.getHtmldescription() + "</td>");
 						out.println("<td>" + t.getTextdescription() + "</td>");
+						out.println("<td>" + t.getHtmldescription() + "</td>");
 						out.println("<td>" + t.getImage() + "</td>");
-						
-						out.println(
-								"<td><a href=\"ProductlineController?productline=" + t.getProductline() + "\">Update</a></td>");
-						out.println(
-								"<td><a href=\"ProductlineController?productline=" + t.getProductline() + "\">Delete</a></td>");
+
+						out.println("<td><a href=\"ProductlineController?productline=" + t.getProductline()
+								+ "\">Update</a></td>");
+						out.println("<td><a href=\"ProductlineController?productline=" + t.getProductline()
+								+ "\">Delete</a></td>");
 						out.println("</tr>");
 					}
 				} else {
@@ -144,20 +144,21 @@ body {
 		</table>
 	</div>
 	<nav aria-label="Navigation for Productlines">
-		<ul class="ProductlinePagination">
+		<ul class="pagination">
 			<%
 				if (currentPage != 1 && nOfPages != 0) {
 			%>
 			<%
 				out.println("<li class=\"page-item\">");
-					out.println("<a class=\"page-link\" href=\"" + "ProductlinePaginationServlet?recordsPerPage=" + recordsPerPage
-							+ "&currentPage=1" + "&keyword=" + keyword + "\">First</a>");
+					out.println("<a class=\"page-link\" href=\"" + "ProductlinePaginationServlet?recordsPerPage="
+							+ recordsPerPage + "&currentPage=1" + "&keyword=" + keyword + "\">First</a>");
 					out.println("</li>");
 			%>
 			<li class="page-item">
 				<%
-					out.println("<a class=\"page-link\" href=\"" + "ProductlinePaginationServlet?recordsPerPage=" + recordsPerPage
-								+ "&currentPage=" + (currentPage - 1) + "&keyword=" + keyword + "\">Previous</a>");
+					out.println("<a class=\"page-link\" href=\"" + "ProductlinePaginationServlet?recordsPerPage="
+								+ recordsPerPage + "&currentPage=" + (currentPage - 1) + "&keyword=" + keyword
+								+ "\">Previous</a>");
 				%>
 			</li>
 			<%
@@ -180,12 +181,12 @@ body {
 			<%
 				if (currentPage < nOfPages) {
 					out.println("<li class=\"page-item\">");
-					out.println("<a class=\"page-link\" href=\"" + "ProductlinePaginationServlet?recordsPerPage=" + recordsPerPage
-							+ "&currentPage=" + (currentPage + 1) + "&keyword=" + keyword + "\">Next</a>");
+					out.println("<a class=\"page-link\" href=\"" + "ProductlinePaginationServlet?recordsPerPage="
+							+ recordsPerPage + "&currentPage=" + (currentPage + 1) + "&keyword=" + keyword + "\">Next</a>");
 					out.println("</li>");
 					out.println("<li class=\"page-item\">");
-					out.println("<a class=\"page-link\" href=\"" + "ProductlinePaginationServlet?recordsPerPage=" + recordsPerPage
-							+ "&currentPage=" + nOfPages + "&keyword=" + keyword + "\">Last</a>");
+					out.println("<a class=\"page-link\" href=\"" + "ProductlinePaginationServlet?recordsPerPage="
+							+ recordsPerPage + "&currentPage=" + nOfPages + "&keyword=" + keyword + "\">Last</a>");
 					out.println("</li>");
 				}
 			%>
@@ -203,17 +204,16 @@ body {
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
 	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-
-alpha.6/js/bootstrap.min.js"></script>
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
 	<button class="open-button" onclick="openForm()">Open Form</button>
 	<div class="form-popup" id="myForm">
 		<form action="ProductlineController" class="form-container" method="post">
-			<h1>Add Product line</h1>
+			<h1>Add Product Line</h1>
 			<fieldset>
-				<legend>Add Product Line: </legend>
-				<br> Product Line <input type="text" name="prol" /> <br>
-				Text Description <input type="text" name="textd" /> <br> HTML Description:
-				<input type="text" name="htmld" /> <br> Image: <input
+				<legend>Add Employee Details:</legend>
+				<br>Product Line:<input type="text" name="productline" /> <br> <br>
+				Text Description: <input type="text" name="td" /> <br> HTML Description:
+				<input type="text" name="hd" /> <br> Image: <input
 					type="text" name="img" /> 
 			</fieldset>
 			<button type="submit" class="btn">Submit Test</button>

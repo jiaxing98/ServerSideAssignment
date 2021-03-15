@@ -29,17 +29,17 @@ public class ProductlineService implements ProductlineServiceInterface {
 	}
 	
 	public List<Productline> readProductlines(int currentPage, int recordsPerPage, String keyword) throws EJBException {
-		// Write some codes here…
+		
 		Query q = null;
 		if (keyword.isEmpty()) {
-			q = em.createNativeQuery("select * from classicmodels.productlines order by productline OFFSET ? LIMIT ?",
+			q = em.createNativeQuery("select * from classicmodels.productlines order by productlines OFFSET ? LIMIT ?",
 					Productline.class);
 			int start = currentPage * recordsPerPage - recordsPerPage;
 			q.setParameter(1, Integer.valueOf(start));
 			q.setParameter(2, Integer.valueOf(recordsPerPage));
 		} else {
 			q = em.createNativeQuery(
-					"SELECT * from classicmodels.productlines WHERE concat(productline,textdescription,htmldescription,image) LIKE? order by productline OFFSET ? LIMIT ?",
+					"SELECT * from classicmodels.productlines WHERE concat(productline,textdescription,htmldescription,image) LIKE ? order by productline OFFSET ? LIMIT ?",
 					Productline.class);
 			int start = currentPage * recordsPerPage - recordsPerPage;
 			q.setParameter(1, "%" + keyword + "%");
@@ -51,7 +51,7 @@ public class ProductlineService implements ProductlineServiceInterface {
 	}
 
 	public int getNumberOfRows(String keyword) throws EJBException {
-		// Write some codes here…
+		
 		Query q = null;
 		if (keyword.isEmpty()) {
 			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow FROM classicmodels.productlines");
@@ -66,9 +66,9 @@ public class ProductlineService implements ProductlineServiceInterface {
 	}
 
 	public Productline findProductline(String productline) throws EJBException {
-		// Write some codes here…
-		Query q = em.createNamedQuery("Productline.findbyProductline");
-		q.setParameter("productline", String.valueOf(productline));
+		
+		Query q = em.createNamedQuery("Productline.findbyId");
+		q.setParameter("productline",String.valueOf(productline));
 		return (Productline) q.getSingleResult();
 	}
 
@@ -84,18 +84,19 @@ public class ProductlineService implements ProductlineServiceInterface {
 	}
 
 	public void deleteProductline(String productline) throws EJBException {
-		// Write some codes here…
+		
 		Productline p = findProductline(productline);
 		em.remove(p);
 	}
 
 	public void addProductline(String[] s) throws EJBException {
-		// Write some codes here…
+		
 
 		Productline p = new Productline();
-
-		p.setHtmldescription(s[1]);
-		p.setTextdescription(s[2]);
+		
+		p.setProductline(s[0]);
+		p.setTextdescription(s[1]);
+		p.setHtmldescription(s[2]);
 		p.setImage(s[3]);
 
 		em.persist(p);

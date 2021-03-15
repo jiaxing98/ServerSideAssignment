@@ -15,8 +15,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "productlines", schema = "classicmodels")
-@NamedQuery(name = "Productline.findAll", query = "SELECT pl FROM Productline pl")
-@NamedQuery(name = "Productline.findbyProductline", query = "SELECT pl FROM Productline pl WHERE pl.productline = :productline")
+//@NamedQuery(name = "Productline.findAll", query = "SELECT pl FROM Productline pl")
+@NamedQuery(name = "Productline.findbyId", query = "SELECT pl FROM Productline pl WHERE pl.productline = :productline")
 public class Productline implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -29,14 +29,14 @@ public class Productline implements Serializable {
 
 	private String textdescription;
 
-	// bi-directional many-to-one association to Product
+	
 	@OneToMany(mappedBy = "productlineBean")
 	private List<Product> products;
 
 	public Productline() {
 	}
 
-	public String getProductline() {
+	public String getProductline() { 
 		return this.productline;
 	}
 
@@ -87,7 +87,7 @@ public class Productline implements Serializable {
 		getProducts().remove(product);
 		product.setProductlineBean(null);
 
-		return product;
+		return product; 
 	}
 
 }

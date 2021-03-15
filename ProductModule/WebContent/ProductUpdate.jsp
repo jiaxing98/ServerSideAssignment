@@ -26,7 +26,7 @@ tr:nth-child(even) {
 </head>
 <body>
 	<%
-		 //pro = (Product) request.getAttribute("EMP");
+		 Product pro = (Product) request.getAttribute("PRO");
 	%>
 	<form action="ProductController" method="post">
 		<table>
@@ -34,7 +34,7 @@ tr:nth-child(even) {
 				<td>Product Code</td>
 				<td>
 					<%
-						//out.println("<input type=\"text\" name=\"id\" readonly value=" + pro.getId());
+						out.println("<input type=\"text\" name=\"productcode\" readonly value=\"" + pro.getProductcode()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -42,7 +42,15 @@ tr:nth-child(even) {
 				<td>Product Name</td>
 				<td>
 					<%
-						//out.println("<input type=\"text\" name=\"pname\" value=" + pro.getProductname());
+					out.println("<input type=\"text\" name=\"pname\" value=\"" + pro.getProductname()+"\"/>");
+					%>
+					</td>
+			</tr>
+			<tr>
+				<td>Product Line</td>
+				<td>
+					<%
+						out.println("<input type=\"text\" name=\"pline\" value=\"" + pro.getProductlineBean().getProductline()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -50,7 +58,7 @@ tr:nth-child(even) {
 				<td>Product Scale</td>
 				<td>
 					<%
-						//out.println("<input type=\"text\" name=\"pscale\" value=" + pro.getProductscale());
+						out.println("<input type=\"text\" name=\"pscale\" value=\"" + pro.getProductscale()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -58,7 +66,7 @@ tr:nth-child(even) {
 				<td>Product Vendor</td>
 				<td>
 					<%
-						//out.println("<input type=\"text\" name=\"pvendor\" value=" + pro.getProductvendor());
+						out.println("<input type=\"text\" name=\"pvendor\" value=\"" + pro.getProductvendor()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -66,7 +74,7 @@ tr:nth-child(even) {
 				<td>Product Description</td>
 				<td>
 					<%
-						//out.println("<input type=\"text\" name=\"pdes\" value=" + pro.getProductdesciption());
+						out.println("<input type=\"text\" name=\"pdescription\" value=\"" + pro.getProductdescription()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -74,7 +82,7 @@ tr:nth-child(even) {
 				<td>Quantity in Stock</td>
 				<td>
 					<%
-						//out.println("<input type=\"text\" name=\"qtyinstock\" value=" + pro.getQuantityinstock());
+						out.println("<input type=\"text\" name=\"quantity\" value=\"" + pro.getQuantityinstock()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -82,7 +90,7 @@ tr:nth-child(even) {
 				<td>Buy Price</td>
 				<td>
 					<%
-						//out.println("<input type=\"text\" name=\"buyprice\" value=" + pro.getBuyprice());
+						out.println("<input type=\"text\" name=\"buyp\" value=\"" + pro.getBuyprice()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -90,7 +98,7 @@ tr:nth-child(even) {
 				<td>MSRP</td>
 				<td>
 					<%
-						//out.println("<input type=\"text\" name=\"msrp\" value=" + pro.getMsrp());
+						out.println("<input type=\"text\" name=\"rsp\" value=\"" + pro.getMsrp()+"\"/>");
 					%>
 				</td>
 			</tr>

@@ -29,8 +29,7 @@ public class ProductlineController extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		// response.getWriter().append("Served at: ").append(request.getContextPath());
+		
 
 		String productline = request.getParameter("productline");
 
@@ -46,23 +45,22 @@ public class ProductlineController extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
 		
-		String productline = request.getParameter("prol");
-		String textdescription = request.getParameter("textd");
-		String htmldescription = request.getParameter("htmld");
-		String image = request.getParameter("img");
+		
+		String pl = request.getParameter("productline");
+		String td = request.getParameter("td");
+		String hd = request.getParameter("hd");
+		String img = request.getParameter("img");
 		PrintWriter out = response.getWriter();
 		
-		String[] s = {productline,textdescription,htmldescription,image};
+		String[] s = { pl, td, hd, img };
 		try {
 			if (ValidateManageLogic.validateManager(request).equals("UPDATE")) {
 				
 				plineser.updateProductline(s);
 			} else if (ValidateManageLogic.validateManager(request).equals("DELETE")) {
 				
-				plineser.deleteProductline(productline);
+				plineser.deleteProductline(pl);
 				
 			} else {
 				

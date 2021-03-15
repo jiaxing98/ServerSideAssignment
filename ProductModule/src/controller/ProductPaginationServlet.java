@@ -30,15 +30,14 @@ public class ProductPaginationServlet extends HttpServlet {
      */
     public ProductPaginationServlet() {
         super();
-        // TODO Auto-generated constructor stub
+        
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		
 		response.setContentType("type/html;charset=UTF-8");
 		int nOfPages = 0;
 		int currentPage = Integer.valueOf(request.getParameter("currentPage"));
@@ -72,8 +71,7 @@ public class ProductPaginationServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
+		
 	}
 
 }

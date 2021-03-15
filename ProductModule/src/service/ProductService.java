@@ -12,12 +12,16 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import domain.Product;
+import domain.Productline;
 
 @Dependent
 @Transactional
 public class ProductService implements ProductServiceInterface {
 	
 	private EntityManager em;
+	
+	@Inject 
+	private ProductlineService plineser;
 
 	@Inject
     public ProductService(@PostGresDatabase EntityManager em) {
@@ -30,9 +34,9 @@ public class ProductService implements ProductServiceInterface {
 	}
 
 	@Override
-	public Product findProduct(String id) throws EJBException {
+	public Product findProduct(String productcode) throws EJBException {
 		Query q = em.createNamedQuery("Product.findbyId");
-		q.setParameter("id", String.valueOf(id));
+		q.setParameter("productcode", String.valueOf(productcode));
 		return (Product) q.getSingleResult();
 	}
 
@@ -70,8 +74,7 @@ public class ProductService implements ProductServiceInterface {
 			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow FROM classicmodels.products");
 
 		} else {
-			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow from classicmodels.products"
-					+ "WHERE concat(productcode,productname) LIKE ?");	//search condition
+			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow from classicmodels.products WHERE concat(productcode,productname) LIKE ?");	
 
 			q.setParameter(1, "%" + keyword + "%");
 		}
@@ -82,40 +85,48 @@ public class ProductService implements ProductServiceInterface {
 	}
 
 	@Override
-	public void updateProduct(String[] s) throws EJBException {
+	public boolean updateProduct(String[] s) throws EJBException {
 		Product product = findProduct(s[0]);
+		
+		Productline productl = plineser.findProductline(s[2]);
+
 
 		product.setProductname(s[1]);
-		//product.setProductlineBean().setProductline()(s[2]);
-		product.setProductvendor(s[3]);
-		product.setProductdescription(s[4]);
-		//product.setQuantityinstock(s[5]);
-		//product.setBuyprice(s[6]);
-		//product.setMsrp(s[7]);
+		product.setProductlineBean(productl);
+		product.setProductscale(s[3]);
+		product.setProductvendor(s[4]);
+		product.setProductdescription(s[5]);
+		product.setQuantityinstock(Short.parseShort(s[6]));
+		product.setBuyprice(s[7].isBlank()? new BigDecimal(0.00): new BigDecimal(s[7]));
+		product.setMsrp(s[8].isBlank()? new BigDecimal(0.00): new BigDecimal(s[8]));
 		
 		em.merge(product);
+		return true;
 	}
 
 	@Override
-	public void deleteProduct(String id) throws EJBException {
-		Product product= findProduct(id);
+	public void deleteProduct(String productcode) throws EJBException {
+		Product product= findProduct(productcode);
 		em.remove(product);
 	}
 
 	@Override
-	public void addProduct(String[] s) throws EJBException {
+	public boolean addProduct(String[] s) throws EJBException {
 		Product product = new Product();
-
+		Productline pl = plineser.findProductline(s[2]);
 		
+		product.setProductcode(s[0]);
 		product.setProductname(s[1]);
-		//product.setProductlineBean(s[2]);
-		product.setProductvendor(s[3]);
-		product.setProductdescription(s[4]);
-		//product.setQuantityinstock(s[5]);
-		//product.setBuyprice(s[6]);
-		//product.setMsrp(s[7]);
+		product.setProductlineBean(pl);
+		product.setProductscale(s[3]);
+		product.setProductvendor(s[4]);
+		product.setProductdescription(s[5]);
+		product.setQuantityinstock(Short.parseShort(s[6]));
+		product.setBuyprice(s[7].isBlank()? new BigDecimal(0.00): new BigDecimal(s[7]));
+		product.setMsrp(s[8].isBlank()? new BigDecimal(0.00): new BigDecimal(s[8]));
 		
 		em.persist(product);
+		return true;
 	}
 
 }

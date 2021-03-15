@@ -37,58 +37,61 @@ public class ProductController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
+    
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		
-		String id = request.getParameter("id");
+		String productcode = request.getParameter("productcode");
+		
+		try {
+			Product pro = proser.findProduct(productcode);
+			request.setAttribute("PRO", pro);
+			RequestDispatcher req = request.getRequestDispatcher("ProductUpdate.jsp");
+			req.forward(request, response);
+		} catch (EJBException ex) {
+
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+
+		String pid = request.getParameter("productcode");
 		String pname = request.getParameter("pname");
 		String pline = request.getParameter("pline");
 		String pscale = request.getParameter("pscale");
 		String pvendor = request.getParameter("pvendor");
-		String pdes = request.getParameter("pdes");
-		String qtyinstock = request.getParameter("qtyinstock");
-		String buyprice = request.getParameter("buyprice");
-		String msrp = request.getParameter("msrp");
+		String pdescription = request.getParameter("pdescription");
+		String quantity = request.getParameter("quantity");
+		String buyp = request.getParameter("buyp");
+		String rsp = request.getParameter("rsp");
 		PrintWriter out = response.getWriter();
 		
-		String[] s = { id,pname, pline, pscale,pvendor,pdes,qtyinstock,buyprice,msrp};
-
-		try {
-			if (ValidateManageLogic.validateManager(request).equals("UPDATE")) {
-				// call session bean updateEmployee method
-				proser.updateProduct(s);
-			} else if (ValidateManageLogic.validateManager(request).equals("DELETE")) {
-				// call session bean deleteEmployee method
-				proser.deleteProduct(id);
-				// if ADD button is clicked
-			} else {
-				// call session bean addEmployee method
-				proser.addProduct(s);
-			}
-			// this line is to redirect to notify record has been updated and redirect to
-			// another page
-			ValidateManageLogic.navigateJS(out);
-		} catch (EJBException ex) {
-		}
-	}
-	
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		String id = request.getParameter("pcode");
+		String[] p = { pid, pname, pline, pscale, pvendor, pdescription, quantity, buyp, rsp };
 		
 		try {
-			Product pro = proser.findProduct(id);
-			request.setAttribute("PRO", pro);
-			RequestDispatcher req = request.getRequestDispatcher("ProductUpdate.jsp");
-			req.forward(request, response);
+			if (ValidateManageLogic.validateManager(request).equals("UPDATE")) {
+				
+				proser.updateProduct(p);
+			} else if (ValidateManageLogic.validateManager(request).equals("DELETE")) {
+				
+				proser.deleteProduct(pid);
+				
+			} else {
+				
+				proser.addProduct(p);
+			}
+		
+			ValidateManageLogic.navigateJS(out);
 		} catch (EJBException ex) {
 		}
 	}
 
 }
+

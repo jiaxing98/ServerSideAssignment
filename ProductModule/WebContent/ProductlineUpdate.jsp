@@ -27,6 +27,7 @@ tr:nth-child(even) {
 <body>
 	<%
 		 Productline prol = (Productline) request.getAttribute("PROL");
+		
 	%>
 	<form action="ProductlineController" method="post">
 		<table>
@@ -34,7 +35,7 @@ tr:nth-child(even) {
 				<td>Product Line</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"prol\" readonly value=" + prol.getProductline());
+						out.println("<input type=\"text\" name=\"productline\" readonly value=\"" + prol.getProductline()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -42,7 +43,8 @@ tr:nth-child(even) {
 				<td>Text Description </td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"textd\" value=" + prol.getTextdescription());
+						out.println("<input type=\"text\" name=\"td\" value=\"" + prol.getTextdescription()+"\"/>");
+						
 					%>
 				</td>
 			</tr>
@@ -50,7 +52,7 @@ tr:nth-child(even) {
 				<td>HTML Description </td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"htmld\" value=" + prol.getHtmldescription());
+						out.println("<input type=\"text\" name=\"hd\" value=\"" + prol.getHtmldescription()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -58,14 +60,14 @@ tr:nth-child(even) {
 				<td>Image</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"img\" value=" + prol.getImage());
+						out.println("<input type=\"text\" name=\"img\" value=\"" + prol.getImage()+"\"/>");
 					%>
 				</td>
 			</tr>
 			
 		</table>
-		<input type="submit" name="UPDATE" value="UPDATE" /> <input
-			type="submit" name="DELETE" value="DELETE" />
+		<input type="submit" name="UPDATE" value="UPDATE" /> 
+		<input type="submit" name="DELETE" value="DELETE" />
 	</form>
 </body>
 </html>

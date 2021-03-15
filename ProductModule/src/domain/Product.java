@@ -7,7 +7,6 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,17 +14,20 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "products", schema = "classicmodels")
-@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
-@NamedQuery(name = "Product.findbyId", query = "SELECT p FROM Product p WHERE p.id = :id")
+//@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
+@NamedQuery(name = "Product.findbyId", query = "SELECT p FROM Product p WHERE p.productcode = :productcode")
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
 	@Id
-	@Column(name="productcode")
-	private String id;
+	//@Column(name="productcode")
+	private String productcode;
+	
+	private String productname;
 
 	private BigDecimal buyprice;
 
@@ -33,32 +35,30 @@ public class Product implements Serializable {
 
 	private String productdescription;
 
-	private String productname;
-
 	private String productscale;
 
 	private String productvendor;
 
-	private Integer quantityinstock;
+	private Short quantityinstock;
 
-	// bi-directional many-to-one association to Orderdetail
+	
 	@OneToMany(mappedBy = "product")
 	//private List<Orderdetail> orderdetails;
 
-	// bi-directional many-to-one association to Productline
+
 	@ManyToOne
-	@JoinColumn(name = "productline", insertable = false, updatable = false)
+	@JoinColumn(name = "productline", insertable = true, updatable = true)
 	private Productline productlineBean;
 
 	public Product() {
 	}
 
-	public String getId() {
-		return this.id;
+	public String getProductcode() {
+		return this.productcode;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setProductcode(String productcode) {
+		this.productcode = productcode;
 	}
 
 	public BigDecimal getBuyprice() {
@@ -109,35 +109,14 @@ public class Product implements Serializable {
 		this.productvendor = productvendor;
 	}
 
-	public Integer getQuantityinstock() {
+	public Short getQuantityinstock() {
 		return this.quantityinstock;
 	}
 
-	public void setQuantityinstock(Integer quantityinstock) {
+	public void setQuantityinstock(Short quantityinstock) {
 		this.quantityinstock = quantityinstock;
 	}
 
-//	public List<Orderdetail> getOrderdetails() {
-//		return this.orderdetails;
-//	}
-//
-//	public void setOrderdetails(List<Orderdetail> orderdetails) {
-//		this.orderdetails = orderdetails;
-//	}
-//
-//	public Orderdetail addOrderdetail(Orderdetail orderdetail) {
-//		getOrderdetails().add(orderdetail);
-//		orderdetail.setProduct(this);
-//
-//		return orderdetail;
-//	}
-//
-//	public Orderdetail removeOrderdetail(Orderdetail orderdetail) {
-//		getOrderdetails().remove(orderdetail);
-//		orderdetail.setProduct(null);
-//
-//		return orderdetail;
-//	}
 
 	public Productline getProductlineBean() {
 		return this.productlineBean;
@@ -146,5 +125,8 @@ public class Product implements Serializable {
 	public void setProductlineBean(Productline productlineBean) {
 		this.productlineBean = productlineBean;
 	}
+	
+
+	
 
 }

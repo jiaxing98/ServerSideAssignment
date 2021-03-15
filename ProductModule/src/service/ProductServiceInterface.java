@@ -10,16 +10,16 @@ public interface ProductServiceInterface {
 
 	public List<Product> getAllProduct() throws EJBException;
 
-	public Product findProduct(String id) throws EJBException;
+	public Product findProduct(String productcode) throws EJBException;
 
 	public List<Product> readProduct(int currentPage, int recordsPerPage, String keyword) throws EJBException;
 
 	public int getNumberOfRows(String keyword) throws EJBException;
 
-	public void updateProduct(String[] s) throws EJBException;
+	public boolean updateProduct(String[] s) throws EJBException;
 
-	public void deleteProduct(String id) throws EJBException;
+	public void deleteProduct(String productcode) throws EJBException;
 
-	public void addProduct(String[] s) throws EJBException;
+	public boolean addProduct(String[] s) throws EJBException;
 }
 
