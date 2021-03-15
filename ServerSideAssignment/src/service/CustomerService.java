@@ -22,10 +22,10 @@ import domain.User;
 public class CustomerService implements CustomerServiceInterface {
 
 	private EntityManager em;
-	
+
 	@Inject
 	private UserService userbean;
-	
+
 	@Inject
 	private EmpService empbean;
 
@@ -89,31 +89,31 @@ public class CustomerService implements CustomerServiceInterface {
 
 		return null;
 	}
-	
+
 	@Override
-	public List<Customer> userReadRecords(int currentPage, int recordsPerPage, String keyword, String username) throws EJBException {
+	public List<Customer> userReadRecords(int currentPage, int recordsPerPage, String keyword, String username)
+			throws EJBException {
 		return null;
 	}
 
 	@Override
-	public List<Customer> staffReadRecords(int currentPage, int recordsPerPage, String keyword, String username) throws EJBException {
+	public List<Customer> staffReadRecords(int currentPage, int recordsPerPage, String keyword, String username)
+			throws EJBException {
 		Query q = null;
 		Employee employee = empbean.findEmployeebyUsername(username);
 		List<Customer> customerList = employee.getCustomers();
 		List<Long> customernumbers = new ArrayList<Long>();
-		
-		for(int i = 0; i < customerList.size(); i++) {
+
+		for (int i = 0; i < customerList.size(); i++) {
 			customernumbers.add(customerList.get(i).getCustomernumber());
 		}
-		
+
 		if (keyword.isEmpty()) {
 
 			q = em.createNativeQuery("select * from classicmodels.customers "
 					+ "WHERE customernumber IN :customernumbers "
 					+ "AND concat(customernumber,customername, contactlastname, contactfirstname, city, country) LIKE :keyword "
-					+ "order by customernumber "
-					+ "OFFSET :offset LIMIT :limit",
-					Customer.class);
+					+ "order by customernumber " + "OFFSET :offset LIMIT :limit", Customer.class);
 
 			int start = currentPage * recordsPerPage - recordsPerPage;
 			q.setParameter("customernumbers", customernumbers);
@@ -124,8 +124,7 @@ public class CustomerService implements CustomerServiceInterface {
 			q = em.createNativeQuery("SELECT * from classicmodels.customers "
 					+ "WHERE customernumber IN :customernumbers "
 					+ "AND concat(customernumber,customername, contactlastname, contactfirstname, city, country) LIKE :keyword "
-					+ "order by customernumber OFFSET :offset LIMIT :limit", 
-					Customer.class);
+					+ "order by customernumber OFFSET :offset LIMIT :limit", Customer.class);
 			int start = currentPage * recordsPerPage - recordsPerPage;
 			q.setParameter("customernumbers", customernumbers);
 			q.setParameter("keyword", "%" + keyword + "%");
@@ -160,7 +159,7 @@ public class CustomerService implements CustomerServiceInterface {
 		int i = results.intValue();
 		return i;
 	}
-	
+
 	@Override
 	public int userGetNumberOfRows(String keyword, String username) throws EJBException {
 		return 0;
@@ -172,13 +171,14 @@ public class CustomerService implements CustomerServiceInterface {
 		Employee employee = empbean.findEmployeebyUsername(username);
 		List<Customer> customerList = employee.getCustomers();
 		List<Long> customernumbers = new ArrayList<Long>();
-		
-		for(int i = 0; i < customerList.size(); i++) {
+
+		for (int i = 0; i < customerList.size(); i++) {
 			customernumbers.add(customerList.get(i).getCustomernumber());
 		}
-		
+
 		if (keyword.isEmpty()) {
-			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow FROM classicmodels.customers WHERE customernumber IN :customernumbers");
+			q = em.createNativeQuery(
+					"SELECT COUNT(*) AS totalrow FROM classicmodels.customers WHERE customernumber IN :customernumbers");
 			q.setParameter("customernumbers", customernumbers);
 		} else {
 			q = em.createNativeQuery("SELECT COUNT(*) AS totalrow from classicmodels.customers "
@@ -192,7 +192,7 @@ public class CustomerService implements CustomerServiceInterface {
 		BigInteger results = (BigInteger) q.getSingleResult();
 		int i = results.intValue();
 		return i;
-		
+
 	}
 
 	@Override
@@ -278,5 +278,12 @@ public class CustomerService implements CustomerServiceInterface {
 		em.persist(customer);
 		return true;
 	}
-	
+
+	public boolean removeCustomer(String id, String empno) throws EJBException {
+		Customer customer = findCustomer(id);
+		Employee emp = null;
+	  customer.setEmployee(emp);
+	  
+	  return true; }
+
 }

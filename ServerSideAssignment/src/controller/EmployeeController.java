@@ -13,18 +13,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import domain.Customer;
 import domain.Employee;
 import service.EmpService;
 import utilities.ValidateManageLogic;
+
 /**
  * Servlet implementation class EmployeeController
  */
 @WebServlet("/EmployeeController")
 public class EmployeeController extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
 	private EmpService empser;
 
@@ -42,20 +45,29 @@ public class EmployeeController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String id = request.getParameter("id");
-		String username = request.getParameter("username");
-		String role = request.getParameter("role");
+		HttpSession session = request.getSession(false);
+
+		String username = (String) session.getAttribute("username");
+		String role = (String) session.getAttribute("role");
 
 		try {
-			Employee emp = empser.findEmployee(id);
-			request.setAttribute("EMP", emp);
-			request.setAttribute("username", username);
-			request.setAttribute("role", role);
-			RequestDispatcher req = request.getRequestDispatcher("EmployeeUpdate.jsp");
-			req.forward(request, response);
+			if (id != null) {
+				Employee EMP = empser.findEmployee(id);
+				request.setAttribute("EMP", EMP);
+				//request.setAttribute("username", username);
+				request.setAttribute("role", role);
+				RequestDispatcher req = request.getRequestDispatcher("EmployeeUpdate.jsp");
+				req.forward(request, response);
+			} else {
+				Employee EMP = empser.findEmployeebyUsername(username);
+				request.setAttribute("EMP", EMP);
+				request.setAttribute("role", role);
+				RequestDispatcher req = request.getRequestDispatcher("StaffDetail.jsp");
+				req.forward(request, response);
+			}
 		} catch (EJBException ex) {
 		}
 	}
-
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -63,7 +75,7 @@ public class EmployeeController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-	
+
 		String eid = request.getParameter("id");
 		String lname = request.getParameter("lname");
 		String fname = request.getParameter("fname");
@@ -71,14 +83,17 @@ public class EmployeeController extends HttpServlet {
 		String email = request.getParameter("email");
 		String ocode = request.getParameter("ocode");
 		String report = request.getParameter("repto");
-		String jobt = request.getParameter("jobt");	
+		String jobt = request.getParameter("jobt");
 		String uname = request.getParameter("uname");
-		String username = request.getParameter("username");
-		String role = request.getParameter("role");
+		//String username = request.getParameter("username");
+		//String role = request.getParameter("role");
+		HttpSession session = request.getSession(false);
+		//String username = (String) session.getAttribute("username");
+		String role = (String) session.getAttribute("role");
 
 		PrintWriter out = response.getWriter();
-		
-		String[] s = { eid, fname, lname, ext, email, ocode, report, jobt, uname };
+
+		String[] s = { eid, lname, fname, ext, email, ocode, report, jobt, uname };
 
 		try {
 			if (ValidateManageLogic.validateManager(request).equals("UPDATE")) {
@@ -94,9 +109,14 @@ public class EmployeeController extends HttpServlet {
 			}
 			// this line is to redirect to notify record has been updated and redirect to
 			// another page
-			request.setAttribute("username", username);
-			request.setAttribute("role", role);
-			ValidateManageLogic.navigateJS(out, "EmpPaginationServlet");
+			if(role.equals("admin")) {
+				ValidateManageLogic.navigateJS(out, "EmpPaginationServlet");
+			} else {
+				Employee EMP = empser.findEmployee(eid);
+				request.setAttribute("EMP", EMP);
+				RequestDispatcher req = request.getRequestDispatcher("StaffDetail.jsp");
+				req.forward(request, response);
+			}
 		} catch (EJBException ex) {
 		}
 	}

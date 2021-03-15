@@ -25,8 +25,8 @@ tr:nth-child(even) {
 <body>
 	<%
 		Employee emp = (Employee) request.getAttribute("EMP");
-		String username = (String) request.getParameter("username");
-		String role = (String) request.getParameter("role");
+		//String username = (String) request.getParameter("username");
+		//String role = (String) request.getParameter("role");
 	%>
 	<form action="EmployeeController" method="post">
 		<table>
@@ -34,7 +34,7 @@ tr:nth-child(even) {
 				<td>Employee ID</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"id\" readonly value=" + emp.getEmployeenumber());
+						out.println("<input type=\"text\" name=\"id\" readonly value=\"" + emp.getEmployeenumber()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -42,7 +42,7 @@ tr:nth-child(even) {
 				<td>Last Name</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"lname\" value=" + emp.getLastname());
+						out.println("<input type=\"text\" name=\"lname\" value=\"" + emp.getLastname()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -50,7 +50,7 @@ tr:nth-child(even) {
 				<td>First Name</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"fname\" value=" + emp.getFirstname());
+						out.println("<input type=\"text\" name=\"fname\" value=\"" + emp.getFirstname()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -58,7 +58,7 @@ tr:nth-child(even) {
 				<td>Extension</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"ext\" value=" + emp.getExtension());
+						out.println("<input type=\"text\" name=\"ext\" value=\"" + emp.getExtension()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -66,7 +66,7 @@ tr:nth-child(even) {
 				<td>Email</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"email\" value=" + emp.getEmail());
+						out.println("<input type=\"text\" name=\"email\" value=\"" + emp.getEmail()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -74,7 +74,7 @@ tr:nth-child(even) {
 				<td>Office Code</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"ocode\" value=" + emp.getOffice().getOfficecode());
+						out.println("<input type=\"text\" name=\"ocode\" value=\"" + emp.getOffice().getOfficecode()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -83,9 +83,9 @@ tr:nth-child(even) {
 				<td>
 					<%
 						if (emp.getReportsto() != null) {
-							out.println("<input type=\"text\" name=\"repto\" value=" + emp.getReportsto());
+							out.println("<input type=\"text\" name=\"repto\" value=\"" + emp.getReportsto()+"\"/>");
 						} else {
-							out.println("<input type=\"text\" name=\"repto\" value=" + "null");
+							out.println("<input type=\"text\" name=\"repto\" value=\"" + "null");
 						}
 					%>
 				</td>
@@ -94,7 +94,7 @@ tr:nth-child(even) {
 				<td>Job Title</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"jobt\" value=" + emp.getJobtitle());
+						out.println("<input type=\"text\" name=\"jobt\" value=\"" + emp.getJobtitle()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -102,15 +102,15 @@ tr:nth-child(even) {
 				<td>User Name(ReadOnly)</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"uname\" readonly value=" + emp.getUser().getUsername());
+						out.println("<input type=\"text\" name=\"uname\" readonly value=\"" + emp.getUser().getUsername()+"\"/>");
 					%>
 				</td>
 			</tr>
 		</table>
-		<input type="submit" name="UPDATE" value="UPDATE" /> <input
-			type="submit" name="DELETE" value="DELETE" />
-			<input type="hidden" name="username" value="<%=username%>" />
-			<input type="hidden" name="role" value="<%=role%>" />
+		<input type="submit" name="UPDATE" value="UPDATE" /> 
+		
+			<%-- <input type="hidden" name="username" value="<%=username%>" />
+			<input type="hidden" name="role" value="<%=role%>" /> --%>
 
 	</form>
 </body>

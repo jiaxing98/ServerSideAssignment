@@ -214,10 +214,11 @@ body h4 {
 							out.println("<td><button class='button' type='submit' form='delete' name='DELETE' value='DELETE'>Delete</button></td>");
 							out.println("</tr>");
 						} else if (role.equals("staff")) {
-							//out.println("<form onSubmit='return confirmRemove()'action='CustomerController' method='post'id='delete'>");
-							//out.println("<input type='hidden' name='id' value=" + t.getCustomernumber() + ">");
-							//out.println("<td><button class='button' type='submit' form='delete' name='DELETE' value='DELETE'>Delete</button></td>");
-							//out.println("</tr>");
+							out.println("<form onSubmit='return confirmRemove()'action='CustomerController' method='post'id='remove'>");
+							out.println("<input type='hidden' name='empno' value=" + t.getEmployee() + ">");
+							out.println("<input type='hidden' name='id' value=" + t.getCustomernumber() + ">");
+							out.println("<td><button class='button' type='submit' form='remove' name='REMOVE' value='REMOVE'>Remove</button></td>");
+							out.println("</tr>");
 						}
 						
 					}

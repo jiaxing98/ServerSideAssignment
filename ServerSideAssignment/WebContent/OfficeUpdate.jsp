@@ -32,7 +32,7 @@ tr:nth-child(even) {
 				<td>Office Code</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"id\" readonly value=" + off.getOfficecode());
+						out.println("<input type=\"text\" name=\"id\" readonly value=\"" + off.getOfficecode()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -40,7 +40,7 @@ tr:nth-child(even) {
 				<td>City</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"city\" value=" + off.getCity());
+						out.println("<input type=\"text\" name=\"city\" value=\"" + off.getCity()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -48,7 +48,7 @@ tr:nth-child(even) {
 				<td>Phone</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"phone\" value=" + off.getPhone());
+						out.println("<input type=\"text\" name=\"phone\" value=\"" + off.getPhone()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -56,7 +56,7 @@ tr:nth-child(even) {
 				<td>Address Line 1</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"adr1\" value=" + off.getAddressline1());
+						out.println("<input type=\"text\" name=\"adr1\" value=\"" + off.getAddressline1()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -65,9 +65,9 @@ tr:nth-child(even) {
 				<td>
 					<%
 						if (off.getAddressline2() != null) {
-							out.println("<input type=\"text\" name=\"adr2\" value=" + off.getAddressline2());
+							out.println("<input type=\"text\" name=\"adr2\" value=\"" + off.getAddressline2()+"\"/>");
 						} else {
-							out.println("<input type=\"text\" name=\"adr2\" value=" + "null");
+							out.println("<input type=\"text\" name=\"adr2\" value=\"" + "null");
 						}
 					%>
 				</td>
@@ -77,9 +77,9 @@ tr:nth-child(even) {
 				<td>
 					<%
 						if (off.getState() != null) {
-							out.println("<input type=\"text\" name=\"state\" value=" + off.getState());
+							out.println("<input type=\"text\" name=\"state\" value=\"" + off.getState()+"\"/>");
 						} else {
-							out.println("<input type=\"text\" name=\"state\" value=" + "null");
+							out.println("<input type=\"text\" name=\"state\" value=\"" + "null");
 						}
 					%>
 				</td>
@@ -88,7 +88,7 @@ tr:nth-child(even) {
 				<td>Country</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"country\" value=" + off.getCountry());
+						out.println("<input type=\"text\" name=\"country\" value=\"" + off.getCountry()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -96,7 +96,7 @@ tr:nth-child(even) {
 				<td>Postal Code</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"pcode\" value=" + off.getPostalcode());
+						out.println("<input type=\"text\" name=\"pcode\" value=\"" + off.getPostalcode()+"\"/>");
 					%>
 				</td>
 			</tr>
@@ -104,7 +104,7 @@ tr:nth-child(even) {
 				<td>Territory</td>
 				<td>
 					<%
-						out.println("<input type=\"text\" name=\"terr\" value=" + off.getTerritory());
+						out.println("<input type=\"text\" name=\"terr\" value=\"" + off.getTerritory()+"\"/>");
 					%>
 				</td>
 			</tr>

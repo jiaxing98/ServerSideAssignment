@@ -42,20 +42,19 @@ public class CustomerController extends HttpServlet {
 			throws ServletException, IOException {
 
 		String id = request.getParameter("id");
-		
+
 		HttpSession session = request.getSession(false);
 		String username = (String) session.getAttribute("username");
 		String role = (String) session.getAttribute("role");
-		
+
 		try {
-			if(id != null) {
+			if (id != null) {
 				Customer customer = customerbean.findCustomer(id);
 				request.setAttribute("customer", customer);
 				request.setAttribute("role", role);
 				RequestDispatcher req = request.getRequestDispatcher("CustomerUpdate.jsp");
 				req.forward(request, response);
-			}
-			else {
+			} else {
 				Customer customer = customerbean.findCustomerbyUsername(username);
 				request.setAttribute("customer", customer);
 				request.setAttribute("role", role);
@@ -88,28 +87,33 @@ public class CustomerController extends HttpServlet {
 		String postalcode = request.getParameter("postalcode");
 		String state = request.getParameter("state");
 		String empno = request.getParameter("empno");
-		
+
 		HttpSession session = request.getSession(false);
 		String username = (String) session.getAttribute("username");
 		String role = (String) session.getAttribute("role");
-		
+
 		PrintWriter out = response.getWriter();
 		// this line is to package the whole values into one array string variable -
 		// easier just pass one parameter object
-		String[] s = { cno, address1, address2, city, contactfname, contactlname,
-						country, creditlimit, customername, phone, postalcode, state, empno, username };
+		String[] s = { cno, address1, address2, city, contactfname, contactlname, country, creditlimit, customername,
+				phone, postalcode, state, empno, username };
 
 		try {
 			if (ValidateManageLogic.validateManager(request).equals("UPDATE")) {
 				customerbean.updateCustomer(s);
 			} else if (ValidateManageLogic.validateManager(request).equals("DELETE")) {
 				customerbean.deleteCustomer(cno);
+			} else if (ValidateManageLogic.validateManager(request).equals("REMOVE")) {
+				customerbean.removeCustomer(cno, empno);
 			} else {
 				customerbean.addCustomer(s);
 			}
-		
-			if(role.equals("admin")) {
+
+			if (role.equals("admin")) {
 				ValidateManageLogic.navigateJS(out, "CustomerPagination");
+			} else if (role.equals("staff")) {
+				ValidateManageLogic.navigateJS(out, "CustomerPagination");
+
 			} else if (role.equals("user")) {
 				Customer customer = customerbean.findCustomer(cno);
 				request.setAttribute("customer", customer);

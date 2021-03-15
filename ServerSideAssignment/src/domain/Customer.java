@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 
+
 /**
  * The persistent class for the customers database table.
  * 
@@ -52,7 +53,7 @@ public class Customer implements Serializable {
 	
 	//bi-directional many-to-one association to Employee
 	@ManyToOne
-	@JoinColumn(name="salesrepemployeenumber", insertable=true, updatable=false)
+	@JoinColumn(name="salesrepemployeenumber", insertable=true, updatable=true)
 	private Employee employee;
 
 	//bi-directional many-to-one association to Payment

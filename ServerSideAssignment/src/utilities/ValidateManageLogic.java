@@ -11,6 +11,8 @@ public class ValidateManageLogic {
 			return "UPDATE";
 		} else if (request.getParameter("DELETE") != null && request.getParameter("DELETE").equals("DELETE")) {
 			return "DELETE";
+		}else if (request.getParameter("REMOVE") != null && request.getParameter("REMOVE").equals("REMOVE")) {
+			return "REMOVE";
 		}
 		return "ADD";
 	}
