@@ -119,7 +119,8 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 						<div class="list-menu">
 							<ul>
 								<li><a href="index.html">Shop</a></li>
-								<li><a href="product-detail.html">Details</a></li>
+								<li><a href="productAdmin.html">Product</a></li>
+                                <li><a href="productlineAdmin.html">Product Line</a></li>
 								<li><a href="contact.html">Contact</a></li>
 							</ul>
 						</div>

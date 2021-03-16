@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name="products", schema="classicmodels")
 @NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
+@NamedQuery(name="Product.findbyId", query="SELECT p FROM Product p WHERE p.productcode =:productcode")
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -39,7 +40,7 @@ public class Product implements Serializable {
 
 	//bi-directional many-to-one association to Productline
 	@ManyToOne
-	@JoinColumn(name="productline", insertable=true, updatable=false)
+	@JoinColumn(name="productline", insertable=true, updatable=true)
 	private Productline productlineBean;
 
 	public Product() {

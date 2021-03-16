@@ -12,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name="productlines", schema="classicmodels")
 @NamedQuery(name="Productline.findAll", query="SELECT p FROM Productline p")
+@NamedQuery(name="Productline.findbyId", query="SELECT pl FROM Productline pl WHERE pl.productline =:productline")
 public class Productline implements Serializable {
 	private static final long serialVersionUID = 1L;
 
