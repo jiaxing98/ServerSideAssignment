@@ -16,6 +16,6 @@ public interface OrderServicesInterface {
 	public int getNumberOfOrder(String keyword) throws EJBException;
 	public void updateOrder(String[] s) throws EJBException;
 	public void deleteOrder(String id) throws EJBException;
-	public void addOrder(String[] o, List<String[]> oDetails, List<Product> product, Customer cus, List<String> odNo) throws EJBException;
+	public void addOrder(String[] o, List<String[]> oDetails, List<Product> product, Customer cus) throws EJBException;
 
 }

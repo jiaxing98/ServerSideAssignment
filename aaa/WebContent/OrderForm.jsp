@@ -729,7 +729,7 @@
 					<div id="cid_13" class="form-input-wide" data-layout="full">
 						<div data-align="center"
 							class="form-buttons-wrapper form-buttons-center   jsTest-button-wrapperField">
-							<button id="input_13" type="submit"
+							<button type="submit"
 								class="form-submit-button submit-button jf-form-buttons jsTest-submitField"
 								data-component="button" data-content="">Submit Order</button>
 						</div>

@@ -104,7 +104,7 @@ public class OrderServices implements OrderServicesInterface {
 	}
 
 	@Override
-	public void addOrder(String[] o, List<String[]> oDetails, List<Product> product, Customer cus, List<String> odNo) throws EJBException {
+	public void addOrder(String[] o, List<String[]> oDetails, List<Product> product, Customer cus) throws EJBException {
 		Order order = new Order();
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -117,7 +117,6 @@ public class OrderServices implements OrderServicesInterface {
 		order.setComments(o[5]);
 		int cusNum = Math.toIntExact(cus.getCustomernumber());
 		order.setCustomernumber(cusNum);
-		order.setOrdernumber(Integer.parseInt(PKgenerator.getAlphaNumericString(odNo)));
 		em.persist(order);
 		
 		for(int i = 0; i < oDetails.size(); i++) {

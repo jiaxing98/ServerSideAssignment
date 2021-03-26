@@ -95,12 +95,6 @@ public class OrderController extends HttpServlet {
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
 		Customer cus = cSrv.findCustomerbyUsername(username);
-		List<String> odNo = new ArrayList<>();
-		List<Integer> temp = odsrv.getAllOrderNo();
-		for(int i = 0; i < temp.size(); i++) {
-			odNo.add(i, String.valueOf(temp.get(i)));
-		}
-		
 		/*
 		 * List<Orderdetail>odList = odsrv.getAllOrderNo(); for(Orderdetail od : odList)
 		 * { odNo.add(String.valueOf(od.getOrder().getOrdernumber())); }
@@ -133,7 +127,7 @@ public class OrderController extends HttpServlet {
 			} else if (ValidateManageLogic.validateManager(request).equals("DELETE")) {
 				ordersrv.deleteOrder(oInfo[0]);
 			} else	{
-				ordersrv.addOrder(oInfo, oDetails, product, cus, odNo);
+				ordersrv.addOrder(oInfo, oDetails, product, cus);
 				path = "Order.jsp";
 			}
 				// add order
