@@ -12,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name="orders", schema="classicmodels")
 @NamedQuery(name="Order.findAll", query="SELECT o FROM Order o")
+@NamedQuery(name = "Order.findbyId", query = "SELECT o FROM Order o WHERE o.ordernumber = :ordernumber")
 public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 

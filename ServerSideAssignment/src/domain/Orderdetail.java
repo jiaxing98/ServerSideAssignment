@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 @Entity
 @Table(name="orderdetails", schema="classicmodels")
 @NamedQuery(name="Orderdetail.findAll", query="SELECT o FROM Orderdetail o")
+@NamedQuery(name="Orderdetail.findbyId", query="SELECT o FROM Orderdetail o WHERE o.id.ordernumber = :ordernumber")
+@NamedQuery(name="Orderdetail.findbyIdnProduct", query="SELECT o FROM Orderdetail o WHERE o.id.ordernumber = :ordernumber AND o.id.productcode =:productcode")
+@NamedQuery(name="Orderdetail.findDisONo", query="SELECT DISTINCT(o.id.ordernumber) FROM Orderdetail o")
 public class Orderdetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -14,6 +14,7 @@ import java.util.List;
 @Table(name="products", schema="classicmodels")
 @NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
 @NamedQuery(name="Product.findbyId", query="SELECT p FROM Product p WHERE p.productcode =:productcode")
+@NamedQuery(name="Product.findpCode", query="SELECT p.productcode FROM Product p WHERE p.productname =:productname")
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 
