@@ -55,8 +55,8 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 				<div class="row">
 					<div class="col-md-6 col-sm-6">
 						<div class="top-header-left">
-							<a href="LogoutServlet">Log Out</a> <label
-								for="username">Welcome, <%=username%>
+							<a href="LogoutServlet">Log Out</a> <label for="username">Welcome,
+								<%=username%>
 							</label>
 						</div>
 						<!-- /.top-header-left -->
@@ -118,9 +118,19 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 					<div class="col-md-6 col-sm-7">
 						<div class="list-menu">
 							<ul>
-								<li><a href="index.html">Shop</a></li>
+								<form class="form-inline md-form mr-auto mb-4"
+									action="ProductPagination" method="get">
+									<input type="hidden" name="currentPage" value="1"> <input
+										type="hidden" name="keyword" value=""> <input
+										type="hidden" name="nOfPdlFilter" value="0"> <input
+										type="hidden" name="recordsPerPage" value="20"> <input
+										type="hidden" name="totalItem" value="0">
+									<button
+										class="btn aqua-gradient btn-rounded btn-sm my-0 btn btn-info"
+										type="submit">Shop</button>
+								</form>
 								<li><a href="productAdmin.html">Product</a></li>
-                                <li><a href="productlineAdmin.html">Product Line</a></li>
+								<li><a href="productlineAdmin.html">Product Line</a></li>
 								<li><a href="contact.html">Contact</a></li>
 							</ul>
 						</div>
@@ -633,9 +643,9 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 							Kool Store is free responsive eCommerce template provided by
 							templatemo website. You can use this layout for any website. <br>
 							<br>Tempore cum mollitia eveniet laboriosam corporis
-							voluptas earum voluptate. Lorem ipsum dolor sit amet. <br>
-							<br>Credit goes to <a rel="nofollow"
-								href="http://unsplash.com">Unsplash</a> for all images.
+							voluptas earum voluptate. Lorem ipsum dolor sit amet. <br> <br>Credit
+							goes to <a rel="nofollow" href="http://unsplash.com">Unsplash</a>
+							for all images.
 						</div>
 						<!-- /.footer-widget -->
 					</div>

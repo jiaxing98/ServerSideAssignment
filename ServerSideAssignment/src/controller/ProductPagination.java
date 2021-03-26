@@ -22,8 +22,8 @@ import service.ProductlineServiceInterface;
 /**
  * Servlet implementation class ProductPagination
  */
-@WebServlet("/ProductPaginationServlet")
-public class ProductPaginationServlet extends HttpServlet {
+@WebServlet("/ProductPagination")
+public class ProductPagination extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
@@ -35,7 +35,7 @@ public class ProductPaginationServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public ProductPaginationServlet() {
+	public ProductPagination() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

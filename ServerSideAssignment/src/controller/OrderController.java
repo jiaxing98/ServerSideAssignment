@@ -128,7 +128,7 @@ public class OrderController extends HttpServlet {
 				ordersrv.deleteOrder(oInfo[0]);
 			} else	{
 				ordersrv.addOrder(oInfo, oDetails, product, cus);
-				path = "Order.jsp";
+				path = "UserSession.jsp";
 			}
 				// add order
 			// this line is to redirect to notify record has been updated and redirect to

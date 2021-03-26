@@ -50,9 +50,8 @@ body h4 {
 				<label for="amount">Amount:</label> <input type="text"
 					class="form-control" id="amount" name="amount" required>
 			</div>
-			<input type="hidden" name="paymentdate" id="paymentdate" value="" /> <input
-				type="hidden" name="customernumber" value="103" />
-			<%-- 			<input type="hidden" name="customernumber" value="<%=customernumber%>" /> --%>
+			<input type="hidden" name="paymentdate" id="paymentdate" value="" />
+			<input type="hidden" name="customernumber" value="<%=customernumber%>" />
 			<button type="submit" class="btn btn-default" value="Submit">Submit</button>
 			<button type="reset" class="btn">Reset</button>
 		</form>

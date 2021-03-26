@@ -161,6 +161,8 @@ body {
 				<tr>
 					<td><input type="hidden" id="nOfPdlFilter" name="nOfPdlFilter"
 						value="0"></td>
+					<td><input type="hidden" id="keyword" name="keyword"
+						value=""></td>
 				</tr>
 
 			</table>
