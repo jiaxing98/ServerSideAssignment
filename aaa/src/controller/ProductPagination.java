@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import domain.Product;
 import domain.Productline;
@@ -85,30 +86,36 @@ public class ProductPagination extends HttpServlet {
 			request.setAttribute("products", lists);
 		} catch (EJBException ex) {
 		}
-		
-		
-		if(totalItem > 0) {
-			for(int i = 1; i<=totalItem; i++) {
+
+		if (totalItem > 0) {
+			for (int i = 1; i <= totalItem; i++) {
 				String pdLine = request.getParameter("pdLine" + i);
 				String pdName = request.getParameter("pdName" + i);
 				int buyQty = Integer.valueOf(request.getParameter("buyQty" + i));
 				float totalPrice = Float.valueOf(request.getParameter("totalPrice" + i));
-						
+
 				request.setAttribute("pdLine" + i, pdLine);
 				request.setAttribute("pdName" + i, pdName);
 				request.setAttribute("buyQty" + i, buyQty);
 				request.setAttribute("totalPrice" + i, totalPrice);
 			}
 		}
-		
+
 		request.setAttribute("nOfPages", nOfPages);
 		request.setAttribute("currentPage", currentPage);
 		request.setAttribute("recordsPerPage", recordsPerPage);
 		request.setAttribute("keyword", keyword);
 		request.setAttribute("nOfPdlFilter", nOfPdlFilter);
 		request.setAttribute("totalItem", totalItem);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("Order.jsp");
-		dispatcher.forward(request, response);
+		HttpSession session = request.getSession();
+		
+		if (session.getAttribute("username") == null) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("CustomerProductView.jsp");
+			dispatcher.forward(request, response);
+		} else {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("Order.jsp");
+			dispatcher.forward(request, response);
+		}
 	}
 
 	/**

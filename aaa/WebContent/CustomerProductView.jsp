@@ -1,14 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; utf-8"
+	pageEncoding="utf-8"%>
 <%@page import="java.util.List"%>
 <%@page import="domain.Product"%>
 <%@page import="domain.Productline"%>
-
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="utf-8">
 <title>Shop at Classic Models</title>
+
 <style>
 body {
 	font-family: Arial, Helvetica, sans-serif;
@@ -17,6 +17,17 @@ body {
 * {
 	box-sizing: border-box;
 }
+
+​#orderPrompt{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+    width: 100px;
+    height: 100px;
+}
+
 /* Button used to open the contact form - fixed at the bottom of the page */
 .open-button {
 	background-color: #555;
@@ -91,8 +102,8 @@ body {
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
 </head>
+<body class="m-3">
 
-<body onload="check_rmQty()" class="m-3">
 	<%
 		int currentPage = (int) request.getAttribute("currentPage");
 		int recordsPerPage = (int) request.getAttribute("recordsPerPage");
@@ -147,10 +158,6 @@ body {
 						out.println("</tr>");
 					%>
 					<tr>
-					<td>
-					<input class="form-control mr-sm-2" type="text" aria-label="Search"
-			name="keyword" />
-					</td>
 						<td><button
 								class="btn aqua-gradient btn-rounded btn-sm my-0 btn btn-info"
 								type="submit">Search</button></td>
@@ -228,7 +235,7 @@ body {
 						if (currentPage != 1 && nOfPages != 0) {
 					%>
 					<%
-						out.println("<br><br><li class=\"page-item\">");
+						out.println("<li class=\"page-item\">");
 							out.println("<a class=\"page-link\" href=\"" + "ProductPagination?recordsPerPage=" + recordsPerPage
 									+ "&currentPage=1" + "&keyword=" + keyword + "&nOfPdlFilter=" + nOfPdlFilter + "&totalItem="
 									+ totalItem + "\">First</a>");
@@ -260,65 +267,23 @@ body {
 					%>
 				</ul>
 			</nav>
+
+			<%
+				if (nOfPages != 0) {
+					out.println("<p class=\"pageref\">");
+					out.println(currentPage + " of " + nOfPages);
+					out.println("</p>");
+				}
+			%>
 		</div>
-		<%
-			if (nOfPages != 0) {
-				out.println("<p class=\"pageref\">");
-				out.println(currentPage + " of " + nOfPages);
-				out.println("</p>");
-			}
-		%>
-
-		<form action="OrderFormServlet" method="get">
-			<div class="table table-striped table-bordered table-sm">
-				<p>
-					<b> Cart </b>
-				</p>
-
-				<table id="cart">
-					<tr>
-						<th>Product Line</th>
-						<th>Product Name</th>
-						<th>Quantity</th>
-						<th>Total Price</th>
-						<th></th>
-					</tr>
-					<%
-						out.println("<tr><td><input type=\"hidden\" id=\"totalItem\" name=\"totalItem\" value\"" + totalItem
-								+ "\"></td></tr>");
-						if (totalItem > 0) {
-							for (int i = 1; i <= totalItem; i++) {
-								String pdLine = (String) request.getAttribute("pdLine" + i);
-								String pdName = (String) request.getAttribute("pdName" + i);
-								int buyQty = (int) request.getAttribute("buyQty" + i);
-								float totalPrice = (float) request.getAttribute("totalPrice" + i);
-
-								out.println("<tr>");
-								out.println("<td><input type=\"text\" name=\"pdLine" + i + "\" value=\"" + pdLine
-										+ "\" readonly></td>");
-								out.println("<td><input type=\"text\" name=\"pdName" + i + "\" value=\"" + pdName
-										+ "\" readonly></td>");
-								out.println("<td><input type=\"text\" name=\"buyQty" + i + "\" value=\"" + buyQty
-										+ "\" readonly></td>");
-								out.println("<td><input type=\"text\" name=\"totalPrice" + i + "\" value=\"" + totalPrice
-										+ "\" readonly></td>");
-								out.println("</tr>");
-							}
-						}
-					%>
-				</table>
-			</div>
-			<button type="submit" class="btn btn-primary" name="submitOrder">Place
-				Order</button>
-		</form>
+		<div id="orderPrompt">
+		<br><p> Interested to order? <a href="login.jsp">Sign in</a> with your account to start purchasing </p>
+		<br><p> Don't have an account yet? <a href="signup.jsp">Sign Up</a> today !</p>
+		
+		</div>
 	</div>
-	<!-- <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-	<script src="vendor/select2/select2.min.js"></script>
-	<script src="js/main.js"></script> -->
-
-	<script type="text/javascript">
+	
+		<script type="text/javascript">
 		// Select all checkboxes with the name 'settings' using querySelectorAll.
 		var checkboxes = document
 				.querySelectorAll("input[type=checkbox][name=pdlSelection]");
@@ -359,69 +324,6 @@ body {
 			});
 	
 </script>
-	<script type="text/javascript">
-		// Use Array.forEach to add an event listener to each checkbox.
-		function check_rmQty() {
-			var qty = document.getElementsByClassName('remainingQty').value;
-			if (qty == 0) {
-				document.getElementsByClassName("buySelection").disabled = true;
-			}
-		}
-	</script>
-
-	<script type="text/javascript">
-		function add_to_cart(event) {
-
-			if(!document.getElementById("buyQty" + event.target.id).value) {
-				alert("Please select a quantity to add an item!"); 
-			}
-			else {
-				var table = document.getElementById("cart");
-
-				// Create an empty <tr> element and add it to the 1st position of the table:
-				var row = table.insertRow(-1);
-				var rowlength = table.rows.length - 2;
-				var itemcount = parseInt(document.getElementById("totalItem").value);
-				if(isNaN(itemcount))
-					itemcount = 0;
-				itemcount++;
-
-				// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
-				var cell1 = row.insertCell(0);
-				var cell2 = row.insertCell(1);
-				var cell3 = row.insertCell(2);
-				var cell4 = row.insertCell(3);
-				//var cell5 = row.insertCell(4);	//to delete the added product
-
-				var totalprice = parseFloat(document.getElementById("buyQty"
-						+ event.target.id).value)
-						* parseFloat(document.getElementById("pdPrice" + event.target.id).value);
-
-
-				// Add some text to the new cells:
-				cell1.innerHTML = "<input type=\"text\" name=\"pdLine" + itemcount + "\" value=\"" + document.getElementById("pdLine"
-						+ event.target.id).value + "\" readonly>";
-			
-				cell2.innerHTML = "<input type=\"text\" name=\"pdName" + itemcount + "\" value=\"" + document.getElementById("pdName"
-						+ event.target.id).value + "\" readonly>";
-
-				cell3.innerHTML = "<input type=\"text\" name=\"buyQty" + itemcount + "\" value=\"" + document.getElementById("buyQty"
-						+ event.target.id).value + "\" readonly>";
-		
-				cell4.innerHTML = "<input type=\"text\" name=\"totalPrice" + itemcount + "\" value=\"" + totalprice.toFixed(2) + "\" readonly>";
-
-				document.getElementById("totalItem").value = itemcount;
-			}
-
-		}
-	</script>
-
-	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
-
 
 </body>
 </html>

@@ -29,27 +29,32 @@ public class OrderDetailService implements OrderDetailServiceInterface{
 		return em.createNamedQuery("Orderdetail.findAll").getResultList();
 	}
 	
+	public List<Integer> getAllOrderNo() throws EJBException {
+		// Write some codes here…
+		return (List<Integer>) em.createNamedQuery("Orderdetail.findDisONo").getResultList();
+	}
+	
 	public List<Orderdetail> readOrderDetail(int orderNo) throws EJBException {
 		// Write some codes here…
-		Query q = null;
-		q = em.createNativeQuery("select * from classicmodels.orderdetails where ordernumber= ? order by productcode",
-				Order.class);
-		q.setParameter(1, orderNo);
+		
+		Query q = em.createNamedQuery("Orderdetail.findbyId");
+		q.setParameter("ordernumber", orderNo);
 		
 		List<Orderdetail> results = q.getResultList();
 		return results;
 	}
 	
-	public Orderdetail findOrderDetail(String oNo) throws EJBException {
+	public Orderdetail findOrderDetail(String oNo, String productCode) throws EJBException {
 		// Write some codes here…
-		Query q = em.createNamedQuery("OrderDetail.findbyId");
+		Query q = em.createNamedQuery("Orderdetail.findbyIdnProduct");
 		q.setParameter("ordernumber", Integer.valueOf(oNo));
+		q.setParameter("productcode", productCode);
 		return (Orderdetail) q.getSingleResult();
 	}
 	
-	public void updateOrderDetail(String[] odInfo) throws EJBException {
+	public void updateOrderDetail(String[] odInfo, String productCode) throws EJBException {
 		
-		Orderdetail od = findOrderDetail(odInfo[0]);
+		Orderdetail od = findOrderDetail(odInfo[0], productCode);
 		BigDecimal price = new BigDecimal(odInfo[3]);
 		price.setScale(2);
 		
@@ -60,9 +65,9 @@ public class OrderDetailService implements OrderDetailServiceInterface{
 		
 	}
 	
-	public void deleteOrderDetail(String id) throws EJBException {
+	public void deleteOrderDetail(String id, String productCode) throws EJBException {
 		// Write some codes here…
-		Orderdetail od = findOrderDetail(id);
+		Orderdetail od = findOrderDetail(id, productCode);
 		em.remove(od);
 	}
 	

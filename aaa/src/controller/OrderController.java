@@ -2,6 +2,9 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.ejb.EJBException;
 import javax.inject.Inject;
@@ -11,10 +14,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import domain.Customer;
 import domain.Order;
+import domain.Orderdetail;
+import domain.Product;
 import services.CustomerServiceInterface;
+import services.OrderDetailServiceInterface;
 import services.OrderServicesInterface;
+import services.ProductServiceInterface;
 import utilities.ValidateManageLogic;
 
 /**
@@ -28,7 +37,13 @@ public class OrderController extends HttpServlet {
 	private OrderServicesInterface ordersrv;
 	
 	@Inject
+	private OrderDetailServiceInterface odsrv;
+	
+	@Inject
 	private CustomerServiceInterface cSrv;
+	
+	@Inject
+	private ProductServiceInterface pSrv;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -47,6 +62,7 @@ public class OrderController extends HttpServlet {
 		// TODO Auto-generated method stub
 		// response.getWriter().append("Served at: ").append(request.getContextPath());
 
+		
 		String oNo = request.getParameter("id");
 		// EmployeeDAO empdao = new PostgreSQLDbDAOFactory().getEmployeeDAO();
 		try {
@@ -67,35 +83,6 @@ public class OrderController extends HttpServlet {
 		// TODO Auto-generated method stub
 		// doGet(request, response);
 		
-		/*
-		 * String cusName = request.getParameter("q2_fullName2[first]") + " " +
-		 * request.getParameter("q2_fullName2[last]"); String conLName =
-		 * request.getParameter("c2_fullName2[last]"); String conFName =
-		 * request.getParameter("c2_fullName2[first]"); String phone =
-		 * request.getParameter("q5_contactNumber[full]"); String address1 =
-		 * request.getParameter("q4_billingAddress[addr_line1]"); String address2 =
-		 * request.getParameter("q4_billingAddress[addr_line2]"); String city =
-		 * request.getParameter("q4_billingAddress[city]"); String state =
-		 * request.getParameter("q4_billingAddress[state]"); String postalCode =
-		 * request.getParameter("q4_billingAddress[postal]"); String country =
-		 * request.getParameter("q4_billingAddress[country]");
-		 * 
-		 * String[] cusInfo = {cusName, conLName, conFName, phone, address1, address2,
-		 * city, state, postalCode, country}; cSrv.addCustomer(cusInfo);
-		 */
-		
-		/*
-		 * try { if (ValidateManageLogic.validateManager(request).equals("UPDATE")) {
-		 * ordersrv.updateOrder(cusInfo); } else if
-		 * (ValidateManageLogic.validateManager(request).equals("DELETE")) {
-		 * ordersrv.deleteOrder(cusInfo[0]); } else { cSrv.addCustomer(cusInfo); }
-		 * 
-		 * // this line is to redirect to notify record has been updated and redirect to
-		 * // another page
-		 * 
-		 * } catch (EJBException ex) { }
-		 */
-
 		String oNo = request.getParameter("orderNumber");
 		String oDate = request.getParameter("oDate");
 		String rDate = request.getParameter("rDate");
@@ -104,19 +91,55 @@ public class OrderController extends HttpServlet {
 		String comments = request.getParameter("comments");
 		String cusNo = request.getParameter("cusNo");
 		PrintWriter out = response.getWriter();
+		String path ="OrderPagination";
+		HttpSession session = request.getSession();
+		String username = (String) session.getAttribute("username");
+		Customer cus = cSrv.findCustomerbyUsername(username);
+		List<String> odNo = new ArrayList<>();
+		List<Integer> temp = odsrv.getAllOrderNo();
+		for(int i = 0; i < temp.size(); i++) {
+			odNo.add(i, String.valueOf(temp.get(i)));
+		}
+		
+		/*
+		 * List<Orderdetail>odList = odsrv.getAllOrderNo(); for(Orderdetail od : odList)
+		 * { odNo.add(String.valueOf(od.getOrder().getOrdernumber())); }
+		 */
 
-		String[] oDetails = { oNo, oDate, rDate, sDate, status, comments, cusNo };
-
+		String[] oInfo = { oNo, oDate, rDate, sDate, status, comments, cusNo };
+		
+		List<String[]> oDetails = new ArrayList<String[]>();
+		List<Product> product = new ArrayList<Product>();
+		
+		int totalItem = Integer.valueOf(request.getParameter("totalItem"));
+		if(totalItem > 0) {
+			for(int i=1; i<=totalItem; i++) {
+				String productName = request.getParameter("pdName" + i);
+				String pCode = pSrv.findProductCode(productName);
+				product.add(pSrv.findProduct(pCode));
+				int buyQty = Integer.valueOf(request.getParameter("buyQty" + i));
+				float totalPrice = Float.valueOf(request.getParameter("totalPrice" + i));
+				float prEach = totalPrice / buyQty;
+				int oLineNo = 1;
+				
+				String[] details = {Integer.toString(buyQty), Float.toString(prEach), Integer.toString(oLineNo)};
+				oDetails.add(details);
+			}
+		}
+		
 		try {
 			if (ValidateManageLogic.validateManager(request).equals("UPDATE")) {
-				ordersrv.updateOrder(oDetails);
+				ordersrv.updateOrder(oInfo);
 			} else if (ValidateManageLogic.validateManager(request).equals("DELETE")) {
-				ordersrv.deleteOrder(oDetails[0]);
+				ordersrv.deleteOrder(oInfo[0]);
+			} else	{
+				ordersrv.addOrder(oInfo, oDetails, product, cus, odNo);
+				path = "Order.jsp";
 			}
 				// add order
 			// this line is to redirect to notify record has been updated and redirect to
 			// another page
-			ValidateManageLogic.navigateJS(out);
+			ValidateManageLogic.navigateJS(out, path);
 		} catch (EJBException ex) {
 		}
 	}

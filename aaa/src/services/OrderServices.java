@@ -1,7 +1,10 @@
 package services;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -10,15 +13,22 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import services.PostGresDatabase;
+import utilities.PKgenerator;
+import domain.Customer;
 import domain.Order;
+import domain.Orderdetail;
+import domain.OrderdetailPK;
+import domain.Product;
+import domain.User;
 
 @Dependent
 @Transactional
-public class OrderServices implements OrderServicesInterface{
-	
+public class OrderServices implements OrderServicesInterface {
+
 	private EntityManager em;
 
 	@Inject
@@ -79,7 +89,7 @@ public class OrderServices implements OrderServicesInterface{
 		// Write some codes here…
 
 		Order order = findOrder(o[0]);
-		
+
 		order.setRequireddate(o[2]);
 		order.setShippeddate(o[3]);
 		order.setStatus(o[4]);
@@ -93,15 +103,42 @@ public class OrderServices implements OrderServicesInterface{
 		em.remove(order);
 	}
 
-	/*
-	 * public void addOrder(String[] o) throws EJBException { // Write some codes
-	 * here… Date dob = null; Date hd = null; try { dob = new
-	 * SimpleDateFormat("yyyy-MM-dd").parse(s[4]); hd = new
-	 * SimpleDateFormat("yyyy-MM-dd").parse(s[5]); } catch (Exception ex) { } Order
-	 * o = new Order(); java.sql.Date DOB = new java.sql.Date(dob.getTime());
-	 * java.sql.Date HD = new java.sql.Date(hd.getTime()); e.setFirstName(s[1]);
-	 * e.setLastName(s[2]); e.setGender(s[3]); e.setBirthDate(DOB);
-	 * e.setHireDate(HD); em.persist(o); }
-	 */
+	@Override
+	public void addOrder(String[] o, List<String[]> oDetails, List<Product> product, Customer cus, List<String> odNo) throws EJBException {
+		Order order = new Order();
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDateTime today = LocalDateTime.now();
+		String orderDate = dtf.format(today);
+		
+		order.setOrderdate(orderDate);	
+		order.setRequireddate(orderDate);
+		order.setStatus("In Process");
+		order.setComments(o[5]);
+		int cusNum = Math.toIntExact(cus.getCustomernumber());
+		order.setCustomernumber(cusNum);
+		order.setOrdernumber(Integer.parseInt(PKgenerator.getAlphaNumericString(odNo)));
+		em.persist(order);
+		
+		for(int i = 0; i < oDetails.size(); i++) {
+			String[] temp = oDetails.get(i);
+			int buyQty = Integer.parseInt(temp[0]);
+			BigDecimal prEach = new BigDecimal(Double.parseDouble(temp[1]));
+			int oLineNo = Integer.parseInt(temp[2]);
+			
+			OrderdetailPK odpk = new OrderdetailPK();
+			Orderdetail od = new Orderdetail();
+			od.setOrder(order);
+			od.setProduct(product.get(i));
+			od.setQuantityordered(buyQty);
+			od.setPriceeach(prEach);
+			od.setOrderlinenumber(oLineNo);
+			odpk.setOrdernumber(order.getOrdernumber());
+			odpk.setProductcode(product.get(i).getProductcode());
+			od.setId(odpk);
+			em.persist(od);
+		}	
+			
+	}
 
 }

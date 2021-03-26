@@ -134,7 +134,7 @@ body {
 						out.println("<td>" + o.getCustomernumber() + "</td>");
 						out.println("<td><a href=\"OrderController?id=" + o.getOrdernumber() + "\">Update</a></td>");
 						out.println("<td><a href=\"OrderController?id=" + o.getOrdernumber() + "\">Delete</a></td>");
-						out.println("<td><a href=\"OrderDetailController?id=" + o.getOrdernumber() + "\">Details</a></td>");
+						out.println("<td><a href=\"OrderDetailDisplay?id=" + o.getOrdernumber() + "\">Details</a></td>");
 						out.println("</tr>");
 					}
 				} else {

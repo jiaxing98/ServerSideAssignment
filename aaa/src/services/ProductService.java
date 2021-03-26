@@ -42,6 +42,20 @@ public class ProductService implements ProductServiceInterface {
 		int i = results.intValue();
 		return i;
 	}
+	
+	@Override
+	public String findProductCode(String productName) throws EJBException {
+		Query q = em.createNamedQuery("Product.findpCode");
+		q.setParameter("productname", String.valueOf(productName));
+		return (String) q.getSingleResult();
+	}
+	
+	@Override
+	public Product findProduct(String productcode) throws EJBException {
+		Query q = em.createNamedQuery("Product.findbyId");
+		q.setParameter("productcode", String.valueOf(productcode));
+		return (Product) q.getSingleResult();
+	}
 
 	public List<Product> readProduct(int currentPage, int recordsPerPage, String keyword, String pdlSelected)
 			throws EJBException {

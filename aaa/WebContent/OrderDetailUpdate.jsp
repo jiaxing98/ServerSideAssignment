@@ -1,16 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    <%@page import="domain.Orderdetail"%>
+	pageEncoding="ISO-8859-1"%>
+<%@page import="domain.Orderdetail"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+<style>
+table {
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+td, th {
+	border: 1px solid #dddddd;
+	text-align: left;
+	padding: 8px;
+}
+
+tr:nth-child(even) {
+	background-color: #dddddd;
+}
+</style>
 </head>
 <body>
 
-<%
-		Orderdetail od = (Orderdetail) request.getAttribute("order");
+	<%
+		Orderdetail od = (Orderdetail) request.getAttribute("orderDetail");
 	%>
 	<form action="OrderController" method="post">
 		<table>
@@ -48,7 +65,7 @@
 			</tr>
 			<tr>
 				<td>Price each</td>
-				<td>s
+				<td>
 					<%
 						out.println("<input type=\"text\" name=\"prEach\" value=" + od.getPriceeach());
 					%>

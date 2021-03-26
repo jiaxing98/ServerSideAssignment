@@ -46,9 +46,10 @@ public class OrderDetailController extends HttpServlet {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		String oNo = request.getParameter("id");
+		String pCode = request.getParameter("pCode");
 		// EmployeeDAO empdao = new PostgreSQLDbDAOFactory().getEmployeeDAO();
 		try {
-			Orderdetail od = odsrv.findOrderDetail(oNo);
+			Orderdetail od = odsrv.findOrderDetail(oNo, pCode);
 			request.setAttribute("orderDetail", od);
 			RequestDispatcher req = request.getRequestDispatcher("OrderDetailUpdate.jsp");
 			req.forward(request, response);
@@ -75,14 +76,14 @@ public class OrderDetailController extends HttpServlet {
 
 		try {
 			if (ValidateManageLogic.validateManager(request).equals("UPDATE")) {
-				odsrv.updateOrderDetail(odDetails);
+				odsrv.updateOrderDetail(odDetails, pdCode);
 			} else if (ValidateManageLogic.validateManager(request).equals("DELETE")) {
-				odsrv.deleteOrderDetail(odDetails[0]);
+				odsrv.deleteOrderDetail(odDetails[0], pdCode);
 			}
 				// add order
 			// this line is to redirect to notify record has been updated and redirect to
 			// another page
-			ValidateManageLogic.navigateJS(out);
+			ValidateManageLogic.navigateJS(out, "OrderDetail.jsp");
 		} catch (EJBException ex) {
 		}
 	}

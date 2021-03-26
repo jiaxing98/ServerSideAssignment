@@ -2,7 +2,6 @@ package domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
 
 
 /**
@@ -10,7 +9,7 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="orders", schema="classicmodels")
+@Table(name="orders")
 @NamedQuery(name="Order.findAll", query="SELECT o FROM Order o")
 @NamedQuery(name = "Order.findbyId", query = "SELECT o FROM Order o WHERE o.ordernumber = :ordernumber")
 public class Order implements Serializable {
@@ -30,10 +29,6 @@ public class Order implements Serializable {
 	private String shippeddate;
 
 	private String status;
-
-	//bi-directional many-to-one association to Orderdetail
-	@OneToMany(mappedBy="order")
-	private List<Orderdetail> orderdetails;
 
 	public Order() {
 	}
@@ -92,28 +87,6 @@ public class Order implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public List<Orderdetail> getOrderdetails() {
-		return this.orderdetails;
-	}
-
-	public void setOrderdetails(List<Orderdetail> orderdetails) {
-		this.orderdetails = orderdetails;
-	}
-
-	public Orderdetail addOrderdetail(Orderdetail orderdetail) {
-		getOrderdetails().add(orderdetail);
-		orderdetail.setOrder(this);
-
-		return orderdetail;
-	}
-
-	public Orderdetail removeOrderdetail(Orderdetail orderdetail) {
-		getOrderdetails().remove(orderdetail);
-		orderdetail.setOrder(null);
-
-		return orderdetail;
 	}
 
 }

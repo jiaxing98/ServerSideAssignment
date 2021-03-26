@@ -18,9 +18,12 @@
 			<tr>
 				<th>Order Number</th>
 				<th>Product Code</th>
+				<th>Product Name</th>
 				<th>Quantity Ordered</th>
 				<th>Price each</th>
 				<th>Order Line Number</th>
+				<th></th>
+				<th></th>
 			</tr>
 			<%
 				List<Orderdetail> odList = (List<Orderdetail>) request.getAttribute("orderDetailList");
@@ -33,8 +36,8 @@
 						out.println("<td>" + od.getQuantityordered() + "</td>");
 						out.println("<td>" + od.getPriceeach() + "</td>");
 						out.println("<td>" + od.getOrderlinenumber() + "</td>");
-						out.println("<td><a href=\"OrderDetailController?id=" + od.getOrder().getOrdernumber() + "\">Update</a></td>");
-						out.println("<td><a href=\"OrderDetailController?id=" + od.getOrder().getOrdernumber() + "\">Delete</a></td>");
+						out.println("<td><a href=\"OrderDetailController?id=" + od.getOrder().getOrdernumber() + "&pCode=" + od.getProduct().getProductcode() + "\">Update</a></td>");
+						out.println("<td><a href=\"OrderDetailController?id=" + od.getOrder().getOrdernumber() + "&pCode=" + od.getProduct().getProductcode() + "\">Delete</a></td>");
 						out.println("</tr>");
 					}
 				} else {

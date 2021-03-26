@@ -11,5 +11,7 @@ public interface ProductServiceInterface {
 	public List<Product> getAllProduct() throws EJBException;
 	public int getNumberOfProduct(String keyword) throws EJBException;
 	public List<Product> readProduct(int currentPage, int recordsPerPage, String keyword, String pdlSelected) throws EJBException;
+	public String findProductCode(String productName) throws EJBException;
+	public Product findProduct(String productcode) throws EJBException;
 
 }
