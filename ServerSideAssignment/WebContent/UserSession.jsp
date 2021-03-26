@@ -101,6 +101,7 @@ http://www.templatemo.com/preview/templatemo_428_kool_store
 								<li><a href="CustomerController">Account</a></li>
 								<li><a href="#">Order</a>
 								<li><a href="paymentpage.jsp">Payment</a></li>
+								<li><a href="MakeNewPayment.jsp?customernumber=103&checknumber=ABC123456">Make New Payment</a></li>
 							</ul>
 						</div>
 						<!-- /.main-menu -->

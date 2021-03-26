@@ -29,14 +29,15 @@ body h4 {
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
 <body>
 	<%
-		String customernumber = (String) request.getAttribute("customernumber");
+		String customernumber = (String) request.getParameter("customernumber");
+		String checknumber = (String) request.getParameter("checknumber");
 	%>
 	<div class="container">
 		<h2>Make New Payment</h2>
 		<form action="PaymentController" method="post" onSubmit="getDate()">
 			<div class="form-group">
 				<label for="checknumber">Check Number:</label> <input type="text"
-					class="form-control" id="checknumber" name="checknumber" required>
+					class="form-control" id="checknumber" name="checknumber" readonly value="<%=checknumber%>">
 			</div>
 			<div class="form-group">
 				<label for="paymentmethod">Payment Method:</label> <select
